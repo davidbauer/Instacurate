@@ -116,8 +116,8 @@ function getLinks(myUser) {
 		
 	$.getJSON('https://api.twitter.com/1/statuses/user_timeline.json?include_entities=true&include_rts=false&screen_name=' + myUser + '&since_id=1&count=1&callback=?', function(data) {
 		
-		var link = "http://bit.ly/ViUK6i"; // only a placeholder, need to extract expanded_url from url-entity, https://dev.twitter.com/docs/tweet-entities 
-		var text = data.text;
+		var link = "https://github.com/dergraf/Twitter-Times"; // only a placeholder, need to extract expanded_url from url-entity, https://dev.twitter.com/docs/tweet-entities 
+		var text = data[0].text;
 		console.log("The link-url is: " + link + " and the tweet text is " + text);
 		generateEmbed(link);
 	});
@@ -145,12 +145,11 @@ function generateEmbed(link) {
 		$('article').append("<div class='credits'/>");
 		
 		//asssign correct content to all those elements
-		$('.teaser .img').html("<img src='" + img_url + "' width='300px'><br/>");
+		$('.teaser .img').html("<img src='" + img_url + "' width='250px'><br/>");
 		$('h3').html("<a href='" + url + "'>" + title + "</a><br />");
 		$('.description').html(description);
 		$('.credits').html("Published on: <a href='" + provider_url + "'>" + provider + "</a>");
 		
 		
 	});
-	
 };

@@ -1,10 +1,17 @@
-body {font-family: Georgia, serif; font-size: 16px;width: 600px; margin: 20px auto;padding:10px;}
+body {font-family: Georgia, serif; font-size: 16px;width: 850px; margin: 20px auto;padding:10px;}
 #wrapper {width:100%;}
 #searchform {margin-top:20px;}
 .searchbox {width: 300px; height:50px; font-size:150%;}
 .suggestions {font-size:12px;font-family: Helvetica, Arial, sans-serif;color: grey;margin:5px 0;}
 #error {border-left: 3px solid rgba(255,0,0,0.61); padding: 0 8px; margin: 30px 0;}
+#embeds {}
+.teaser {width:250px;float:left;margin: 0 20px 20px 0;padding: 0 10px;background-color: rgba(227,227,227,0.4);}
+.teaser:nth-child(3) {margin-right:0;}
+.teaser h3, h3 a {font-family:Helvetica, Arial, sans-serif; font-weight: bold;text-decoration: none;color:black;}
+.description {font-family:Helvetica, Arial, sans-serif;font-size: 0.9em;}
+.credits {font-size: 0.8em;color:grey;}
+.credits a {color:grey;}
 .twitter-follow-button {margin: 10px 3px 0 0;}
-#footnote {font-size:12px;color:grey;margin-top: 30px;}
+#footnote {font-size:12px;color:grey;margin-top: 150px;clear:both;}
 
-/* bloody mobile styling. maybe later. */
+/* mobile styling maybe later. */
