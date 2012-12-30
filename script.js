@@ -141,7 +141,7 @@ function generateEmbed(link) {
 		provider = embed.provider_name;
 		provider_url = embed.provider_url;
 
-		$('#embeds').html("<a href='" + url + "'>" + title + "</a><br />" + description + "<br />" + "Published on: <a href='" + provider_url + "'>" + provider + "</a>"); //crude version for now, need to assign to specific classes for styling
+		$('#embeds').append("<p><a href='" + url + "'>" + title + "</a><br />" + description + "<br />" + "Published on: <a href='" + provider_url + "'>" + provider + "</a></p>"); //crude version for now, need to assign to specific classes for styling
 	});
 
 };
