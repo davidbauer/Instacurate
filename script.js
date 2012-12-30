@@ -132,9 +132,25 @@ function generateEmbed(link) {
 		description = embed.description;
 		url = embed.url;
 		provider = embed.provider_name;
-		provider_url = embed.provider_url; 
-
-		$('#embeds').html("<a href='" + url + "'>" + title + "</a><br />" + description + "<br />" + "Published on: <a href='" + provider_url + "'>" + provider + "</a>"); //crude version for now, need to assign to specific classes for styling
+		provider_url = embed.provider_url;
+		img_url = embed.thumbnail_url; 
+		
+		//create a new teaser element with all subelements
+		$('#embeds').html(""); // get rid of loading message
+		$('#embeds').append("<div class='teaser' />");
+		$('.teaser').append("<div class='img' />");
+		$('.teaser').append("<article />");
+		$('article').append("<h3 />");
+		$('article').append("<div class='description' />");
+		$('article').append("<div class='credits'/>");
+		
+		//asssign correct content to all those elements
+		$('.teaser .img').html("<img src='" + img_url + "' width='300px'><br/>");
+		$('h3').html("<a href='" + url + "'>" + title + "</a><br />");
+		$('.description').html(description);
+		$('.credits').html("Published on: <a href='" + provider_url + "'>" + provider + "</a>");
+		
+		
 	});
 	
 };
