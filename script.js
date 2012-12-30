@@ -1,0 +1,140 @@
+// Setup an event listener for the form that will execute findTweet()
+// when the form is submitted.
+$(function() {
+	
+	var hash = window.location.hash,
+	    field = document.tweetfinder.user;
+
+	if (hash) {
+		hash = hash.substring(1);
+
+		// Fill field
+		field.value = hash;
+
+		// Do the magic
+		checkUser(hash);
+	}
+	
+	
+	$('#searchform').submit(function(e) {
+		// Stop the form from sending and reloading the page
+		e.preventDefault();
+		// clean up
+		$('#bugfixing').html("");
+		$('#embeds').html("");
+		$('.userinfo').html("");
+
+		// Get the articles from typed user
+		var myUser = findUser();
+		if (myUser == "usernameistoolong") {}
+		else {checkUser(myUser);}
+		// Update URL
+		window.location.hash = myUser;
+	});
+});
+
+$(function() {
+	$('.linkinput').click (function(e) {
+		e.preventDefault();
+		// clean up
+		$('#bugfixing').html("");
+		$('#embeds').html("");
+		$('.userinfo').html("");
+		
+		// Get the articles from linked user
+		var myUser = $(this).attr('data-user');
+		checkUser(myUser);
+		// Update URL
+		window.location.hash = myUser;
+	});
+});
+
+
+// store username given via input
+function findUser() {
+		var myUser;
+
+		// Get the username value from the form and cleanup the @ if needed
+		if (document.tweetfinder.user.value[0] == "@") {
+			myUser = document.tweetfinder.user.value.substring(1,20); //get rid of the @
+		}
+		else { myUser = document.tweetfinder.user.value };
+
+		// Validate length of username
+		if (myUser.length > 16) { // TODO: if true, return error msg and don't continue
+			$('#bugfixing').html("This doesn't seem to be a username. Too long.");
+			return "usernameistoolong";
+		}
+		else {
+			return myUser;
+		}
+}
+
+// call info about username via twitter api and get link data
+function checkUser(myUser) {
+		$.ajax({
+			url: 'https://api.twitter.com/1/users/show.json', 
+			data: {
+				screen_name: myUser,
+				include_entities: true,
+				suppress_response_codes: true
+				},
+			dataType: 'jsonp',
+			success: function(data) {
+        var html = "";
+
+        if (data.error) {
+            $('#bugfixing').html("Twitter doesn't know this username. Try another one.");
+        }
+		else {
+			var created = new Date(data.created_at);
+			var name = data.name;
+			var username = data.screen_name;
+			var followersNumber = data.followers_count;
+			var tweetsNumber = data.statuses_count;	
+
+			html += name + " (@" + username + ") joined Twitter on " + created.toDateString() + ". " + name.split(' ')[0] + " currently has " + followersNumber + " followers and has published a total number of " + tweetsNumber + " tweets."; // test
+			
+			
+			getLinks(myUser); // getting those links from tweets
+							
+			}
+			
+			$('#myUser').html(name);
+			$('.userinfo').html(html);
+			
+		}
+	});
+}
+
+//extract links from url
+function getLinks(myUser) {
+		
+	$('#embeds').html("Looking for tweeted links...");
+	
+	// loop through all tweets and generate embed (loop missing for now, testing the whole thing with most recent tweet)
+		
+	$.getJSON('https://api.twitter.com/1/statuses/user_timeline.json?include_entities=true&include_rts=false&screen_name=' + myUser + '&since_id=1&count=1&callback=?', function(data) {
+		
+		var link = "http://bit.ly/ViUK6i"; // only a placeholder, need to extract expanded_url from url-entity, https://dev.twitter.com/docs/tweet-entities 
+		var text = data.text;
+		console.log("The link-url is: " + link + " and the tweet text is " + text);
+		generateEmbed(link);
+	});
+			
+};
+
+
+//create oEmbed of link from tweet
+function generateEmbed(link) {
+	$.getJSON('http://api.embed.ly/1/oembed?url=' + link + '&maxwidth=500', function(embed) {
+		title = embed.title;
+		description = embed.description;
+		url = embed.url;
+		provider = embed.provider_name;
+		provider_url = embed.provider_url; 
+
+		$('#embeds').html("<a href='" + url + "'>" + title + "</a><br />" + description + "<br />" + "Published on: <a href='" + provider_url + "'>" + provider + "</a>"); //crude version for now, need to assign to specific classes for styling
+	});
+	
+};

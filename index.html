@@ -1,0 +1,51 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<link rel="stylesheet" href="style.css">
+<script src="script.js"></script>
+<title>Twitter Times (beta)</title>
+<meta name="description" content="" />
+<meta name="author" content="David Bauer" />
+<meta name="Content-Language" content="de" />
+<meta name="keywords" content="" />
+<meta property="og:title" content="Twitter Times (beta)"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="http://labs.davidbauer.ch/twitter-times"/>
+    <meta property="og:image" content=""/>
+    <meta property="og:description"
+          content=""/>
+</head>
+<body>
+<div id="wrapper">
+<h2>Twitter Times by <span id="myUser"></span></h2>
+
+<span style="background-color:yellow;">// work in progress. help me get it to work.</span>
+
+<p>Enter a username see the latest links he or she has posted.</p>
+<div>
+	<form id="searchform" name="tweetfinder">
+		<input type="text" id="user" name="username" autofocus="autofocus" class="searchbox" required><br/>
+		<div class ="suggestions">Try: <a href="#" class="linkinput" data-user="davidbauer">David Bauer</a>.</div>
+		<input type="submit" value="Create it!" class="button">
+	</form>
+
+	<div id="bugfixing"></div>
+
+	<p class="userinfo"></p>
+
+	<div id="embeds"></div>
+
+</div>
+	<div id="footnote">
+		This is a little project by <a href="https://twitter.com/davidbauer">David Bauer</a> to document that I'm somewhat progressing in my #Codeyear.
+	</div>
+	<a href="https://twitter.com/davidbauer" class="twitter-follow-button" data-show-count="false" data-dnt="true">Follow @davidbauer</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+	<iframe src="http://ghbtns.com/github-btn.html?user=davidbauer&repo=famous-first-tweets&type=watch"
+  allowtransparency="true" frameborder="0" scrolling="0" width="53" height="20"></iframe>
+  <iframe src="http://ghbtns.com/github-btn.html?user=davidbauer&repo=famous-first-tweets&type=fork"
+  allowtransparency="true" frameborder="0" scrolling="0" width="53" height="20"></iframe>
+</div> <!-- wrapper -->
+</body>
+</html>
