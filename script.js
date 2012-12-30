@@ -116,10 +116,15 @@ function getLinks(myUser) {
 		
 	$.getJSON('https://api.twitter.com/1/statuses/user_timeline.json?include_entities=true&include_rts=false&screen_name=' + myUser + '&since_id=1&count=1&callback=?', function(data) {
 		
-		var link = "https://github.com/dergraf/Twitter-Times"; // only a placeholder, need to extract expanded_url from url-entity, https://dev.twitter.com/docs/tweet-entities 
-		var text = data[0].text;
-		console.log("The link-url is: " + link + " and the tweet text is " + text);
-		generateEmbed(link);
+		$.each(data, function(index, value) {
+				var text = value.text;
+                var ytre = /(\b(https?|ftp|file):\/\/[\-A-Z0-9+&@#\/%?=~_|!:,.;]*[\-A-Z0-9+&@#\/%=~_|])/ig;
+                var links = text.match(ytre);
+                $.each(links, function(index, link) {
+                    generateEmbed(link);
+                    console.log("The link-url is: " + link + " and the tweet text is " + text);
+                });
+            });
 	});
 			
 };
