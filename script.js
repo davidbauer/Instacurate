@@ -185,7 +185,9 @@ function generateEmbed(linksTotal, link) {
             if (description.length > 140) {description = description.substring(0, 139) + " [...]"}
 
             //asssign correct content to all those elements
-            $img.html("<a href='" + url + "'>" + "<img src='" + img_url + "' width='250px'></a><br/>");
+            if (img_url != undefined) {
+            		$img.html("<a href='" + url + "'>" + "<img src='" + img_url + "' width='250px'></a><br/>")
+            		};
             $title.html("<a href='" + url + "'>" + title + "</a><br />");
             $description.html(description + " <a href='"+ url + "'>read on</a>");
             $credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>");
