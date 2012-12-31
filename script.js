@@ -120,25 +120,20 @@ function getLinks(myUser) {
         'count' : tweetsToFetch,
     };
     $.getJSON('https://api.twitter.com/1/statuses/user_timeline.json?&callback=?', params, function(data) {
-        $.each(data, function(index, value) {
+        $.each(data, function(index, tweet) {
             if (minNrOfLinks > 0) {
-                var text = value.text;
-                // var links = value.entities;
+                var text = tweet.text;
+                $.each(tweet.entities.urls, function(i, url_entity) {
+                    var link = url_entity.expanded_url;
+                    minNrOfLinks -= 1;
+                    generateEmbed(link);
+                    console.log("The link-url is: " + link + " and the tweet text is " + text);
 
-                var ytre = /(\b(https?|ftp|file):\/\/[\-A-Z0-9+&@#\/%?=~_|!:,.;]*[\-A-Z0-9+&@#\/%=~_|])/ig;
-                var links = text.match(ytre);
-                if (links) {
-                    $.each(links, function(index, link) {
-                        minNrOfLinks -= 1;
-                        generateEmbed(link);
-                        console.log("The link-url is: " + link + " and the tweet text is " + text);
-
-                        if (minNrOfLinks == 0) {
-                            // we break the each loop here since we have enough links found
-                            return false;
-                        }
-                    });
-                }
+                    if (minNrOfLinks == 0) {
+                        // we break the each loop here since we have enough links found
+                        return false;
+                    }
+                });
             } else {
                 // we break each loop
                 console.log("we have enough links found");
