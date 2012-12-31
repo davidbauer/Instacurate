@@ -110,7 +110,7 @@ function checkUser(myUser) {
 //extract links from url
 function getLinks(myUser) {
 		
-	$('#embeds').html("Looking for tweeted links...");
+	$('#embeds').addClass('state-loading').html("Looking for tweeted links...");
 	
 	// loop through all tweets and generate embed (loop missing for now, testing the whole thing with most recent tweet)
 		
@@ -135,29 +135,43 @@ function getLinks(myUser) {
 
 //create oEmbed of link from tweet
 function generateEmbed(link) {
-	$.getJSON('http://api.embed.ly/1/oembed?url=' + link + '&maxwidth=500', function(embed) {
-		title = embed.title;
-		description = embed.description;
-		url = embed.url;
-		provider = embed.provider_name;
-		provider_url = embed.provider_url;
-		img_url = embed.thumbnail_url; 
+		
+	//cache container DOM element
+    var $embeds = $('#embeds');
+
+    $.getJSON('http://api.embed.ly/1/oembed?url=' + link + '&maxwidth=500', function(embed) {
+        var title = embed.title,
+            description = embed.description,
+            url = embed.url,
+            provider = embed.provider_name,
+            provider_url = embed.provider_url,
+            img_url = embed.thumbnail_url,
+
+            //cache teaser DOM elements for faster access
+            $teaser = $('<div class="teaser" />'),
+            $img = $('<div class="img" />'),
+            $article = $('<article />'),
+            $title = $('<h3 />'),
+            $description = $('<div class="description" />'),
+            $credits = $('<div class="credits" />');  
+		
+		//get rid of loading message if loading class is still applied
+        if ($embeds.hasClass('state-loading')) {
+            $embeds.removeClass('state-loading').html('');
+        }
 		
 		//create a new teaser element with all subelements
-		$('#embeds').html(""); // get rid of loading message
-		$('#embeds').append("<div class='teaser' />");
-		$('.teaser').append("<div class='img' />");
-		$('.teaser').append("<article />");
-		$('article').append("<h3 />");
-		$('article').append("<div class='description' />");
-		$('article').append("<div class='credits'/>");
-		
-		//asssign correct content to all those elements
-		$('.teaser .img').html("<a href='" + url + "'>" + "<img src='" + img_url + "' width='250px'></a><br/>");
-		$('h3').html("<a href='" + url + "'>" + title + "</a><br />");
-		$('.description').html(description);
-		$('.credits').html("Published by: <a href='" + provider_url + "'>" + provider + "</a>");
-		
-		
-	});
-};
+        $embeds.append($teaser);
+        $teaser.append($img);
+        $teaser.append($article);
+        $article.append($title);
+        $article.append($description);
+        $article.append($credits);
+
+        //asssign correct content to all those elements
+        $img.html("<a href='" + url + "'>" + "<img src='" + img_url + "' width='250px'></a><br/>");
+        $title.html("<a href='" + url + "'>" + title + "</a><br />");
+        $description.html(description);
+        $credits.html("Published by: <a href='" + provider_url + "'>" + provider + "</a>");
+    });
+    };
