@@ -106,7 +106,7 @@ function checkUser(myUser) {
 
 //extract links from url
 function getLinks(myUser) {
-    var tweetsToFetch = 100, minNrOfLinks = 10;
+    var tweetsToFetch = 100, minNrOfLinks = 20;
 
     $('#embeds').addClass('state-loading').html("Looking for tweeted links...");
 
@@ -178,10 +178,13 @@ function generateEmbed(link) {
             $article.append($description);
             $article.append($credits);
 
+            // crop long description
+            if (description.length > 140) {description = description.substring(0, 139) + " [...]"}
+
             //asssign correct content to all those elements
             $img.html("<a href='" + url + "'>" + "<img src='" + img_url + "' width='250px'></a><br/>");
             $title.html("<a href='" + url + "'>" + title + "</a><br />");
-            $description.html(description  + " <a href='"+ url + "'>read on</a>");
+            $description.html(description + " <a href='"+ url + "'>read on</a>");
             $credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>");
     });
     
