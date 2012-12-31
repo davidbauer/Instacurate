@@ -92,7 +92,7 @@ function checkUser(myUser) {
                     followersNumber = data.followers_count,
                     tweetsNumber = data.statuses_count;
 
-                html += "The latest links posted by " + name + "(<a href='http://www.twitter.com/@" + username + "'>@" + username + ")</a>."
+                html += "The latest links posted by " + name + "(<a href='http://www.twitter.com/@" + username + "'>@" + username + "</a>)."
 
 
                 getLinks(myUser); // getting those links from tweets
@@ -181,7 +181,8 @@ function generateEmbed(link) {
             //asssign correct content to all those elements
             $img.html("<a href='" + url + "'>" + "<img src='" + img_url + "' width='250px'></a><br/>");
             $title.html("<a href='" + url + "'>" + title + "</a><br />");
-            $description.html(description);
-            $credits.html("Published by: <a href='" + provider_url + "'>" + provider + "</a>");
+            $description.html(description  + " <a href='"+ url + "'>read on</a>");
+            $credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>");
     });
+    
 };

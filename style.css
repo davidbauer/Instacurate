@@ -7,7 +7,8 @@ body {font-family: Georgia, serif; font-size: 16px;width: 850px; margin: 20px au
 #embeds {}
 .teaser {font-family:Helvetica, Arial, sans-serif;width:250px;float:left;margin: 0 20px 20px 0;padding: 10px 10px;background-color: rgba(227,227,227,0.4);}
 .teaser:nth-child(3n) {margin-right:0;}
-.teaser h3, h3 a {font-weight: bold;text-decoration: none;color:black;margin-bottom: 5px;}
+.teaser h3 a {font-weight: bold;text-decoration: none;color:black;margin-bottom: 5px;}
+.teaser h3 a:hover {color:red;}
 .img {border: solid 1px rgba(227,227,227,0.4);}
 .description {font-size: 0.9em;}
 .credits {font-size: 0.8em;color:grey;margin-top: 5px;}
