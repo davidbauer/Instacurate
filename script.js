@@ -21,7 +21,7 @@ $(function() {
         e.preventDefault();
         // clean up
         $('#bugfixing').html("");
-        $('#embeds').html("");
+        $('#embeds .embeds_column').html("");
         $('.userinfo').html("");
 
         // Get the articles from typed user
@@ -38,7 +38,7 @@ $(function() {
         e.preventDefault();
         // clean up
         $('#bugfixing').html("");
-        $('#embeds').html("");
+        $('#embeds .embeds_column').html("");
         $('.userinfo').html("");
 
         // Get the articles from linked user
@@ -106,9 +106,9 @@ function checkUser(myUser) {
 
 //extract links from url
 function getLinks(myUser) {
-    var tweetsToFetch = 100, minNrOfLinks = 20;
+    var linksTotal = 0, tweetsToFetch = 100, minNrOfLinks = 18;
 
-    $('#embeds').addClass('state-loading').html("Looking for tweeted links...");
+    $('#status').addClass('state-loading').html("Looking for tweeted links...");
 
     // loop through all tweets and generate embed (loop missing for now, testing the whole thing with most recent tweet)
 
@@ -126,7 +126,8 @@ function getLinks(myUser) {
                 $.each(tweet.entities.urls, function(i, url_entity) {
                     var link = url_entity.expanded_url;
                     minNrOfLinks -= 1;
-                    generateEmbed(link);
+                    linksTotal += 1;
+                    generateEmbed(linksTotal, link);
                     console.log("The link-url is: " + link + " and the tweet text is " + text);
 
                     if (minNrOfLinks == 0) {
@@ -144,10 +145,12 @@ function getLinks(myUser) {
 };
 
 //create oEmbed of link from tweet
-function generateEmbed(link) {
+function generateEmbed(linksTotal, link) {
 
     //cache container DOM element
-    var $embeds = $('#embeds');
+    var embeds_columns = $('#embeds .embeds_column');
+ 	var $column = $(embeds_columns[(linksTotal -1) % embeds_columns.length]);
+ 	var $status = $('#status');
 
     $.getJSON('http://api.embed.ly/1/oembed?key=ab0fdaa34f634136bf4eb2325e040527&url=' + link + '&maxwidth=500', function(embed) {
             var title = embed.title,
@@ -166,12 +169,12 @@ function generateEmbed(link) {
             $credits = $('<div class="credits" />');
 
             //get rid of loading message if loading class is still applied
-            if ($embeds.hasClass('state-loading')) {
-                $embeds.removeClass('state-loading').html('');
+            if ($status.hasClass('state-loading')) {
+                $status.removeClass('state-loading').html('');
             }
 
             //create a new teaser element with all subelements
-            $embeds.append($teaser);
+            $column.append($teaser);
             $teaser.append($img);
             $teaser.append($article);
             $article.append($title);
