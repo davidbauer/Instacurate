@@ -154,7 +154,7 @@ function generateEmbed(link) {
     //cache container DOM element
     var $embeds = $('#embeds');
 
-    $.getJSON('http://api.embed.ly/1/oembed?url=' + link + '&maxwidth=500', function(embed) {
+    $.getJSON('http://api.embed.ly/1/oembed?key=ab0fdaa34f634136bf4eb2325e040527&url=' + link + '&maxwidth=500', function(embed) {
             var title = embed.title,
             description = embed.description,
             url = embed.url,
