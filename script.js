@@ -1,4 +1,4 @@
-// Setup an event listener for the form that will execute findTweet()
+// Setup an event listener for the form that will execute checkUser()
 // when the form is submitted.
 $(function() {
 	
@@ -114,16 +114,19 @@ function getLinks(myUser) {
 	
 	// loop through all tweets and generate embed (loop missing for now, testing the whole thing with most recent tweet)
 		
-	$.getJSON('https://api.twitter.com/1/statuses/user_timeline.json?include_entities=true&include_rts=false&screen_name=' + myUser + '&since_id=1&count=1&callback=?', function(data) {
+	$.getJSON('https://api.twitter.com/1/statuses/user_timeline.json?include_entities=true&include_rts=false&screen_name=' + myUser + '&since_id=1&count=3&callback=?', function(data) {
 		
 		$.each(data, function(index, value) {
 				var text = value.text;
+                // var links = value.entities;
+                
                 var ytre = /(\b(https?|ftp|file):\/\/[\-A-Z0-9+&@#\/%?=~_|!:,.;]*[\-A-Z0-9+&@#\/%=~_|])/ig;
                 var links = text.match(ytre);
                 $.each(links, function(index, link) {
                     generateEmbed(link);
                     console.log("The link-url is: " + link + " and the tweet text is " + text);
                 });
+                
             });
 	});
 			
@@ -150,10 +153,10 @@ function generateEmbed(link) {
 		$('article').append("<div class='credits'/>");
 		
 		//asssign correct content to all those elements
-		$('.teaser .img').html("<img src='" + img_url + "' width='250px'><br/>");
+		$('.teaser .img').html("<a href='" + url + "'>" + "<img src='" + img_url + "' width='250px'></a><br/>");
 		$('h3').html("<a href='" + url + "'>" + title + "</a><br />");
 		$('.description').html(description);
-		$('.credits').html("Published on: <a href='" + provider_url + "'>" + provider + "</a>");
+		$('.credits').html("Published by: <a href='" + provider_url + "'>" + provider + "</a>");
 		
 		
 	});
