@@ -92,7 +92,7 @@ function checkUser(myUser) {
                     followersNumber = data.followers_count,
                     tweetsNumber = data.statuses_count;
 
-                html += name + " (@" + username + ") joined Twitter on " + created.toDateString() + ". " + name.split(' ')[0] + " currently has " + followersNumber + " followers and has published a total number of " + tweetsNumber + " tweets."; // test
+                html += "The latest links posted by " + name + "(<a href='http://www.twitter.com/@" + username + "'>@" + username + ")</a>."
 
 
                 getLinks(myUser); // getting those links from tweets
