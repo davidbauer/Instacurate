@@ -120,12 +120,13 @@ function getLinks(myUser) {
         $.each(data, function(index, tweet) {
             if (minNrOfLinks > 0) {
                 var text = tweet.text;
+                var retweets = tweet.retweet_count;
                 $.each(tweet.entities.urls, function(i, url_entity) {
                     var link = url_entity.expanded_url;
                     minNrOfLinks -= 1;
                     linksTotal += 1;
                     generateEmbed(linksTotal, link);
-                    console.log("The link-url is: " + link + " and the tweet text is " + text);
+                    console.log("The link-url is: " + link + " and the tweet text is " + text + ". The tweet has been retweeted " + retweets + " times.");
 
                     if (minNrOfLinks == 0) {
                         // we break the each loop here since we have enough links found
