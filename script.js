@@ -98,11 +98,7 @@ function checkUser(myUser) {
                 getLinks(myUser); // getting those links from tweets
             }
 
-<<<<<<< HEAD
-            $('#myUser').html(name);
-=======
             $('#myUser').html("by " + name);
->>>>>>> Suggestions added
             $('.userinfo').html(html);
         }
     });
@@ -110,11 +106,7 @@ function checkUser(myUser) {
 
 //extract links from url
 function getLinks(myUser) {
-<<<<<<< HEAD
-    var linksTotal = 0, tweetsToFetch = 100, minNrOfLinks = 18;
-=======
     var linksTotal = 0, tweetsToFetch = 100, minNrOfLinks = 20;
->>>>>>> Suggestions added
 
     $('#status').addClass('state-loading').html("Looking for tweeted links...");
 
@@ -167,11 +159,8 @@ function generateEmbed(linksTotal, link) {
             provider = embed.provider_name,
             provider_url = embed.provider_url,
             img_url = embed.thumbnail_url,
-<<<<<<< HEAD
-=======
             author = embed.author_name,
             author_url = embed.author_url
->>>>>>> Suggestions added
 
             //cache teaser DOM elements for faster access
             $teaser = $('<div class="teaser" />'),
