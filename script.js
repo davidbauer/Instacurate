@@ -189,8 +189,9 @@ function generateEmbed(linksTotal, link) {
             		$img.html("<a href='" + url + "'>" + "<img src='" + img_url + "' width='250px'></a><br/>")
             		};
             $title.html("<a href='" + url + "'>" + title + "</a><br />");
-            $description.html(description + " <a href='"+ url + "'>read on</a>");
-            $credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>");
+            $description.html(description + " <a href='"+ url + "'>read on</a>"); 
+            if (author != undefined) {$credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>, Author: " 				+ "<a href='" + author_url + "' title='" + author + "'>" + author + "</a>");}
+            else {$credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>");};
     });
 
 };
