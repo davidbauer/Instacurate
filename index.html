@@ -1,63 +1,97 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
-<link rel="stylesheet" href="style.css">
-<script src="script.js"></script>
-<title>Twitter Times (beta)</title>
-<meta name="description" content="All the links posted on Twitter, browsable in a more discovery-friendly way." />
-<meta name="author" content="David Bauer" />
-<meta name="Content-Language" content="de" />
-<meta name="keywords" content="Twitter, Twitter Times, links, curation, Twitter API" />
-<meta property="og:title" content="Twitter Times (beta)"/>
-<meta property="og:type" content="website"/>
-<meta property="og:url" content="http://labs.davidbauer.ch/twitter-times"/>
-<meta property="og:image" content="tt_screenshot.png"/>
-<meta property="og:description" content="All the links posted on Twitter, browsable in a more discovery-friendly way."/>
-</head>
-<body>
-<div id="wrapper">
-<h2>Twitter Times <span id="myUser"></span></h2>
-All the links that are fit to tweet.
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Twitter Times (beta)</title>
+        <meta name="description" content="All the links posted on Twitter, browsable in a more discovery-friendly way." />
+        <meta name="author" content="David Bauer" />
+        <meta name="keywords" content="Twitter, Twitter Times, links, curation, Twitter API" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Twitter Times (beta)"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:url" content="http://labs.davidbauer.ch/twitter-times"/>
+        <meta property="og:image" content="tt_screenshot.png"/>
+        <meta property="og:description" content="All the links posted on Twitter, browsable in a more discovery-friendly way."/>
 
-<span style="background-color:yellow;">// work in progress. <a href="https://github.com/davidbauer/Twitter-Times">help me improve it</a>.</span>
+        <!-- CSS -->
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="bootstrap/css/bootstrap-responsive.min.css">
+        <link rel="stylesheet" href="style.css">
 
-<p>Enter a username see the latest links he or she has posted.</p>
-<div>
-	<form id="searchform" name="tweetfinder">
-		<input type="text" id="user" name="username" autofocus="autofocus" class="searchbox" required><br/>
-		<input type="submit" value="Create it!" class="button">
-		<div class ="suggestions">Try: <a href="#" class="linkinput" data-user="longreads">Longreads</a>, <a href="#" class="linkinput" data-user="economist">The Economist</a>, <a href="#" class="linkinput" data-user="poynter">Poynter</a>, <a href="#" class="linkinput" data-user="davidbauer">David Bauer</a>.</div>
-	</form>
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
 
-	<div id="bugfixing"></div>
+    </head>
+    <body>
+        <div id="wrapper">
 
-	<p class="userinfo"></p>
+            <!-- Begin Page Content -->
+            <div class="container">
 
-    <div id="embeds">
+                <div class="page-header">
+                    <h1>Twitter Times <span id="myUser"></span></h1>
+                    <p>
+                    All the links that are fit to tweet.
+                    <span style="background-color:yellow;">// work in progress. <a href="https://github.com/davidbauer/Twitter-Times">help me improve it</a>.</span>
+                    </p>
+                </div>
 
-        <div id="embeds">
 
-            <div id="status"></div>
-            <!-- add more columns if you like -->
-            <div class="embeds_column"></div>
-            <div class="embeds_column"></div>
-            <div class="embeds_column"></div>
-            <div class="embeds_column"></div>
+                <p class="lead">
+                Enter a username see the latest links he or she has posted.<br />
+                <div id="bugfixing"></div>
+                <form id="searchform" name="tweetfinder">
+                    <div class="input-append">
+                        <input class="span3" type="text" id="user" name="username" autofocus="autofocus" required>
+                        <button class="btn btn-primary linkinput" type="button">Create it!</button>
+                    </div>
+                    <div class ="suggestions">Try: <a href="#" class="linkinput" data-user="longreads">Longreads</a>, <a href="#" class="linkinput" data-user="economist">The Economist</a>, <a href="#" class="linkinput" data-user="poynter">Poynter</a>, <a href="#" class="linkinput" data-user="davidbauer">David Bauer</a>.</div>
+                </form>
 
+
+                <p class="userinfo"></p>
+                </p>
+
+
+
+                <div class="row">
+                    <div id="status" class="span12"></div>
+                </div>
+                <div id="embeds" class="row">
+                    <!-- add more columns if you like -->
+                    <div class="span3"></div>
+                    <div class="span3"></div>
+                    <div class="span3"></div>
+                    <div class="span3"></div>
+                </div>
+            </div>
+
+            <!-- push footer down to the bottom of the page -->
+            <div id="push"></div>
+        </div> <!-- wrapper -->
+
+        <div id="footer">
+            <div class="container">
+                <p class="muted credit">
+                This is a little project by <a href="http://www.davidbauer.ch">David Bauer</a> to document the progress in <a href="http://www.davidbauer.ch/2012/12/28/als-journalist-programmieren-lernen-bilanz-und-anleitung/">my quest to learn how to program</a>. Thanks to <a href="https://github.com/dergraf">Andre Graf</a> and <a href="https://github.com/backflip">Thomas Jaggi</a> for helping me with the tricky parts.
+                </p>
+                <p>
+                <a href="https://twitter.com/davidbauer" class="twitter-follow-button" data-show-count="false" data-dnt="true">Follow @davidbauer</a>
+                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+                <iframe src="http://ghbtns.com/github-btn.html?user=davidbauer&repo=Twitter-Times&type=watch"
+                    allowtransparency="true" frameborder="0" scrolling="0" width="53" height="20"></iframe>
+                <iframe src="http://ghbtns.com/github-btn.html?user=davidbauer&repo=Twitter-Times&type=fork"
+                    allowtransparency="true" frameborder="0" scrolling="0" width="53" height="20"></iframe>
+                </p>
+            </div>
         </div>
 
-</div>
-	<div id="footnote">
-		This is a little project by <a href="http://www.davidbauer.ch">David Bauer</a> to document the progress in <a href="http://www.davidbauer.ch/2012/12/28/als-journalist-programmieren-lernen-bilanz-und-anleitung/">my quest to learn how to program</a>. Thanks to <a href="https://github.com/dergraf">Andre Graf</a> and <a href="https://github.com/backflip">Thomas Jaggi</a> for helping me with the tricky parts.
-	</div>
-	<a href="https://twitter.com/davidbauer" class="twitter-follow-button" data-show-count="false" data-dnt="true">Follow @davidbauer</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-	<iframe src="http://ghbtns.com/github-btn.html?user=davidbauer&repo=Twitter-Times&type=watch"
-  allowtransparency="true" frameborder="0" scrolling="0" width="53" height="20"></iframe>
-  <iframe src="http://ghbtns.com/github-btn.html?user=davidbauer&repo=Twitter-Times&type=fork"
-  allowtransparency="true" frameborder="0" scrolling="0" width="53" height="20"></iframe>
-</div> <!-- wrapper -->
-</body>
+        <!-- Scripts (at the end of the page for faster page build-up-->
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
+
+        <script src="script.js"></script>
+    </body>
 </html>

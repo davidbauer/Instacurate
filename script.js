@@ -15,40 +15,37 @@ $(function() {
         checkUser(hash);
     }
 
-
-    $('#searchform').submit(function(e) {
-        // Stop the form from sending and reloading the page
-        e.preventDefault();
-        // clean up
-        $('#bugfixing').html("");
-        $('#embeds .embeds_column').html("");
-        $('.userinfo').html("");
-
-        // Get the articles from typed user
-        var myUser = findUser();
-        if (myUser == "usernameistoolong") {}
-        else {checkUser(myUser);}
-        // Update URL
-        window.location.hash = myUser;
-    });
 });
 
 $(function() {
+    $("#searchform #user").keyup(function(event){
+        if(event.keyCode == 13){
+            $("#searchform button.linkinput").click();
+        }
+    });
     $('.linkinput').click (function(e) {
         e.preventDefault();
         // clean up
         $('#bugfixing').html("");
-        $('#embeds .embeds_column').html("");
+        $('#embeds div').html("");
         $('.userinfo').html("");
 
         // Get the articles from linked user
         var myUser = $(this).attr('data-user');
+        if (typeof myUser == "undefined") {
+            // form input
+            myUser = $("#searchform #user").val();
+        }
         checkUser(myUser);
         // Update URL
         window.location.hash = myUser;
     });
 });
 
+function warn(message) {
+    $('#bugfixing').html("<div class='alert'><button type='button' class='close' data-dismiss='alert'>&times;</button><strong>Warning! </strong>" + message + "</div>");
+    console.log("warning: " + message);
+}
 
 // store username given via input
 function findUser() {
@@ -62,7 +59,7 @@ function findUser() {
 
     // Validate length of username
     if (myUser.length > 16) { // TODO: if true, return error msg and don't continue
-        $('#bugfixing').html("This doesn't seem to be a username. Too long.");
+        warn("This doesn't seem to be a username, Too long");
         return "usernameistoolong";
     }
     else {
@@ -84,7 +81,7 @@ function checkUser(myUser) {
             var html = "";
 
             if (data.error) {
-                $('#bugfixing').html("Twitter doesn't know this username. Try another one.");
+                warn("Twitter doesn't know this username. Try another one.");
             } else {
                 var created = new Date(data.created_at),
                     name = data.name,
@@ -148,27 +145,27 @@ function getLinks(myUser) {
 function generateEmbed(linksTotal, link) {
 
     //cache container DOM element
-    var embeds_columns = $('#embeds .embeds_column');
+    var embeds_columns = $('#embeds div');
  	var $column = $(embeds_columns[(linksTotal -1) % embeds_columns.length]);
  	var $status = $('#status');
 
     $.getJSON('http://api.embed.ly/1/oembed?key=ab0fdaa34f634136bf4eb2325e040527&url=' + link + '&maxwidth=500', function(embed) {
             var title = embed.title,
-            description = embed.description,
-            url = embed.url,
-            provider = embed.provider_name,
-            provider_url = embed.provider_url,
-            img_url = embed.thumbnail_url,
-            author = embed.author_name,
-            author_url = embed.author_url
+                description = embed.description,
+                url = embed.url,
+                provider = embed.provider_name,
+                provider_url = embed.provider_url,
+                img_url = embed.thumbnail_url,
+                author = embed.author_name,
+                author_url = embed.author_url,
 
-            //cache teaser DOM elements for faster access
-            $teaser = $('<div class="teaser" />'),
-            $img = $('<div class="img" />'),
-            $article = $('<article />'),
-            $title = $('<h3 />'),
-            $description = $('<div class="description" />'),
-            $credits = $('<div class="credits" />');
+                //cache teaser DOM elements for faster access
+                $teaser = $('<div class="teaser"/>'),
+                $img = $('<div class="img" />'),
+                $article = $('<article />'),
+                $title = $('<h3 />'),
+                $description = $('<div class="description" />'),
+                $credits = $('<div class="credits" />');
 
             //get rid of loading message if loading class is still applied
             if ($status.hasClass('state-loading')) {
@@ -184,7 +181,7 @@ function generateEmbed(linksTotal, link) {
             $article.append($credits);
 
             // crop long description
-            if (description.length > 140) {description = description.substring(0, 139) + " [...]"}
+            if (description && description.length > 140) {description = description.substring(0, 139) + " [...]"}
 
             //asssign correct content to all those elements
             if (img_url != undefined) {
