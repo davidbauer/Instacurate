@@ -1,7 +1,8 @@
+html {background: url(background.png) top left repeat; }
 body {
     font-family: Georgia, serif; 
     font-size: 16px;
-    width: 850px; 
+    width: 1140px; 
     margin: 20px auto;
     padding:10px;
 }
@@ -91,4 +92,8 @@ body {
     clear:both;
 }
 
+<<<<<<< HEAD
 /* mobile styling maybe later. */
+=======
+/* mobile styling maybe later. */
+>>>>>>> davidbauer/master

@@ -92,13 +92,13 @@ function checkUser(myUser) {
                     followersNumber = data.followers_count,
                     tweetsNumber = data.statuses_count;
 
-                html += "The latest links posted by " + name + "(<a href='http://www.twitter.com/@" + username + "'>@" + username + ")</a>."
+                html += "The latest links posted by " + name + "(<a href='http://www.twitter.com/@" + username + "'>@" + username + "</a>)."
 
 
                 getLinks(myUser); // getting those links from tweets
             }
 
-            $('#myUser').html(name);
+            $('#myUser').html("by " + name);
             $('.userinfo').html(html);
         }
     });
@@ -106,7 +106,7 @@ function checkUser(myUser) {
 
 //extract links from url
 function getLinks(myUser) {
-    var linksTotal = 0, tweetsToFetch = 100, minNrOfLinks = 9;
+    var linksTotal = 0, tweetsToFetch = 100, minNrOfLinks = 20;
 
     $('#status').addClass('state-loading').html("Looking for tweeted links...");
 
@@ -149,8 +149,8 @@ function generateEmbed(linksTotal, link) {
 
     //cache container DOM element
     var embeds_columns = $('#embeds .embeds_column');
-    var $column = $(embeds_columns[(linksTotal -1) % embeds_columns.length]);
-    var $status = $('#status');
+ 	var $column = $(embeds_columns[(linksTotal -1) % embeds_columns.length]);
+ 	var $status = $('#status');
 
     $.getJSON('http://api.embed.ly/1/oembed?key=ab0fdaa34f634136bf4eb2325e040527&url=' + link + '&maxwidth=500', function(embed) {
             var title = embed.title,
@@ -159,6 +159,8 @@ function generateEmbed(linksTotal, link) {
             provider = embed.provider_name,
             provider_url = embed.provider_url,
             img_url = embed.thumbnail_url,
+            author = embed.author_name,
+            author_url = embed.author_url
 
             //cache teaser DOM elements for faster access
             $teaser = $('<div class="teaser" />'),
@@ -181,10 +183,16 @@ function generateEmbed(linksTotal, link) {
             $article.append($description);
             $article.append($credits);
 
+            // crop long description
+            if (description.length > 140) {description = description.substring(0, 139) + " [...]"}
+
             //asssign correct content to all those elements
-            $img.html("<a href='" + url + "'>" + "<img src='" + img_url + "' width='250px'></a><br/>");
+            if (img_url != undefined) {
+            		$img.html("<a href='" + url + "'>" + "<img src='" + img_url + "' width='250px'></a><br/>")
+            		};
             $title.html("<a href='" + url + "'>" + title + "</a><br />");
-            $description.html(description);
-            $credits.html("Published by: <a href='" + provider_url + "'>" + provider + "</a>");
+            $description.html(description + " <a href='"+ url + "'>read on</a>");
+            $credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>");
     });
+
 };

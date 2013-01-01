@@ -2,31 +2,33 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 <link rel="stylesheet" href="style.css">
 <script src="script.js"></script>
 <title>Twitter Times (beta)</title>
-<meta name="description" content="" />
+<meta name="description" content="All the links posted on Twitter, browsable in a more discovery-friendly way." />
 <meta name="author" content="David Bauer" />
 <meta name="Content-Language" content="de" />
-<meta name="keywords" content="" />
+<meta name="keywords" content="Twitter, Twitter Times, links, curation, Twitter API" />
 <meta property="og:title" content="Twitter Times (beta)"/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="http://labs.davidbauer.ch/twitter-times"/>
-<meta property="og:image" content=""/>
-<meta property="og:description" content=""/>
+<meta property="og:image" content="tt_screenshot.png"/>
+<meta property="og:description" content="All the links posted on Twitter, browsable in a more discovery-friendly way."/>
 </head>
 <body>
 <div id="wrapper">
-<h2>Twitter Times by <span id="myUser"></span></h2>
+<h2>Twitter Times <span id="myUser"></span></h2>
+All the links that are fit to tweet.
 
-<span style="background-color:yellow;">// work in progress. <a href="https://github.com/davidbauer/Twitter-Times">help me get it to work</a>.</span>
+<span style="background-color:yellow;">// work in progress. <a href="https://github.com/davidbauer/Twitter-Times">help me improve it</a>.</span>
 
 <p>Enter a username see the latest links he or she has posted.</p>
 <div>
 	<form id="searchform" name="tweetfinder">
 		<input type="text" id="user" name="username" autofocus="autofocus" class="searchbox" required><br/>
-		<div class ="suggestions">Try: <a href="#" class="linkinput" data-user="davidbauer">David Bauer</a>.</div>
 		<input type="submit" value="Create it!" class="button">
+		<div class ="suggestions">Try: <a href="#" class="linkinput" data-user="longreads">Longreads</a>, <a href="#" class="linkinput" data-user="economist">The Economist</a>, <a href="#" class="linkinput" data-user="poynter">Poynter</a>, <a href="#" class="linkinput" data-user="davidbauer">David Bauer</a>.</div>
 	</form>
 
 	<div id="bugfixing"></div>
@@ -34,14 +36,17 @@
 	<p class="userinfo"></p>
 
     <div id="embeds">
-        <div id="status"></div>
-		<!-- this is where the magic will happen -->
-        <div class="embeds_column"></div>
-        <div class="embeds_column"></div>
-        <div class="embeds_column"></div>
-        <!-- add more columns if you like -->
 
-	</div>
+        <div id="embeds">
+
+            <div id="status"></div>
+            <!-- add more columns if you like -->
+            <div class="embeds_column"></div>
+            <div class="embeds_column"></div>
+            <div class="embeds_column"></div>
+            <div class="embeds_column"></div>
+
+        </div>
 
 </div>
 	<div id="footnote">
