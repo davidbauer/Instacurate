@@ -121,6 +121,7 @@ function getLinks(myUser) {
             if (minNrOfLinks > 0) {
                 var text = tweet.text;
                 var retweets = tweet.retweet_count;
+                var tweetId = tweet.id;
                 $.each(tweet.entities.urls, function(i, url_entity) {
                     var link = url_entity.expanded_url;
                     minNrOfLinks -= 1;
@@ -132,6 +133,7 @@ function getLinks(myUser) {
                         // we break the each loop here since we have enough links found
                         return false;
                     }
+                return tweetId;    
                 });
             } else {
                 // we break each loop
@@ -167,6 +169,7 @@ function generateEmbed(linksTotal, link) {
                 $title = $('<h3 />'),
                 $description = $('<div class="description" />'),
                 $credits = $('<div class="credits" />');
+                $tweet = $('<div class="tweet" />')
 
             //get rid of loading message if loading class is still applied
             if ($status.hasClass('state-loading')) {
@@ -180,11 +183,12 @@ function generateEmbed(linksTotal, link) {
             $article.append($title);
             $article.append($description);
             $article.append($credits);
+            $teaser.append($tweet);
 
             // crop long description
             if (description && description.length > 140) {description = description.substring(0, 139) + " [...]"}
 
-            //asssign correct content to all those elements
+            //assign correct content to all those elements
             if (img_url != undefined) {
             		$img.html("<a href='" + url + "'>" + "<img src='" + img_url + "' width='250px'></a><br/>")
             		};
@@ -192,6 +196,20 @@ function generateEmbed(linksTotal, link) {
             $description.html(description + " <a href='"+ url + "'>read on</a>"); 
             if (author != undefined) {$credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>, Author: " 				+ "<a href='" + author_url + "' title='" + author + "'>" + author + "</a>");}
             else {$credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>");};
+            $tweet.html("<a href='#' title='tooltip test'>#</a>");
+            
+            //add the tweet as a tooltip
+            // $( ".tweet" ).tooltip({ content: generateTweetEmbed(tweetId) });
+            $( ".tweet" ).tooltip({ content: "tooltip works!" });
     });
+    
+};
+
+//create embed for tweet
+function generateTweetEmbed(tweetId) {
+	$.getJSON('https://api.twitter.com/1/statuses/oembed.json?id=' + tweetId + '&callback=?', function(embed) {
+		tweetembed = embed.html;
+		return tweetembed;
+	});    
 
 };

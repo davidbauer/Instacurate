@@ -100,3 +100,15 @@ input, button{
     margin-top: 150px;
     clear:both;
 }
+
+/* tooltip styles */
+
+.ui-tooltip, .arrow:after {
+        background: rgba(227,227,227,0.95);
+        width: 250px;
+    }
+    .ui-tooltip {
+        padding: 10px 20px;
+        border-radius: 4px;
+        box-shadow: 0 0 7px white;
+    }
