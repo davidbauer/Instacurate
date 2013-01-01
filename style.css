@@ -22,9 +22,6 @@ body {
 #push, #footer {
     height: 60px;
 }
-#footer {
-    background-color: #f5f5f5;
-}
 
 /* Lastly, apply responsive CSS fixes as necessary */
 @media (max-width: 767px) {
@@ -72,6 +69,7 @@ input, button{
     text-decoration: none;
     color:black;
     margin-bottom: 5px;
+    line-height: 1.2em;
 }
 
 .img {
@@ -93,7 +91,7 @@ input, button{
 }
 
 .twitter-follow-button {
-    margin: 10px 3px 0 0;
+    margin: 0px 3px 0 0;
 }
 
 #footnote {
@@ -102,9 +100,3 @@ input, button{
     margin-top: 150px;
     clear:both;
 }
-
-<<<<<<< HEAD
-/* mobile styling maybe later. */
-=======
-/* mobile styling maybe later. */
->>>>>>> davidbauer/master
