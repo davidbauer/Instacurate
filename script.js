@@ -107,19 +107,17 @@ function checkUser(myUser) {
                 getLinks(myUser); // getting those links from tweets
             }
 
-            $('#myUser').html("by " + name);
+            $('#myUser').html("by " + name); // add user's name to header
             $('.userinfo').html(html);
         }
     });
 }
 
-//extract links from url
+//extract links from tweets
 function getLinks(myUser) {
     var linksTotal = 0, tweetsToFetch = 100, minNrOfLinks = 20;
 
     $('#status').addClass('state-loading').html("Looking for tweeted links...");
-
-    // loop through all tweets and generate embed (loop missing for now, testing the whole thing with most recent tweet)
 
     var params = {
         'screen_name': myUser,
@@ -133,7 +131,7 @@ function getLinks(myUser) {
             if (minNrOfLinks > 0) {
                 var text = tweet.text;
                 var retweets = tweet.retweet_count;
-                var tweetId = tweet.id;
+                var tweetId = tweet.id; // needed later to embed tweet
                 $.each(tweet.entities.urls, function(i, url_entity) {
                     var link = url_entity.expanded_url;
                     minNrOfLinks -= 1;
@@ -145,13 +143,14 @@ function getLinks(myUser) {
                         // we break the each loop here since we have enough links found
                         return false;
                     }
-                return tweetId;    
+                    
                 });
             } else {
                 // we break each loop
                 console.log("we have enough links found");
                 return false;
             }
+            
         });
     });
 };
@@ -173,7 +172,11 @@ function generateEmbed(linksTotal, link) {
                 img_url = embed.thumbnail_url,
                 author = embed.author_name,
                 author_url = embed.author_url,
+                type = embed.type, // used to distinguish links from audio and video
+                multimedia = embed.html
 
+                console.log(type + " " + multimedia); // testin'
+                
                 //cache teaser DOM elements for faster access
                 $teaser = $('<div class="teaser"/>'),
                 $img = $('<div class="img" />'),
