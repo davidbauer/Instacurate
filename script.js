@@ -201,7 +201,8 @@ function generateEmbed(linksTotal, link, tweetId, text) {
             $teaser.append($tweet);
 
             // crop long description
-            if (description && description.length > 140) {description = description.substring(0, 139) + " [...]"}
+            // if (description && description.length > 140) {description = description.substring(0, 139) + " [...]"}
+            if (description && description.length > 140) {description = jQuery.trim(description).substring(0, 139).split(" ").slice(0, -1).join(" ") + " [...]"};
 
             //assign correct content to all those elements
             if (img_url != undefined) {
@@ -227,9 +228,8 @@ function generateEmbed(linksTotal, link, tweetId, text) {
 
 //create embed for tweet
 function generateTweetEmbed(tweetId) {
-    $.getJSON('https://api.twitter.com/1.1/statuses/oembed.json?id=' + tweetId + '&callback=?', function(embed) {
-            var tweetembed = embed.html;
-            return tweetembed;
-            });
-
+	$.getJSON('https://api.twitter.com/1.1/statuses/oembed.json?id=' + tweetId + '&callback=?', function(embed) {
+		var tweetembed = embed.html;
+		return tweetembed;
+	});
 };
