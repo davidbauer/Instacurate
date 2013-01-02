@@ -34,7 +34,7 @@ $(function() {
 });
 
 $(function() {
-    
+
     $('.linkinput').click (function(e) {
         e.preventDefault();
         // clean up
@@ -136,27 +136,27 @@ function getLinks(myUser) {
                     var link = url_entity.expanded_url;
                     minNrOfLinks -= 1;
                     linksTotal += 1;
-                    generateEmbed(linksTotal, link, tweetId);
+                    generateEmbed(linksTotal, link, tweetId, text);
                     console.log("The link-url is: " + link + " and the tweet text is " + text + ". The tweet has been retweeted " + retweets + " times.");
 
                     if (minNrOfLinks == 0) {
                         // we break the each loop here since we have enough links found
                         return false;
                     }
-                    
+
                 });
             } else {
                 // we break each loop
                 console.log("we have enough links found");
                 return false;
             }
-            
+
         });
     });
 };
 
 //create oEmbed of link from tweet
-function generateEmbed(linksTotal, link, tweetId) {
+function generateEmbed(linksTotal, link, tweetId, text) {
 
     //cache container DOM element
     var embeds_columns = $('#embeds div');
@@ -176,7 +176,7 @@ function generateEmbed(linksTotal, link, tweetId) {
                 multimedia = embed.html
 
                 console.log(type + " " + multimedia); // testin'
-                
+
                 //cache teaser DOM elements for faster access
                 $teaser = $('<div class="teaser"/>'),
                 $img = $('<div class="img" />'),
@@ -184,7 +184,7 @@ function generateEmbed(linksTotal, link, tweetId) {
                 $title = $('<h3 />'),
                 $description = $('<div class="description" />'),
                 $credits = $('<div class="credits" />');
-                $tweet = $('<div class="tweet" />')
+                $tweet = $('<div id="'+ tweetId +'"class="tweet" />')
 
             //get rid of loading message if loading class is still applied
             if ($status.hasClass('state-loading')) {
@@ -208,23 +208,28 @@ function generateEmbed(linksTotal, link, tweetId) {
             		$img.html("<a href='" + url + "'>" + "<img src='" + img_url + "' width='250px'></a><br/>")
             		};
             $title.html("<a href='" + url + "'>" + title + "</a><br />");
-            $description.html(description + " <a href='"+ url + "'>read on</a>"); 
+            $description.html(description + " <a href='"+ url + "'>read on</a>");
             if (author != undefined) {$credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>, Author: " 				+ "<a href='" + author_url + "' title='" + author + "'>" + author + "</a>");}
             else {$credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>");};
-            $tweet.html("<a href='#' title='tooltip test'>#</a>");
-            
+
             //add the tweet as a tooltip
-            $( ".tweet" ).tooltip({ content: generateTweetEmbed(tweetId) });
-            // $( ".tweet" ).tooltip({ content: "just a test. tooltip works!" });
+            //generateTweetEmbed(tweetId);
+            console.log("popover "+ text);
+            $tweet.html("<a href='#'>see tweet</a>").popover({
+                title: "<blockquote>"+text+"</blockquote>",
+                html: true,
+                trigger: "hover",
+                placement: "top"
+            });
     });
-    
+
 };
 
 //create embed for tweet
 function generateTweetEmbed(tweetId) {
-	$.getJSON('https://api.twitter.com/1/statuses/oembed.json?id=' + tweetId + '&callback=?', function(embed) {
-		var tweetembed = embed.html;
-		return tweetembed;
-	});    
+    $.getJSON('https://api.twitter.com/1.1/statuses/oembed.json?id=' + tweetId + '&callback=?', function(embed) {
+            var tweetembed = embed.html;
+            return tweetembed;
+            });
 
 };
