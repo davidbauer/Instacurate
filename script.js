@@ -71,7 +71,7 @@ function findUser() {
 
     // Validate length of username
     if (myUser.length > 16) { // TODO: if true, return error msg and don't continue
-        warn("This doesn't seem to be a username, Too long");
+        warn("This doesn't seem to be a username, too long.");
         return "usernameistoolong";
     }
     else {
@@ -136,7 +136,7 @@ function getLinks(myUser) {
                     var link = url_entity.expanded_url;
                     minNrOfLinks -= 1;
                     linksTotal += 1;
-                    generateEmbed(linksTotal, link);
+                    generateEmbed(linksTotal, link, tweetId);
                     console.log("The link-url is: " + link + " and the tweet text is " + text + ". The tweet has been retweeted " + retweets + " times.");
 
                     if (minNrOfLinks == 0) {
@@ -156,7 +156,7 @@ function getLinks(myUser) {
 };
 
 //create oEmbed of link from tweet
-function generateEmbed(linksTotal, link) {
+function generateEmbed(linksTotal, link, tweetId) {
 
     //cache container DOM element
     var embeds_columns = $('#embeds div');
@@ -214,8 +214,8 @@ function generateEmbed(linksTotal, link) {
             $tweet.html("<a href='#' title='tooltip test'>#</a>");
             
             //add the tweet as a tooltip
-            // $( ".tweet" ).tooltip({ content: generateTweetEmbed(tweetId) });
-            $( ".tweet" ).tooltip({ content: "just a test. tooltip works!" });
+            $( ".tweet" ).tooltip({ content: generateTweetEmbed(tweetId) });
+            // $( ".tweet" ).tooltip({ content: "just a test. tooltip works!" });
     });
     
 };
@@ -223,7 +223,7 @@ function generateEmbed(linksTotal, link) {
 //create embed for tweet
 function generateTweetEmbed(tweetId) {
 	$.getJSON('https://api.twitter.com/1/statuses/oembed.json?id=' + tweetId + '&callback=?', function(embed) {
-		tweetembed = embed.html;
+		var tweetembed = embed.html;
 		return tweetembed;
 	});    
 
