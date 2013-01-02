@@ -15,14 +15,26 @@ $(function() {
         checkUser(hash);
     }
 
+
+    $('#searchform').submit(function(e) {
+        // Stop the form from sending and reloading the page
+        e.preventDefault();
+        // clean up
+        $('#bugfixing').html("");
+        $('#embeds div').html("");
+        $('.userinfo').html("");
+
+        // Get the articles from typed user
+        var myUser = findUser();
+        if (myUser == "usernameistoolong") {}
+        else {checkUser(myUser);}
+        // Update URL
+        window.location.hash = myUser;
+    });
 });
 
 $(function() {
-    $("#searchform #user").keyup(function(event){
-        if(event.keyCode == 13){
-            $("#searchform button.linkinput").click();
-        }
-    });
+    
     $('.linkinput').click (function(e) {
         e.preventDefault();
         // clean up
@@ -200,7 +212,7 @@ function generateEmbed(linksTotal, link) {
             
             //add the tweet as a tooltip
             // $( ".tweet" ).tooltip({ content: generateTweetEmbed(tweetId) });
-            $( ".tweet" ).tooltip({ content: "tooltip works!" });
+            $( ".tweet" ).tooltip({ content: "just a test. tooltip works!" });
     });
     
 };
