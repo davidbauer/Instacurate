@@ -179,7 +179,7 @@ function generateEmbed(linksTotal, link, tweetId, text) {
 
                 //cache teaser DOM elements for faster access
                 $teaser = $('<div class="teaser"/>'),
-                $img = $('<div class="img" />'),
+                $media = $('<div class="media" />'),
                 $article = $('<article />'),
                 $title = $('<h3 />'),
                 $description = $('<div class="description" />'),
@@ -193,7 +193,7 @@ function generateEmbed(linksTotal, link, tweetId, text) {
 
             //create a new teaser element with all subelements
             $column.append($teaser);
-            $teaser.append($img);
+            $teaser.append($media);
             $teaser.append($article);
             $article.append($title);
             $article.append($description);
@@ -206,7 +206,7 @@ function generateEmbed(linksTotal, link, tweetId, text) {
 
             //assign correct content to all those elements
             if (img_url != undefined) {
-            		$img.html("<a href='" + url + "'>" + "<img src='" + img_url + "' width='268px'></a><br/>")
+            		$media.html("<a href='" + url + "'>" + "<img src='" + img_url + "' width='268px'></a><br/>")
             		};
             $title.html("<a href='" + url + "'>" + title + "</a><br />");
             $description.html(description + " <a href='"+ url + "'>read on</a>");
@@ -225,6 +225,7 @@ function generateEmbed(linksTotal, link, tweetId, text) {
     });
 
 };
+
 
 //create embed for tweet
 function generateTweetEmbed(tweetId) {
