@@ -206,7 +206,7 @@ function generateEmbed(linksTotal, link, tweetId, text) {
 
             //assign correct content to all those elements
             if (img_url != undefined) {
-            		$img.html("<a href='" + url + "'>" + "<img src='" + img_url + "' width='250px'></a><br/>")
+            		$img.html("<a href='" + url + "'>" + "<img src='" + img_url + "' width='268px'></a><br/>")
             		};
             $title.html("<a href='" + url + "'>" + title + "</a><br />");
             $description.html(description + " <a href='"+ url + "'>read on</a>");
