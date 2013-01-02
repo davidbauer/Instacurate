@@ -101,6 +101,10 @@ input, button{
     clear:both;
 }
 
+.tweet {font-size: 10px;}
+
+.close {margin-top: -15px;}
+
 /* tooltip styles */
 
 .ui-tooltip, .arrow:after {
