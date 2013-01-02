@@ -217,7 +217,7 @@ function generateEmbed(linksTotal, link, tweetId, text) {
             //generateTweetEmbed(tweetId);
             console.log("popover "+ text);
             $tweet.html("<a href='#'>see tweet</a>").popover({
-                title: "<blockquote>"+text+"</blockquote>",
+                title: "<blockquote class='twitter-tweet'><p>"+text+"</p></blockquote><script src='//platform.twitter.com/widgets.js' charset='utf-8'></script>",
                 html: true,
                 trigger: "hover",
                 placement: "top"
