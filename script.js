@@ -174,6 +174,7 @@ function generateEmbed(linksTotal, link, tweetId, text) {
                 author_url = embed.author_url,
                 type = embed.type, // used to distinguish links from audio and video
                 multimedia = embed.html
+                
 
                 console.log(type + " " + multimedia); // testin'
 
@@ -205,9 +206,13 @@ function generateEmbed(linksTotal, link, tweetId, text) {
             if (description && description.length > 140) {description = jQuery.trim(description).substring(0, 139).split(" ").slice(0, -1).join(" ") + " [...]"};
 
             //assign correct content to all those elements
-            if (img_url != undefined) {
+            if (type == "link" && img_url != undefined) {
             		$media.html("<a href='" + url + "'>" + "<img src='" + img_url + "' width='268px'></a><br/>")
-            		};
+            		}
+            // else if (type == "video" || type == "rich" || type == "audio") {
+            //		$media.html(multimedia + "<br/>")
+            //		};
+                       
             $title.html("<a href='" + url + "'>" + title + "</a><br />");
             $description.html(description + " <a href='"+ url + "'>read on</a>");
             if (author != undefined) {$credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>, Author: " 				+ "<a href='" + author_url + "' title='" + author + "'>" + author + "</a>");}
