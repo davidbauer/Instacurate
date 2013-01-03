@@ -207,14 +207,14 @@ function generateEmbed(linksTotal, link, tweetId, text) {
 
             //assign correct content to all those elements
             if (type == "link" && img_url != undefined) {
-            		$media.html("<a href='" + url + "'>" + "<img src='" + img_url + "' width='268px'></a><br/>")
+            		$media.html("<a href='" + url + "' target='_blank'>" + "<img src='" + img_url + "' width='268px'></a><br/>")
             		}
             // else if (type == "video" || type == "rich" || type == "audio") {
             //		$media.html(multimedia + "<br/>")
             //		};
                        
-            $title.html("<a href='" + url + "'>" + title + "</a><br />");
-            $description.html(description + " <a href='"+ url + "'>read on</a>");
+            $title.html("<a href='" + url + "' target='_blank'>" + title + "</a><br />");
+            $description.html(description + " <a href='"+ url + "' target='_blank'>read on</a>");
             if (author != undefined) {$credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>, Author: " 				+ "<a href='" + author_url + "' title='" + author + "'>" + author + "</a>");}
             else {$credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>");};
 
