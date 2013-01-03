@@ -114,9 +114,12 @@ function checkUser(myUser) {
 }
 
 //extract links from tweets
-function getLinks(myUser) {
-    var linksTotal = 0, tweetsToFetch = 100, minNrOfLinks = 20;
+var fetched_data;
+var tweetsToFetch = 200, minNrOfLinks = 12;
+var linksTotal = 0;
+var processing; // used for scroll-loader
 
+function getLinks(myUser) {
     $('#status').addClass('state-loading').html("Looking for tweeted links...");
 
     var params = {
@@ -127,40 +130,47 @@ function getLinks(myUser) {
         'count' : tweetsToFetch,
     };
     $.getJSON('https://api.twitter.com/1/statuses/user_timeline.json?&callback=?', params, function(data) {
-        $.each(data, function(index, tweet) {
-            if (minNrOfLinks > 0) {
-                var text = tweet.text;
-                var retweets = tweet.retweet_count;
-                var tweetId = tweet.id; // needed later to embed tweet
-                $.each(tweet.entities.urls, function(i, url_entity) {
-                    var link = url_entity.expanded_url;
-                    minNrOfLinks -= 1;
-                    linksTotal += 1;
-                    generateEmbed(linksTotal, link, tweetId, text);
-                    console.log("The link-url is: " + link + " and the tweet text is " + text + ". The tweet has been retweeted " + retweets + " times.");
-
-                    if (minNrOfLinks == 0) {
-                        // we break the each loop here since we have enough links found
-                        return false;
-                    }
-
-                });
-            } else {
-                // we break each loop
-                console.log("we have enough links found");
-                return false;
-            }
-
-        });
+        fetched_data = data.reverse();
+        process_data(minNrOfLinks);
     });
 };
+
+function process_data(nrOfLinks) {
+    processing = true;
+    var n = nrOfLinks;
+    while (n > 0) {
+        var tweet = fetched_data.pop();
+        if (typeof tweet == "undefined") {
+            break;
+        }
+        var text = tweet.text;
+        var retweets = tweet.retweet_count;
+        var tweetId = tweet.id; // needed later to embed tweet
+        $.each(tweet.entities.urls, function(i, url_entity) {
+            var link = url_entity.expanded_url;
+            n -= 1;
+            linksTotal += 1;
+            generateEmbed(linksTotal, link, tweetId, text);
+            console.log("The link-url is: " + link + " and the tweet text is " + text + ". The tweet has been retweeted " + retweets + " times.");
+
+            if (n == 0) {
+                // we break the each loop here since we have enough links found
+                processing = false;
+                return false;
+            }
+        });
+    }
+
+}
+
 
 //create oEmbed of link from tweet
 function generateEmbed(linksTotal, link, tweetId, text) {
 
     //cache container DOM element
-    var embeds_columns = $('#embeds div');
- 	var $column = $(embeds_columns[(linksTotal -1) % embeds_columns.length]);
+    var embeds_columns = $('#embeds div.column');
+    var c = (linksTotal -1) % embeds_columns.length;
+ 	var $column = $(embeds_columns[c]);
  	var $status = $('#status');
 
     $.getJSON('http://api.embed.ly/1/oembed?key=ab0fdaa34f634136bf4eb2325e040527&url=' + link + '&maxwidth=268', function(embed) {
@@ -174,7 +184,7 @@ function generateEmbed(linksTotal, link, tweetId, text) {
                 author_url = embed.author_url,
                 type = embed.type, // used to distinguish links from audio and video
                 multimedia = embed.html
-                
+
 
                 console.log(type + " " + multimedia); // testin'
 
@@ -212,9 +222,10 @@ function generateEmbed(linksTotal, link, tweetId, text) {
             else if (type == "video" || type == "rich" || type == "audio") {
             		$media.html(multimedia + "<br/>")
             		};
-                       
+
             $title.html("<a href='" + link + "' target='_blank'>" + title + "</a><br />");
             $description.html(description + " <a href='"+ link + "' target='_blank'>read on</a>");
+
             if (author != undefined) {$credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>, Author: " 				+ "<a href='" + author_url + "' title='" + author + "'>" + author + "</a>");}
             else {$credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>");};
 
@@ -231,6 +242,17 @@ function generateEmbed(linksTotal, link, tweetId, text) {
 
 };
 
+$(document).ready(function(){
+    $(document).scroll(function(e){
+        if (processing)
+            return false;
+
+        if ($(window).scrollTop() >= ($(document).height() - $(window).height())*0.7){
+            processing = true;
+            process_data(minNrOfLinks);
+        }
+    });
+});
 
 //create embed for tweet
 function generateTweetEmbed(tweetId) {
