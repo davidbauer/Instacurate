@@ -163,7 +163,7 @@ function generateEmbed(linksTotal, link, tweetId, text) {
  	var $column = $(embeds_columns[(linksTotal -1) % embeds_columns.length]);
  	var $status = $('#status');
 
-    $.getJSON('http://api.embed.ly/1/oembed?key=ab0fdaa34f634136bf4eb2325e040527&url=' + link + '&maxwidth=500', function(embed) {
+    $.getJSON('http://api.embed.ly/1/oembed?key=ab0fdaa34f634136bf4eb2325e040527&url=' + link + '&maxwidth=268', function(embed) {
             var title = embed.title,
                 description = embed.description,
                 url = embed.url,
@@ -207,14 +207,14 @@ function generateEmbed(linksTotal, link, tweetId, text) {
 
             //assign correct content to all those elements
             if (type == "link" && img_url != undefined) {
-            		$media.html("<a href='" + url + "' target='_blank'>" + "<img src='" + img_url + "' width='268px'></a><br/>")
+            		$media.html("<a href='" + link + "' target='_blank'>" + "<img src='" + img_url + "' width='268px'></a><br/>")
             		}
-            // else if (type == "video" || type == "rich" || type == "audio") {
-            //		$media.html(multimedia + "<br/>")
-            //		};
+            else if (type == "video" || type == "rich" || type == "audio") {
+            		$media.html(multimedia + "<br/>")
+            		};
                        
-            $title.html("<a href='" + url + "' target='_blank'>" + title + "</a><br />");
-            $description.html(description + " <a href='"+ url + "' target='_blank'>read on</a>");
+            $title.html("<a href='" + link + "' target='_blank'>" + title + "</a><br />");
+            $description.html(description + " <a href='"+ link + "' target='_blank'>read on</a>");
             if (author != undefined) {$credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>, Author: " 				+ "<a href='" + author_url + "' title='" + author + "'>" + author + "</a>");}
             else {$credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>");};
 
