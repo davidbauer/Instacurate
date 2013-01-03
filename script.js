@@ -147,17 +147,32 @@ function process_data(nrOfLinks) {
         var retweets = tweet.retweet_count;
         var tweetId = tweet.id; // needed later to embed tweet
         $.each(tweet.entities.urls, function(i, url_entity) {
+<<<<<<< HEAD
+=======
+            
+            if (text[0] != "@") { // exclude tweets that are @replies
+>>>>>>> Issue #7: Exclude links from @replies
             var link = url_entity.expanded_url;
             n -= 1;
             linksTotal += 1;
             generateEmbed(linksTotal, link, tweetId, text);
             console.log("The link-url is: " + link + " and the tweet text is " + text + ". The tweet has been retweeted " + retweets + " times.");
+<<<<<<< HEAD
 
             if (n == 0) {
                 // we break the each loop here since we have enough links found
                 processing = false;
                 return false;
             }
+=======
+            }
+            
+            if (n == 0) {
+                // we break the each loop here since we have enough links found
+                processing = false;
+                return false;
+            }
+>>>>>>> Issue #7: Exclude links from @replies
         });
     }
 
