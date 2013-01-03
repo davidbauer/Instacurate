@@ -118,6 +118,7 @@ var fetched_data;
 var tweetsToFetch = 200, minNrOfLinks = 12;
 var linksTotal = 0;
 var processing; // used for scroll-loader
+var links = {}; // keep this hash, to check if we already know about a link.
 
 function getLinks(myUser) {
     $('#status').addClass('state-loading').html("Looking for tweeted links...");
@@ -148,21 +149,26 @@ function process_data(nrOfLinks) {
         var tweetId = tweet.id; // needed later to embed tweet
         $.each(tweet.entities.urls, function(i, url_entity) {
             var link = url_entity.expanded_url;
-            n -= 1;
-            linksTotal += 1;
-            generateEmbed(linksTotal, link, tweetId, text);
-            console.log("The link-url is: " + link + " and the tweet text is " + text + ". The tweet has been retweeted " + retweets + " times.");
 
-            if (n == 0) {
-                // we break the each loop here since we have enough links found
-                processing = false;
-                return false;
+            // we check if we have already stored this link inside
+            // our global links hash, this could be done more efficient
+            // but I guess it's good enough for the moment.
+            if(typeof links[link] == "undefined") {
+                links[link] = true;
+                n -= 1;
+                linksTotal += 1;
+                generateEmbed(linksTotal, link, tweetId, text);
+                console.log("The link-url is: " + link + " and the tweet text is " + text + ". The tweet has been retweeted " + retweets + " times.");
+
+                if (n == 0) {
+                    // we break the each loop here since we have enough links found
+                    processing = false;
+                    return false;
+                }
             }
         });
     }
-
 }
-
 
 //create oEmbed of link from tweet
 function generateEmbed(linksTotal, link, tweetId, text) {
