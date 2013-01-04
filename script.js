@@ -68,6 +68,8 @@ $(function() {
 $(function() {
 
     $('.linkinput').click (function(e) {
+        e.preventDefault();
+
         var myUser = $(this).attr('data-user');
 
         setInput(myUser);
