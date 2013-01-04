@@ -22,6 +22,9 @@
     }
 }());
 
+//display recent search terms
+var searches = []; // create array to store search terms
+displaySearches(searches);
 
 
 // Setup an event listener for the form that will execute checkUser()
@@ -39,11 +42,6 @@ $(function() {
 
         // Do the magic
         checkUser(hash);
-        
-        //display recent search terms
-        var searches = []; // create array to store searches
-        console.log(searches);
-        displaySearches(searches);
         
     }
 
@@ -115,15 +113,13 @@ function getInput() {
 	     if (myUser.length > 16) { // TODO: if true, return error msg and don't continue
 	        warn("This doesn't seem to be a username, too long.");
 	        return "usernameistoolong";
-	        
-	    }
+	     }
     }
     
-    return myUser;
-    return myHashtag;
-    searches.splice(0,0,myUser); // store successful search term in searches array
-    return searches;
-     
+    searches.unshift(myUser); // store successful search term in searches array
+    console.log(searches);
+    console.log(myUser);
+    return myUser;     
 }
 
 // call info about username via twitter api and get link data
@@ -301,8 +297,9 @@ function generateEmbed(linksTotal, link, tweetId, text) {
 
 };
 
+//display latest search term (for starters, should be n latest search terms eventually)
 function displaySearches(searches) {
-	$('.searches').append("<a href='#' class='linkinput' data-user='" + searches[searches.length-1] + "'>" + searches[searches.length-1] + " </a>");
+	$('.searches').append("<a href='#' class='linkinput' data-user='" + searches[0] + "'>" + searches[0] + " </a>");
 };
 
 
