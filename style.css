@@ -1,6 +1,5 @@
 html, body {
     height: 100%;
-    /* The html and body elements cannot have any padding or margin. */
 }
 
 body {
@@ -30,6 +29,8 @@ body {
         padding-left: 20px;
         padding-right: 20px;
     }
+    .description {display:none;}
+    .slide {display:none;} 
 }
 
 form {
@@ -139,12 +140,13 @@ input, button{
 #supportbox {
     background: rgba(255,255,255,0.8);
     background-size:90% 90%;
-    height:280px;
+    height:300px;
     width:320px;
     padding: 30px 10px 20px 10px;
     border-bottom:solid 2px rgba(204,0,0,0.75);
     position: absolute;
     right:100px;
+    z-index: 10;
 }
 .state-hidden {
     clip: rect(1px 1px 1px 1px);
@@ -177,6 +179,7 @@ input, button{
     border-bottom-left-radius:5px;
     border-bottom-right-radius:5px;
     text-align: center;
+    z-index: 11;
 }
 
 .slide a:hover {
@@ -195,5 +198,4 @@ input, button{
 .s h4 {
     font-size:12px;
     font-weight: normal;
-    text-transform:capitalize;
 }
