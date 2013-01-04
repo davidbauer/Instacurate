@@ -67,20 +67,12 @@ $(function() {
 
     $('.linkinput').click (function(e) {
         e.preventDefault();
-        // clean up
-        $('#bugfixing').html("");
-        $('#embeds div').html("");
-        $('.userinfo').html("");
 
-        // Get the articles from linked user
         var myUser = $(this).attr('data-user');
-        if (typeof myUser == "undefined") {
-            // form input
-            myUser = $("#searchform #user").val();
-        }
-        checkUser(myUser);
-        // Update URL
-        window.location.hash = myUser;
+
+        setInput(myUser);
+
+        $('#searchform').submit();
     });
 });
 
@@ -122,6 +114,10 @@ function getInput() {
     return myUser;     
 }
 
+function setInput(myUser) {
+    document.tweetfinder.user.value = myUser;
+}
+
 // call info about username via twitter api and get link data
 function checkUser(myUser) {
     $.ajax({
@@ -158,7 +154,7 @@ function checkUser(myUser) {
 
 //extract links from tweets
 var user;
-var fetched_data;
+var fetched_data = [];
 var tweetsToFetch = 200, minNrOfLinks = 12;
 var linksTotal = 0;
 var processing; // used for scroll-loader
@@ -184,6 +180,9 @@ function getLinks(myUser) {
 };
 
 function process_data(nrOfLinks) {
+    //stop processing if there are no tweets
+    if (fetched_data.length === 0) return;
+
     processing = true;
     var n = nrOfLinks;
     while (n > 0) {
@@ -313,10 +312,16 @@ $(document).ready(function(){
             process_data(minNrOfLinks);
         }
     });
-    //load supportbox
-        $('.pull-me').click(function(){
-		$('#supportbox').slideToggle('slow');				
-				});
+
+    //toggle supportbox
+    $('.pull-me').click(function(){
+        //remove class on supportbox (allowing for correct initiation of Twitter buttons, see issue #35)
+        if ($('#supportbox').hasClass('state-hidden')) {
+            $('#supportbox').removeClass('state-hidden').hide();
+        }
+        
+		$('#supportbox').slideToggle('slow');
+	});
 });
 
 //create embed for tweet
