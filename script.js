@@ -156,7 +156,7 @@ function checkUser(myUser) {
 
 //extract links from tweets
 var user;
-var fetched_data;
+var fetched_data = [];
 var tweetsToFetch = 200, minNrOfLinks = 12;
 var linksTotal = 0;
 var processing; // used for scroll-loader
@@ -182,6 +182,9 @@ function getLinks(myUser) {
 };
 
 function process_data(nrOfLinks) {
+    //stop processing if there are no tweets
+    if (fetched_data.length === 0) return;
+
     processing = true;
     var n = nrOfLinks;
     while (n > 0) {
