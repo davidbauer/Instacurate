@@ -304,10 +304,16 @@ $(document).ready(function(){
             process_data(minNrOfLinks);
         }
     });
-    //load supportbox
-        $('.pull-me').click(function(){
-		$('#supportbox').slideToggle('slow');				
-				});
+
+    //toggle supportbox
+    $('.pull-me').click(function(){
+        //remove class on supportbox (allowing for correct initiation of Twitter buttons, see issue #35)
+        if ($('#supportbox').hasClass('state-hidden')) {
+            $('#supportbox').removeClass('state-hidden').hide();
+        }
+        
+		$('#supportbox').slideToggle('slow');
+	});
 });
 
 //create embed for tweet

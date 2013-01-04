@@ -130,11 +130,19 @@ input, button{
     background-size:90% 90%;
     height:280px;
     width:320px;
-	display:none;
 	padding: 30px 10px 20px 10px;
 	border-bottom:solid 2px rgba(204,0,0,0.75);
 	position: absolute;
 	right:100px;
+}
+.state-hidden {
+    clip: rect(1px 1px 1px 1px);
+    clip: rect(1px, 1px, 1px, 1px);
+    height: 1px;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+    width: 1px;
 }
 
 .slide {
