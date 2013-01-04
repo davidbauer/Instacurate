@@ -123,3 +123,59 @@ input, button{
         border-radius: 4px;
         box-shadow: 0 0 7px white;
     }
+    
+/* supportbox styles */
+#supportbox {
+	background: rgba(255,255,255,0.4);
+    background-size:90% 90%;
+    height:280px;
+    width:320px;
+	display:none;
+	padding: 30px 10px 20px 10px;
+	border-bottom:solid 2px rgba(204,0,0,0.75);
+	position: absolute;
+	right:100px;
+}
+
+.slide {
+	margin:0;
+	padding:0;
+	width:340px;
+}
+.pull-me {
+	display:block;
+    position:absolute;
+    right:100px;
+    padding-left: 10px;
+    width:200px;
+    height:20px;
+	color:#ffffff;
+    background:rgba(204,0,0,0.75);
+	text-decoration:none;
+	font-weight: bold;
+    -moz-border-bottom-left-radius:5px;
+    -moz-border-bottom-right-radius:5px;
+    border-bottom-left-radius:5px;
+    border-bottom-right-radius:5px;
+    text-align: center;
+}
+
+.slide a:hover {
+	color:#ffffff !important;
+    background:#cc0000;
+	text-decoration:none;
+	font-weight: bold;
+}
+.s ul {	padding-left: 0px;;margin-left: 0px;}
+.s ul li {
+	display: inline;
+	list-style: none;
+	margin-left: 0px;
+	padding-left: 0px;
+	}
+.s h4 {
+	font-size:12px;
+	font-weight: normal;
+	text-transform:capitalize;
+}
+	        

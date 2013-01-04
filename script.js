@@ -18,6 +18,7 @@ $(function() {
         var searches = []; // create array to store searches
         console.log(searches);
         displaySearches(searches);
+        
     }
 
 
@@ -277,6 +278,10 @@ $(document).ready(function(){
             process_data(minNrOfLinks);
         }
     });
+    //load supportbox
+        $('.pull-me').click(function(){
+		$('#supportbox').slideToggle('slow');				
+				});
 });
 
 //create embed for tweet
