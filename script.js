@@ -57,7 +57,7 @@ $(function() {
         $('.userinfo').html("");
 
         // Get the articles from typed user
-        var myUser = findUser();
+        var myUser = getInput();
         if (myUser == "usernameistoolong") {}
         else {checkUser(myUser);}
         // Update URL
@@ -92,26 +92,38 @@ function warn(message) {
 }
 
 // store username given via input
-function findUser() {
+function getInput() {
     var myUser;
-
-    // Get the username value from the form and cleanup the @ if needed
-    if (document.tweetfinder.user.value[0] == "@") {
-        myUser = document.tweetfinder.user.value.substring(1,20); //get rid of the @
+    var myHashtag;
+    
+    // check if a hashtag is entered
+    if (document.tweetfinder.user.value[0] == "#") { 
+	    myHashtag = document.tweetfinder.user.value;
+	    console.log("HASHTAG: " + myHashtag);
     }
-    else { myUser = document.tweetfinder.user.value };
-
-    // Validate length of username
-    if (myUser.length > 16) { // TODO: if true, return error msg and don't continue
-        warn("This doesn't seem to be a username, too long.");
-        return "usernameistoolong";
-    }
+    
     else {
-        return myUser;
-        searches.splice(0,0,myUser); // store successful search term in searches array
-        return searches;
-        
+    
+		// Check if cleanup of the @ is needed
+	    if (document.tweetfinder.user.value[0] == "@") {
+	        myUser = document.tweetfinder.user.value.substring(1,20); //get rid of the @
+	    }
+	     
+	    else { myUser = document.tweetfinder.user.value };
+	
+	    // Validate length of username
+	     if (myUser.length > 16) { // TODO: if true, return error msg and don't continue
+	        warn("This doesn't seem to be a username, too long.");
+	        return "usernameistoolong";
+	        
+	    }
     }
+    
+    return myUser;
+    return myHashtag;
+    searches.splice(0,0,myUser); // store successful search term in searches array
+    return searches;
+     
 }
 
 // call info about username via twitter api and get link data
