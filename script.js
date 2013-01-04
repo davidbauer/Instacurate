@@ -22,6 +22,9 @@
     }
 }());
 
+;(function(window, document, $, undefined) {
+    "use strict"; // best practice
+
 //display recent search terms
 var searches = []; // create array to store search terms
 displaySearches(searches);
@@ -331,3 +334,5 @@ $(document).ready(function(){
 // 		return tweetembed;
 // 	});
 // };
+
+})(window, document, jQuery);
