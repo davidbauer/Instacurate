@@ -68,21 +68,11 @@ $(function() {
 $(function() {
 
     $('.linkinput').click (function(e) {
-        e.preventDefault();
-        // clean up
-        $('#bugfixing').html("");
-        $('#embeds div').html("");
-        $('.userinfo').html("");
-
-        // Get the articles from linked user
         var myUser = $(this).attr('data-user');
-        if (typeof myUser == "undefined") {
-            // form input
-            myUser = $("#searchform #user").val();
-        }
-        checkUser(myUser);
-        // Update URL
-        window.location.hash = myUser;
+
+        setInput(myUser);
+
+        $('#searchform').submit();
     });
 });
 
@@ -124,6 +114,10 @@ function getInput() {
     searches.splice(0,0,myUser); // store successful search term in searches array
     return searches;
      
+}
+
+function setInput(myUser) {
+    document.tweetfinder.user.value = myUser;
 }
 
 // call info about username via twitter api and get link data
