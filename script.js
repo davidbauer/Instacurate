@@ -229,7 +229,7 @@ function generateEmbed(linksTotal, link, tweetId, text) {
 
             //assign correct content to all those elements
             if (type == "link" && img_url != undefined) {
-            		$media.html("<a href='" + link + "' target='_blank'>" + "<img src='" + img_url + "' width='268px'></a><br/>")
+            		$media.html("<a href='" + link + "' target='_blank'>" + "<img src='" + img_url + "'></a><br/>")
             		}
             else if (type == "video" || type == "rich" || type == "audio") {
             		$media.html(multimedia + "<br/>")

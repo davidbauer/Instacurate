@@ -73,7 +73,14 @@ input, button{
 }
 
 .media {
-    border: solid 1px rgba(255,255,255,0.4);
+    
+}
+
+.media img {
+	max-width: 100%;
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .description {
