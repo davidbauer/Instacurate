@@ -38,7 +38,7 @@ input, button{
     font-size: 25px !important;
 }
 
-.suggestions {
+.suggestions, .searches {
     font-size:12px;
     font-family: Helvetica, Arial, sans-serif;
     color: grey;

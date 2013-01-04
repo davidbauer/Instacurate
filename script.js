@@ -13,6 +13,11 @@ $(function() {
 
         // Do the magic
         checkUser(hash);
+        
+        //display recent search terms
+        var searches = []; // create array to store searches
+        console.log(searches);
+        displaySearches(searches);
     }
 
 
@@ -76,6 +81,9 @@ function findUser() {
     }
     else {
         return myUser;
+        searches.splice(0,0,myUser); // store successful search term in searches array
+        return searches;
+        
     }
 }
 
@@ -253,6 +261,11 @@ function generateEmbed(linksTotal, link, tweetId, text) {
     });
 
 };
+
+function displaySearches(searches) {
+	$('.searches').append("<a href='#' class='linkinput' data-user='" + searches[searches.length-1] + "'>" + searches[searches.length-1] + " </a>");
+};
+
 
 $(document).ready(function(){
     $(document).scroll(function(e){
