@@ -58,11 +58,20 @@ $(function() {
         $('.userinfo').html("");
 
         // Get the articles from typed user
-        var myUser = getInput();
-        if (myUser == "usernameistoolong") {}
-        else {checkUser(myUser);}
+        var myInput = getInput();
+        
+        //proceed with either hashtag or username
+        if (myInput[0] == '#') {
+	        // checkHashtag();
+        }
+        
+        else {
+        	if (myInput != "usernameistoolong") {
+        		checkUser(myInput);
+        		}
+        	}
         // Update URL
-        window.location.hash = myUser;
+        window.location.hash = myInput;
     });
 });
 
@@ -71,9 +80,9 @@ $(function() {
     $('.linkinput').click (function(e) {
         e.preventDefault();
 
-        var myUser = $(this).attr('data-user');
+        var myInput = $(this).attr('data-user');
 
-        setInput(myUser);
+        setInput(myInput);
 
         $('#searchform').submit();
     });
@@ -86,47 +95,47 @@ function warn(message) {
 
 // store username given via input
 function getInput() {
-    var myUser;
-    var myHashtag;
+    var myInput;
     
     // check if a hashtag is entered
     if (document.tweetfinder.user.value[0] == "#") { 
-	    myHashtag = document.tweetfinder.user.value;
-	    console.log("HASHTAG: " + myHashtag);
+	    myInput = document.tweetfinder.user.value;
+	    console.log("HASHTAG: " + myInput);
+	    warn("We don't support hashtags yet. We're working on it right now.");
     }
     
     else {
     
 		// Check if cleanup of the @ is needed
 	    if (document.tweetfinder.user.value[0] == "@") {
-	        myUser = document.tweetfinder.user.value.substring(1,20); //get rid of the @
+	        myInput = document.tweetfinder.user.value.substring(1,20); //get rid of the @
 	    }
 	     
-	    else { myUser = document.tweetfinder.user.value };
+	    else { myInput = document.tweetfinder.user.value };
 	
 	    // Validate length of username
-	     if (myUser.length > 16) { // TODO: if true, return error msg and don't continue
+	     if (myInput.length > 16) { // TODO: if true, return error msg and don't continue
 	        warn("This doesn't seem to be a username, too long.");
 	        return "usernameistoolong";
 	     }
     }
     
-    searches.unshift(myUser); // store successful search term in searches array
+    searches.unshift(myInput); // store successful search term in searches array
     console.log(searches);
-    console.log(myUser);
-    return myUser;     
+    console.log(myInput);
+    return myInput;     
 }
 
-function setInput(myUser) {
-    document.tweetfinder.user.value = myUser;
+function setInput(myInput) {
+    document.tweetfinder.user.value = myInput;
 }
 
 // call info about username via twitter api and get link data
-function checkUser(myUser) {
+function checkUser(myInput) {
     $.ajax({
         url: 'https://api.twitter.com/1/users/show.json',
         data: {
-            screen_name: myUser,
+            screen_name: myInput,
             include_entities: true,
             suppress_response_codes: true
         },
@@ -144,7 +153,7 @@ function checkUser(myUser) {
                     tweetsNumber = data.statuses_count;
 
                 html += "The latest links posted by <a href='http://www.twitter.com/" + username + "'>" + name + "</a>. <iframe allowtransparency='true' frameborder='0' scrolling='no' src='//platform.twitter.com/widgets/follow_button.html?screen_name=" + username + "' style='width:300px; height:20px;margin-left:8px;'></iframe>" 
-                getLinks(myUser); // getting those links from tweets
+                getLinks(myInput); // getting those links from tweets
             }
 
             $('#myUser').html("by " + name); // add user's name to header
@@ -161,14 +170,14 @@ var linksTotal = 0;
 var processing; // used for scroll-loader
 var links = {}; // keep this hash, to check if we already know about a link.
 
-function getLinks(myUser) {
+function getLinks(myInput) {
     $('#status').addClass('state-loading').html("Looking for tweeted links...");
 
     // Save for reuse
-    user = myUser;
+    user = myInput;
 
     var params = {
-        'screen_name': myUser,
+        'screen_name': myInput,
         'include_entities': true,
         'include_rts': false,
         'since_id': 1,
