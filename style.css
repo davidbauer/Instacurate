@@ -1,6 +1,5 @@
 html, body {
     height: 100%;
-    /* The html and body elements cannot have any padding or margin. */
 }
 
 body {
@@ -8,13 +7,12 @@ body {
 }
 
 .page-header {
-    font-family: Georgia, serif !important; 
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+    margin-bottom: 20px;
 }
 
 #wrapper {
     min-height: 100%;
-    height: auto !important;
-    height: 100%;
     /* Negative indent footer by it's height */
     margin: 0 auto -60px;
 }
@@ -31,6 +29,14 @@ body {
         padding-left: 20px;
         padding-right: 20px;
     }
+    .description {display:none;}
+    .slide {display:none;} 
+}
+
+form {
+	border-bottom: 1px solid rgba(0,0,0,0.2);
+    margin-bottom: 20px;
+    padding-bottom: 20px;
 }
 
 input, button{ 
@@ -38,9 +44,12 @@ input, button{
     font-size: 25px !important;
 }
 
-.suggestions {
+.lead {
+    font-weight: normal;
+}
+
+.suggestions, .searches {
     font-size:12px;
-    font-family: Helvetica, Arial, sans-serif;
     color: grey;
     margin:5px 0;
 }
@@ -52,12 +61,15 @@ input, button{
 }
 
 .teaser {
-    font-family:Helvetica, Arial, sans-serif;
+           -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+    box-sizing:             border-box;
+    border: 1px solid rgba(0,0,0,0.2);
     width:100%;
     float:left;
-    margin-bottom: 10px;
-    padding: 10px;
-    background-color: rgba(255,255,255,0.4);
+    margin-bottom: 30px;
+    padding: 20px;
+    background: rgba(255,255,255,0.8);
 }
 
 .teaser:nth-child(3n) {
@@ -73,7 +85,14 @@ input, button{
 }
 
 .media {
-    border: solid 1px rgba(255,255,255,0.4);
+    
+}
+
+.media img {
+    max-width: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .description {
@@ -108,11 +127,75 @@ input, button{
 /* tooltip styles */
 
 .ui-tooltip, .arrow:after {
-        background: rgba(227,227,227,0.95);
-        width: 250px;
+    background: rgba(227,227,227,0.95);
+    width: 250px;
+}
+.ui-tooltip {
+    padding: 10px 20px;
+    border-radius: 4px;
+    box-shadow: 0 0 7px white;
+}
+    
+/* supportbox styles */
+#supportbox {
+    background: rgba(255,255,255,0.8);
+    background-size:90% 90%;
+    height:300px;
+    width:320px;
+    padding: 30px 10px 20px 10px;
+    border-bottom:solid 2px rgba(204,0,0,0.75);
+    position: absolute;
+    right:100px;
+    z-index: 10;
+}
+.state-hidden {
+    clip: rect(1px 1px 1px 1px);
+    clip: rect(1px, 1px, 1px, 1px);
+    height: 1px;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+    width: 1px;
+}
+
+.slide {
+    margin:0;
+    padding:0;
+    width:340px;
+}
+.pull-me {
+    display:block;
+    position:absolute;
+    right:100px;
+    padding-left: 10px;
+    width:200px;
+    height:20px;
+    color:#ffffff;
+    background:rgba(204,0,0,0.75);
+    text-decoration:none;
+    font-weight: bold;
+    -moz-border-bottom-left-radius:5px;
+    -moz-border-bottom-right-radius:5px;
+    border-bottom-left-radius:5px;
+    border-bottom-right-radius:5px;
+    text-align: center;
+    z-index: 11;
+}
+
+.slide a:hover {
+    color:#ffffff !important;
+    background:#cc0000;
+    text-decoration:none;
+    font-weight: bold;
+}
+.s ul { padding-left: 0px;;margin-left: 0px;}
+.s ul li {
+    display: inline;
+    list-style: none;
+    margin-left: 0px;
+    padding-left: 0px;
     }
-    .ui-tooltip {
-        padding: 10px 20px;
-        border-radius: 4px;
-        box-shadow: 0 0 7px white;
-    }
+.s h4 {
+    font-size:12px;
+    font-weight: normal;
+}

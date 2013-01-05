@@ -1,3 +1,35 @@
+// Avoid `console` errors in browsers that lack a console
+// https://github.com/h5bp/html5-boilerplate/blob/master/js/plugins.js
+(function() {
+    var method,
+        noop = function() {},
+        methods = [
+            'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
+            'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
+            'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd',
+            'timeStamp', 'trace', 'warn'
+        ],
+        length = methods.length,
+        console = (window.console = window.console || {});
+
+    while (length--) {
+        method = methods[length];
+
+        // Only stub undefined methods.
+        if (!console[method]) {
+            console[method] = noop;
+        }
+    }
+}());
+
+;(function(window, document, $, undefined) {
+    "use strict"; // best practice
+
+//display recent search terms
+var searches = []; // create array to store search terms
+displaySearches(searches);
+
+
 // Setup an event listener for the form that will execute checkUser()
 // when the form is submitted.
 $(function() {
@@ -13,6 +45,7 @@ $(function() {
 
         // Do the magic
         checkUser(hash);
+
     }
 
 
@@ -25,7 +58,7 @@ $(function() {
         $('.userinfo').html("");
 
         // Get the articles from typed user
-        var myUser = findUser();
+        var myUser = getInput();
         if (myUser == "usernameistoolong") {}
         else {checkUser(myUser);}
         // Update URL
@@ -35,22 +68,14 @@ $(function() {
 
 $(function() {
 
-    $('.linkinput').click (function(e) {
+    $('.linkinput').live('click', function(e) {
         e.preventDefault();
-        // clean up
-        $('#bugfixing').html("");
-        $('#embeds div').html("");
-        $('.userinfo').html("");
 
-        // Get the articles from linked user
         var myUser = $(this).attr('data-user');
-        if (typeof myUser == "undefined") {
-            // form input
-            myUser = $("#searchform #user").val();
-        }
-        checkUser(myUser);
-        // Update URL
-        window.location.hash = myUser;
+
+        setInput(myUser);
+
+        $('#searchform').submit();
     });
 });
 
@@ -60,23 +85,40 @@ function warn(message) {
 }
 
 // store username given via input
-function findUser() {
+function getInput() {
     var myUser;
+    var myHashtag;
 
-    // Get the username value from the form and cleanup the @ if needed
-    if (document.tweetfinder.user.value[0] == "@") {
-        myUser = document.tweetfinder.user.value.substring(1,20); //get rid of the @
+    // check if a hashtag is entered
+    if (document.tweetfinder.user.value[0] == "#") {
+	    myHashtag = document.tweetfinder.user.value;
+	    console.log("HASHTAG: " + myHashtag);
     }
-    else { myUser = document.tweetfinder.user.value };
 
-    // Validate length of username
-    if (myUser.length > 16) { // TODO: if true, return error msg and don't continue
-        warn("This doesn't seem to be a username, too long.");
-        return "usernameistoolong";
-    }
     else {
-        return myUser;
+
+		// Check if cleanup of the @ is needed
+	    if (document.tweetfinder.user.value[0] == "@") {
+	        myUser = document.tweetfinder.user.value.substring(1,20); //get rid of the @
+	    }
+
+	    else { myUser = document.tweetfinder.user.value };
+
+	    // Validate length of username
+	     if (myUser.length > 16) { // TODO: if true, return error msg and don't continue
+	        warn("This doesn't seem to be a username, too long.");
+	        return "usernameistoolong";
+	     }
     }
+
+    searches.unshift(myUser); // store successful search term in searches array
+    console.log(searches);
+    console.log(myUser);
+    return myUser;
+}
+
+function setInput(myUser) {
+    document.tweetfinder.user.value = myUser;
 }
 
 // call info about username via twitter api and get link data
@@ -101,9 +143,7 @@ function checkUser(myUser) {
                     followersNumber = data.followers_count,
                     tweetsNumber = data.statuses_count;
 
-                html += "The latest links posted by " + name + "(<a href='http://www.twitter.com/@" + username + "'>@" + username + "</a>)."
-
-
+                html += "The latest links posted by <a href='http://www.twitter.com/" + username + "'>" + name + "</a>. <iframe allowtransparency='true' frameborder='0' scrolling='no' src='//platform.twitter.com/widgets/follow_button.html?screen_name=" + username + "' style='width:300px; height:20px;margin-left:8px;'></iframe>"
                 getLinks(myUser); // getting those links from tweets
             }
 
@@ -114,7 +154,9 @@ function checkUser(myUser) {
 }
 
 //extract links from tweets
-var fetched_data;
+var user;
+var tambur_stream;
+var fetched_data = [];
 var tweetsToFetch = 200, minNrOfLinks = 12;
 var linksTotal = 0;
 var processing; // used for scroll-loader
@@ -122,6 +164,9 @@ var links = {}; // keep this hash, to check if we already know about a link.
 
 function getLinks(myUser) {
     $('#status').addClass('state-loading').html("Looking for tweeted links...");
+
+    // Save for reuse
+    user = myUser;
 
     var params = {
         'screen_name': myUser,
@@ -133,10 +178,14 @@ function getLinks(myUser) {
     $.getJSON('https://api.twitter.com/1/statuses/user_timeline.json?&callback=?', params, function(data) {
         fetched_data = data.reverse();
         process_data(minNrOfLinks);
+        enable_realtime_update(myUser);
     });
 };
 
 function process_data(nrOfLinks) {
+    //stop processing if there are no tweets
+    if (fetched_data.length === 0) return;
+
     processing = true;
     var n = nrOfLinks;
     while (n > 0) {
@@ -146,14 +195,13 @@ function process_data(nrOfLinks) {
         }
         var text = tweet.text;
         var retweets = tweet.retweet_count;
-        var tweetId = tweet.id; // needed later to embed tweet
+        var tweetId = tweet.id_str; // needed later to link to tweet
         $.each(tweet.entities.urls, function(i, url_entity) {
             var link = url_entity.expanded_url;
-
             // we check if we have already stored this link inside
             // our global links hash, this could be done more efficient
             // but I guess it's good enough for the moment.
-            if(typeof links[link] == "undefined") {
+            if(typeof links[link] == "undefined" && text[0] != "@") { // exclude duplicate links and links from @-replies
                 links[link] = true;
                 n -= 1;
                 linksTotal += 1;
@@ -189,10 +237,7 @@ function generateEmbed(linksTotal, link, tweetId, text) {
                 author = embed.author_name,
                 author_url = embed.author_url,
                 type = embed.type, // used to distinguish links from audio and video
-                multimedia = embed.html
-
-
-                console.log(type + " " + multimedia); // testin'
+                multimedia = embed.html,
 
                 //cache teaser DOM elements for faster access
                 $teaser = $('<div class="teaser"/>'),
@@ -200,8 +245,11 @@ function generateEmbed(linksTotal, link, tweetId, text) {
                 $article = $('<article />'),
                 $title = $('<h3 />'),
                 $description = $('<div class="description" />'),
-                $credits = $('<div class="credits" />');
-                $tweet = $('<div id="'+ tweetId +'"class="tweet" />')
+                $credits = $('<div class="credits" />'),
+                $tweet = $('<div class="tweet" />'),
+                $tweetLink = $('<a>see tweet</a>');
+
+            console.log(type + " " + multimedia); // testin'
 
             //get rid of loading message if loading class is still applied
             if ($status.hasClass('state-loading')) {
@@ -216,6 +264,7 @@ function generateEmbed(linksTotal, link, tweetId, text) {
             $article.append($description);
             $article.append($credits);
             $teaser.append($tweet);
+            $tweet.append($tweetLink);
 
             // crop long description
             // if (description && description.length > 140) {description = description.substring(0, 139) + " [...]"}
@@ -223,7 +272,7 @@ function generateEmbed(linksTotal, link, tweetId, text) {
 
             //assign correct content to all those elements
             if (type == "link" && img_url != undefined) {
-            		$media.html("<a href='" + link + "' target='_blank'>" + "<img src='" + img_url + "' width='268px'></a><br/>")
+            		$media.html("<a href='" + link + "' target='_blank'>" + "<img src='" + img_url + "'></a><br/>")
             		}
             else if (type == "video" || type == "rich" || type == "audio") {
             		$media.html(multimedia + "<br/>")
@@ -237,8 +286,8 @@ function generateEmbed(linksTotal, link, tweetId, text) {
 
             //add the tweet as a tooltip
             //generateTweetEmbed(tweetId);
-            console.log("popover "+ text);
-            $tweet.html("<a href='#'>see tweet</a>").popover({
+            // console.log("popover "+ text);
+            $tweetLink.attr('href', 'http://twitter.com/'+ user +'/status/'+ tweetId).popover({
                 title: "<blockquote class='twitter-tweet'><p>"+text+"</p></blockquote><script src='//platform.twitter.com/widgets.js' charset='utf-8'></script>",
                 html: true,
                 trigger: "hover",
@@ -247,6 +296,63 @@ function generateEmbed(linksTotal, link, tweetId, text) {
     });
 
 };
+
+//display latest search term (for starters, should be n latest search terms eventually)
+function displaySearches(searches) {
+	$('.searches').append("<a href='#' class='linkinput' data-user='" + searches[0] + "'>" + searches[0] + " </a>");
+};
+
+var tambur_conn, tambur_stream;
+function enable_realtime_update(myUser) {
+    var ready = function(id, nick) {
+        $.getJSON("http://149.126.0.41/token?id=" + id +"&nick="+nick+"&callback=?", function(res){
+            var list = jQuery.parseJSON(res.initial_list);
+            $("#readrightnow a").remove();
+            if (list.length > 0) {
+                for (var i=0; i<list.length; i++) {
+                    var a = $("<a href='#' class='linkinput btn btn-mini' style='display:none' data-user='"+list[i]+"'>"+list[i]+"</a> ");
+                    $("#readrightnow").append(a);
+                    a.fadeIn();
+                }
+                $("#readrightnow").fadeIn();
+            }
+            tambur_stream.enable_presence(nick, res.token);
+            tambur_stream.onpresence = function(e) {
+                var nick = e[0], presence_state = e[1];
+                if(presence_state == 'up' && $("#readrightnow a[data-user='" + nick + "']").length == 0) {
+                    var links = $("#readrightnow a");
+                    $("#readrightnow").show();
+                    if(links.length > 40) {
+                        // we remove the oldest entry
+                        links[0].fadeOut().remove();
+                    }
+                    var a = $("<a href='#' class='linkinput btn btn-mini' style='display:none' data-user='" + nick + "'>" + nick + "</a> ")
+                    $("#readrightnow").append(a);
+                    a.fadeIn();
+                } else if(presence_state == 'down') {
+                    $("#readrightnow a[data-user='" + nick + "']").fadeOut().remove();
+                }
+            };
+        });
+    };
+    if(typeof tambur_conn == "undefined") {
+        // connect to tambur.io
+        tambur_conn = new tambur.Connection("a1892d4076a7421aa9e1ac6b2fb5dd68", "twitter-times-11");
+        tambur_stream = tambur_conn.get_stream("current");
+        tambur_stream.ready = function() {
+            ready(tambur_conn.subscriber_id, myUser);
+        }
+    } else {
+        // we already have a tambur connection
+        // we disable presence
+        tambur_stream.disable_presence();
+        tambur_stream.ondisabled = function() {
+            ready(tambur_conn.subscriber_id, myUser);
+        };
+    }
+
+}
+
 
 $(document).ready(function(){
     $(document).scroll(function(e){
@@ -258,12 +364,25 @@ $(document).ready(function(){
             process_data(minNrOfLinks);
         }
     });
+
+    //toggle supportbox
+    $('.pull-me').click(function(){
+        //remove class on supportbox (allowing for correct initiation of Twitter buttons, see issue #35)
+        if ($('#supportbox').hasClass('state-hidden')) {
+            $('#supportbox').removeClass('state-hidden').hide();
+        }
+
+		$('#supportbox').slideToggle('slow');
+	});
+
 });
 
 //create embed for tweet
-function generateTweetEmbed(tweetId) {
-	$.getJSON('https://api.twitter.com/1.1/statuses/oembed.json?id=' + tweetId + '&callback=?', function(embed) {
-		var tweetembed = embed.html;
-		return tweetembed;
-	});
-};
+// function generateTweetEmbed(tweetId) {
+// 	$.getJSON('https://api.twitter.com/1.1/statuses/oembed.json?id=' + tweetId + '&callback=?', function(embed) {
+// 		var tweetembed = embed.html;
+// 		return tweetembed;
+// 	});
+// };
+
+})(window, document, jQuery);
