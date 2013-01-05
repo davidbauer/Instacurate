@@ -62,7 +62,7 @@ $(function() {
         
         //proceed with either hashtag or username
         if (myInput[0] == '#') {
-	        // checkHashtag();
+	        getLinks(myInput);
         }
         
         else {
@@ -176,17 +176,35 @@ function getLinks(myInput) {
     // Save for reuse
     user = myInput;
 
-    var params = {
-        'screen_name': myInput,
-        'include_entities': true,
-        'include_rts': false,
-        'since_id': 1,
-        'count' : tweetsToFetch,
-    };
-    $.getJSON('https://api.twitter.com/1/statuses/user_timeline.json?&callback=?', params, function(data) {
-        fetched_data = data.reverse();
-        process_data(minNrOfLinks);
-    });
+    if (myInput[0] == "#") {
+    	//call search API with myInput as query
+    	var params = {
+	        'q': myInput,
+	        'include_entities': true,
+	        'include_rts': false,
+	        'since_id': 1,
+	        'count' : 100,
+	    };
+	    $.getJSON('http://search.twitter.com/search.json', params, function(data) {
+	        fetched_data = data.reverse();
+	        process_data(minNrOfLinks);
+	    });
+	}
+    
+    else {
+	    var params = {
+	        'screen_name': myInput,
+	        'include_entities': true,
+	        'include_rts': false,
+	        'since_id': 1,
+	        'count' : tweetsToFetch,
+	    };
+	    $.getJSON('https://api.twitter.com/1/statuses/user_timeline.json?&callback=?', params, function(data) {
+	        fetched_data = data.reverse();
+	        process_data(minNrOfLinks);
+	    });
+    }
+    
 };
 
 function process_data(nrOfLinks) {
