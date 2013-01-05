@@ -45,7 +45,7 @@ $(function() {
 
         // Do the magic
         checkUser(hash);
-        
+
     }
 
 
@@ -59,15 +59,16 @@ $(function() {
 
         // Get the articles from typed user
         var myInput = getInput();
-        
+
         //proceed with either hashtag or username
         if (myInput[0] == '#') {
 	        getLinks(myInput);
         }
-        
+
         else {
         	if (myInput != "usernameistoolong") {
         		checkUser(myInput);
+                enable_realtime_update(myInput);
         		}
         	}
         // Update URL
@@ -77,7 +78,7 @@ $(function() {
 
 $(function() {
 
-    $('.linkinput').click (function(e) {
+    $('.linkinput').live('click', function(e) {
         e.preventDefault();
 
         var myInput = $(this).attr('data-user');
@@ -96,34 +97,32 @@ function warn(message) {
 // store username given via input
 function getInput() {
     var myInput;
-    
+
     // check if a hashtag is entered
-    if (document.tweetfinder.user.value[0] == "#") { 
+    if (document.tweetfinder.user.value[0] == "#") {
 	    myInput = document.tweetfinder.user.value;
 	    console.log("HASHTAG: " + myInput);
 	    warn("We don't support hashtags yet. We're working on it right now.");
     }
-    
+
     else {
-    
+
 		// Check if cleanup of the @ is needed
 	    if (document.tweetfinder.user.value[0] == "@") {
 	        myInput = document.tweetfinder.user.value.substring(1,20); //get rid of the @
 	    }
-	     
 	    else { myInput = document.tweetfinder.user.value };
-	
+
 	    // Validate length of username
 	     if (myInput.length > 16) { // TODO: if true, return error msg and don't continue
 	        warn("This doesn't seem to be a username, too long.");
 	        return "usernameistoolong";
 	     }
     }
-    
     searches.unshift(myInput); // store successful search term in searches array
     console.log(searches);
     console.log(myInput);
-    return myInput;     
+    return myInput;
 }
 
 function setInput(myInput) {
@@ -152,7 +151,7 @@ function checkUser(myInput) {
                     followersNumber = data.followers_count,
                     tweetsNumber = data.statuses_count;
 
-                html += "The latest links posted by <a href='http://www.twitter.com/" + username + "'>" + name + "</a>. <iframe allowtransparency='true' frameborder='0' scrolling='no' src='//platform.twitter.com/widgets/follow_button.html?screen_name=" + username + "' style='width:300px; height:20px;margin-left:8px;'></iframe>" 
+                html += "The latest links posted by <a href='http://www.twitter.com/" + username + "'>" + name + "</a>. <iframe allowtransparency='true' frameborder='0' scrolling='no' src='//platform.twitter.com/widgets/follow_button.html?screen_name=" + username + "' style='width:300px; height:20px;margin-left:8px;'></iframe>"
                 getLinks(myInput); // getting those links from tweets
             }
 
@@ -190,7 +189,7 @@ function getLinks(myInput) {
 	        process_data(minNrOfLinks);
 	    });
 	}
-    
+
     else {
 	    var params = {
 	        'screen_name': myInput,
@@ -204,7 +203,6 @@ function getLinks(myInput) {
 	        process_data(minNrOfLinks);
 	    });
     }
-    
 };
 
 function process_data(nrOfLinks) {
@@ -241,9 +239,7 @@ function process_data(nrOfLinks) {
             }
         });
     }
-
 }
-
 
 //create oEmbed of link from tweet
 function generateEmbed(linksTotal, link, tweetId, text) {
@@ -329,6 +325,57 @@ function displaySearches(searches) {
 	$('.searches').append("<a href='#' class='linkinput' data-user='" + searches[0] + "'>" + searches[0] + " </a>");
 };
 
+var tambur_conn, tambur_stream;
+function enable_realtime_update(myUser) {
+    var ready = function(id, nick) {
+        $.getJSON("http://149.126.0.41/token?id=" + id +"&nick="+nick+"&callback=?", function(res){
+            var list = jQuery.parseJSON(res.initial_list);
+            $("#readrightnow a").remove();
+            if (list.length > 0) {
+                for (var i=0; i<list.length; i++) {
+                    var a = $("<a href='#' class='linkinput btn btn-mini' style='display:none' data-user='"+list[i]+"'>"+list[i]+"</a> ");
+                    $("#readrightnow").append(a);
+                    a.fadeIn();
+                }
+                $("#readrightnow").fadeIn();
+            }
+            tambur_stream.enable_presence(nick, res.token);
+            tambur_stream.onpresence = function(e) {
+                var nick = e[0], presence_state = e[1];
+                if(presence_state == 'up' && $("#readrightnow a[data-user='" + nick + "']").length == 0) {
+                    var links = $("#readrightnow a");
+                    $("#readrightnow").show();
+                    if(links.length > 40) {
+                        // we remove the oldest entry
+                        links[0].fadeOut().remove();
+                    }
+                    var a = $("<a href='#' class='linkinput btn btn-mini' style='display:none' data-user='" + nick + "'>" + nick + "</a> ")
+                    $("#readrightnow").append(a);
+                    a.fadeIn();
+                } else if(presence_state == 'down') {
+                    $("#readrightnow a[data-user='" + nick + "']").fadeOut().remove();
+                }
+            };
+        });
+    };
+    if(typeof tambur_conn == "undefined") {
+        // connect to tambur.io
+        tambur_conn = new tambur.Connection("a1892d4076a7421aa9e1ac6b2fb5dd68", "twitter-times-11");
+        tambur_stream = tambur_conn.get_stream("current");
+        tambur_stream.ready = function() {
+            ready(tambur_conn.subscriber_id, myUser);
+        }
+    } else {
+        // we already have a tambur connection
+        // we disable presence
+        tambur_stream.disable_presence();
+        tambur_stream.ondisabled = function() {
+            ready(tambur_conn.subscriber_id, myUser);
+        };
+    }
+
+}
+
 
 $(document).ready(function(){
     $(document).scroll(function(e){
@@ -347,9 +394,10 @@ $(document).ready(function(){
         if ($('#supportbox').hasClass('state-hidden')) {
             $('#supportbox').removeClass('state-hidden').hide();
         }
-        
+
 		$('#supportbox').slideToggle('slow');
 	});
+
 });
 
 //create embed for tweet
