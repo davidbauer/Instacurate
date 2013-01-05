@@ -22,21 +22,21 @@
         <!--[if lt IE 9]>
             <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
-        
+
         <!-- Google Analytics -->
         <script type="text/javascript">
-        
+
           var _gaq = _gaq || [];
           _gaq.push(['_setAccount', 'UA-18717219-2']);
           _gaq.push(['_trackPageview']);
-        
+
           (function() {
             var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
             ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
           })();
-        
-        </script> 
+
+        </script>
 
     </head>
     <body>
@@ -44,7 +44,7 @@
 
             <!-- Begin Page Content -->
             <div class="container">
-            
+
                 <div id="supportbox" class="state-hidden">
                     <p>Thanks for supporting us. You rock.</p>
                     <div class="s share">
@@ -60,40 +60,40 @@
                         <li>
                             <iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Flabs.davidbauer.ch%2Ftwitter-times&amp;send=false&amp;layout=button_count&amp;width=80&amp;show_faces=false&amp;font=arial&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=153576157369" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:80px; height:21px;" allowTransparency="true"></iframe>
                         </li>
-                        
+
                         </ul>
-                        
+
                     </div>
-                    
+
                     <div class="s donate">
-                        <h4>Help us pay the bills</h4>              
+                        <h4>Help us pay the bills</h4>
                         <div class="flattr">
                         <a href="http://flattr.com/thing/1090831/Twitter-Times-" target="_blank">
                         <img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" /></a>
                         </div>
                     </div>
-                    
+
                     <div class="s contribute">
                         <h4>Improve the code</h4>
-                    
+
                         <iframe src="http://ghbtns.com/github-btn.html?user=davidbauer&repo=Twitter-Times&type=watch"
                         allowtransparency="true" frameborder="0" scrolling="0" width="53" height="20"></iframe>
                         <iframe src="http://ghbtns.com/github-btn.html?user=davidbauer&repo=Twitter-Times&type=fork"
                         allowtransparency="true" frameborder="0" scrolling="0" width="53" height="20"></iframe>
                     </div>
-                    
+
                     <div class="s impressum">
                         <h4>Follow us on Twitter</h4>
                         <a href="https://twitter.com/davidbauer" class="twitter-follow-button" data-show-count="false">Follow @davidbauer</a>
                         <a href="https://twitter.com/der_graf" class="twitter-follow-button" data-show-count="false">Follow @der_graf</a>
                         <a href="https://twitter.com/backflip" class="twitter-follow-button" data-show-count="false">Follow @backflip</a>
                     </div>
-                    
+
                 </div>
                 <p class="slide"><a href="#" class="pull-me">Like this site? Support it!</a></p>
-                
-                
-            
+
+
+
 
                 <div class="page-header">
                     <h1>Twitter Times <span id="myUser"></span></h1>
@@ -113,7 +113,8 @@
                         <button class="btn btn-primary" type="submit">Create it!</button>
                     </div>
                     <div class ="suggestions">Try: <a href="#" class="linkinput" data-user="longreads">Longreads</a>, <a href="#" class="linkinput" data-user="theeconomist">The Economist</a>, <a href="#" class="linkinput" data-user="poynter">Poynter</a>, <a href="#" class="linkinput" data-user="davidbauer">David Bauer</a>.</div>
-                    <!-- <div class="searches">Latest searches: </div> --> 
+                    <div id="readrightnow" style="display:none" class="suggestions">Read right now: </div>
+                    <!-- <div class="searches">Latest searches: </div> -->
                 </form>
 
 
@@ -157,9 +158,10 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script src="bootstrap/js/bootstrap.min.js"></script>
         <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+        <script src="http://static.tambur.io/tambur.min.js"></script>
 
         <script src="script.js"></script>
-        
+
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
         <script type="text/javascript">
