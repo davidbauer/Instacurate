@@ -143,8 +143,7 @@ function checkUser(myUser) {
                     followersNumber = data.followers_count,
                     tweetsNumber = data.statuses_count;
 
-                html += "The latest links posted by <a href='http://www.twitter.com/" + username + "'>" + name + "</a>. <a href='https://twitter.com/" + username + "' class='twitter-follow-button' data-show-count='false'>Follow @" + username + "</a>"
-
+                html += "The latest links posted by <a href='http://www.twitter.com/" + username + "'>" + name + "</a>. <iframe allowtransparency='true' frameborder='0' scrolling='no' src='//platform.twitter.com/widgets/follow_button.html?screen_name=" + username + "' style='width:300px; height:20px;margin-left:8px;'></iframe>" 
                 getLinks(myUser); // getting those links from tweets
             }
 
