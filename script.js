@@ -326,7 +326,7 @@ function displaySearches(searches) {
 };
 
 var tambur_conn, tambur_stream;
-function enable_realtime_update(myUser) {
+function enable_realtime_update(myInput) {
     var ready = function(id, nick) {
         $.getJSON("http://149.126.0.41/token?id=" + id +"&nick="+nick+"&callback=?", function(res){
             var list = jQuery.parseJSON(res.initial_list);
@@ -363,14 +363,14 @@ function enable_realtime_update(myUser) {
         tambur_conn = new tambur.Connection("a1892d4076a7421aa9e1ac6b2fb5dd68", "twitter-times-11");
         tambur_stream = tambur_conn.get_stream("current");
         tambur_stream.ready = function() {
-            ready(tambur_conn.subscriber_id, myUser);
+            ready(tambur_conn.subscriber_id, myInput);
         }
     } else {
         // we already have a tambur connection
         // we disable presence
         tambur_stream.disable_presence();
         tambur_stream.ondisabled = function() {
-            ready(tambur_conn.subscriber_id, myUser);
+            ready(tambur_conn.subscriber_id, myInput);
         };
     }
 
