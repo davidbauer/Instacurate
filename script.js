@@ -177,28 +177,7 @@ function getLinks(myInput) {
 
     if (myInput[0] == "#") {
     	//call search API with myInput as query
-    	
-    	
-    	/* version 1: doesn't work
-    	$.ajax({
-	    	url: "http://search.twitter.com/search.json",
-	    	data: {
-		    	'q': myInput,
-		    	'include_entities': true,
-		    	'include_rts': false,
-		    	'since_id': 1,
-		    	'count' : 100,
-	    	},
-	    	dataType: "jsonp",
-	    	success: function(data) {
-	    		fetched_data = data.reverse();
-	    		process_data(minNrOfLinks);
-	    	}
-	    	
-	    	});
-    	*/
-    	
-    	/* version 2: doesn't work either
+    
     	var params = {
 	        'q': myInput,
 	        'include_entities': true,
@@ -206,10 +185,10 @@ function getLinks(myInput) {
 	        'since_id': 1,
 	        'count' : 100,
 	    };
-	    $.getJSON('http://search.twitter.com/search.json', params, function(data) {
-	        fetched_data = data.reverse();
+	    $.getJSON('http://search.twitter.com/search.json?callback=?', params, function(data) {
+	        fetched_data = data.results.reverse();
 	        process_data(minNrOfLinks);
-	    });*/
+	    });
 	}
 
     else {
