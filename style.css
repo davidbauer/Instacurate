@@ -199,3 +199,11 @@ input, button{
     font-size:12px;
     font-weight: normal;
 }
+.donate ul {
+	height:40px;
+	margin-top: -15px;
+}
+.paypal form {
+	border-bottom: none;
+	display:inline;
+}
