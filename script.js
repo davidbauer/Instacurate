@@ -177,6 +177,28 @@ function getLinks(myInput) {
 
     if (myInput[0] == "#") {
     	//call search API with myInput as query
+    	
+    	
+    	/* version 1: doesn't work
+    	$.ajax({
+	    	url: "http://search.twitter.com/search.json",
+	    	data: {
+		    	'q': myInput,
+		    	'include_entities': true,
+		    	'include_rts': false,
+		    	'since_id': 1,
+		    	'count' : 100,
+	    	},
+	    	dataType: "jsonp",
+	    	success: function(data) {
+	    		fetched_data = data.reverse();
+	    		process_data(minNrOfLinks);
+	    	}
+	    	
+	    	});
+    	*/
+    	
+    	/* version 2: doesn't work either
     	var params = {
 	        'q': myInput,
 	        'include_entities': true,
@@ -187,7 +209,7 @@ function getLinks(myInput) {
 	    $.getJSON('http://search.twitter.com/search.json', params, function(data) {
 	        fetched_data = data.reverse();
 	        process_data(minNrOfLinks);
-	    });
+	    });*/
 	}
 
     else {
@@ -314,8 +336,6 @@ function generateEmbed(linksTotal, link, tweetId, text) {
             else {$credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>");};
 
             //add the tweet as a tooltip
-            //generateTweetEmbed(tweetId);
-            // console.log("popover "+ text);
             $tweetLink.attr('href', 'http://twitter.com/'+ user +'/status/'+ tweetId).popover({
                 title: "<blockquote class='twitter-tweet'><p>"+text+"</p></blockquote><script src='//platform.twitter.com/widgets.js' charset='utf-8'></script>",
                 html: true,
