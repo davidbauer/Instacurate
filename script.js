@@ -38,6 +38,7 @@ $(function() {
         field = document.tweetfinder.user;
 
     if (hash) {
+	   if (hash[1] != '#') {
         hash = hash.substring(1);
 
         // Fill field
@@ -46,7 +47,18 @@ $(function() {
         // Do the magic
         checkUser(hash);
 
-    }
+        }
+    
+    else {
+    	hash = hash.substring(1);
+
+        // Fill field
+        field.value = hash;
+
+        // Do the magic
+        getLinks(hash);    
+        }
+    } 
 
 
     $('#searchform').submit(function(e) {
@@ -63,6 +75,8 @@ $(function() {
         //proceed with either hashtag or username
         if (myInput[0] == '#') {
 	        getLinks(myInput);
+	         // Update URL
+	         window.location.hash = "#" + myInput;
         }
 
         else {
@@ -70,9 +84,10 @@ $(function() {
         		checkUser(myInput);
                 enable_realtime_update(myInput);
         		}
+        		 // Update URL
+        		 window.location.hash = myInput;
         	}
-        // Update URL
-        window.location.hash = myInput;
+       
     });
 });
 
@@ -101,8 +116,7 @@ function getInput() {
     // check if a hashtag is entered
     if (document.tweetfinder.user.value[0] == "#") {
 	    myInput = document.tweetfinder.user.value;
-	    console.log("HASHTAG: " + myInput);
-	    warn("We don't support hashtags yet. We're working on it right now.");
+	    
     }
 
     else {
@@ -188,6 +202,7 @@ function getLinks(myInput) {
 	    $.getJSON('http://search.twitter.com/search.json?callback=?', params, function(data) {
 	        fetched_data = data.results.reverse();
 	        process_data(minNrOfLinks);
+	        $('.userinfo').html("The latest links posted under hashtag " + myInput);
 	    });
 	}
 
