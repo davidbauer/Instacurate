@@ -295,8 +295,9 @@ function generateEmbed(linksTotal, link, tweetId, text) {
             $tweet.append($tweetLink);
 
             // crop long description
-            // if (description && description.length > 140) {description = description.substring(0, 139) + " [...]"}
             if (description && description.length > 140) {description = jQuery.trim(description).substring(0, 139).split(" ").slice(0, -1).join(" ") + " [...]"};
+            // crop long titles
+            if (title && title.length > 100) {title = jQuery.trim(title).substring(0, 99).split(" ").slice(0, -1).join(" ") + " [...]"};
 
             //assign correct content to all those elements
             if (type == "link" && img_url != undefined) {
