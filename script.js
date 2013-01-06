@@ -207,7 +207,12 @@ function getLinks(myInput) {
 
 function process_data(nrOfLinks) {
     //stop processing if there are no tweets
-    if (fetched_data.length === 0) return;
+    if (fetched_data.length === 0) {
+    	warn("This user hasn't tweeted anything yet.");
+    	$('#status').html("");
+    	$('.userinfo').html("");
+    	return;
+    	}
 
     processing = true;
     var n = nrOfLinks;
