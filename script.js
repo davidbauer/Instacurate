@@ -409,7 +409,9 @@ $(document).ready(function(){
     });
 
     //toggle supportbox
-    $('.pull-me').click(function(){
+    $('.pull-me').click(function(event) {
+        event.preventDefault();
+
         //remove class on supportbox (allowing for correct initiation of Twitter buttons, see issue #35)
         if ($('#supportbox').hasClass('state-hidden')) {
             $('#supportbox').removeClass('state-hidden').hide();
