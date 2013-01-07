@@ -33,31 +33,22 @@ displaySearches(searches);
 // Setup an event listener for the form that will execute checkUser()
 // when the form is submitted.
 $(function() {
-
-    var hash = window.location.hash,
+    // extract and decode hash
+    var hash = decodeURIComponent(window.location.hash.substr(1)),
         field = document.tweetfinder.user;
 
     if (hash) {
-	   if (hash[1] != '%') {
-        hash = hash.substring(1);
+	   if (hash[0] != '#') {
+            // Do the user magic
+            checkUser(hash);
+
+        } else {
+            // Do the search magic
+            getLinks(hash);    
+        }
 
         // Fill field
         field.value = hash;
-
-        // Do the magic
-        checkUser(hash);
-
-        }
-    
-    else {
-    	hash = "#" + hash.substring(4);
-
-        // Fill field
-        field.value = hash;
-
-        // Do the magic
-        getLinks(hash);    
-        }
     } 
 
 
