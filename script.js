@@ -38,7 +38,7 @@ $(function() {
         field = document.tweetfinder.user;
 
     if (hash) {
-	   if (hash[1] != '#') {
+	   if (hash[1] != '%') {
         hash = hash.substring(1);
 
         // Fill field
@@ -50,7 +50,7 @@ $(function() {
         }
     
     else {
-    	hash = hash.substring(1);
+    	hash = "#" + hash.substring(4);
 
         // Fill field
         field.value = hash;
@@ -76,7 +76,7 @@ $(function() {
         if (myInput[0] == '#') {
 	        getLinks(myInput);
 	         // Update URL
-	         window.location.hash = "#" + myInput;
+	         window.location.hash = "%23" + myInput.substring(1);
         }
 
         else {
