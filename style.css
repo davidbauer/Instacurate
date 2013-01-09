@@ -38,12 +38,13 @@ form {
     margin-bottom: 20px;
     padding-bottom: 20px;
 }
-
+/*Fixed problem with the form on the mobile*/
+@media (min-width:400px){
 input, button{ 
     padding: 15px !important;    
     font-size: 25px !important;
 }
-
+}
 .lead {
     font-weight: normal;
 }
