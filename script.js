@@ -390,7 +390,8 @@ function enable_realtime_update(myInput) {
 
 $(document).ready(function(){
     $(document).scroll(function(e){
-        if (processing)
+        var myInput = document.tweetfinder.user.value;
+        if (processing || myInput.length == 0)
             return false;
 
         if ($(window).scrollTop() >= ($(document).height() - $(window).height())*0.7){
