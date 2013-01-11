@@ -161,6 +161,7 @@ function checkUser(myInput) {
             }
 
             $('#myUser').html("by " + name); // add user's name to header
+            document.title = "Twitter Times by " + name + " (beta)";
             $('.userinfo').html(html);
         }
     });
