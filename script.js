@@ -44,12 +44,12 @@ $(function() {
 
         } else {
             // Do the search magic
-            getLinks(hash);    
+            getLinks(hash);
         }
 
         // Fill field
         field.value = hash;
-    } 
+    }
 
 
     $('#searchform').submit(function(e) {
@@ -82,7 +82,7 @@ $(function() {
         		 // Update URL
         		 window.location.hash = myInput;
         	}
-       
+
     });
 });
 
@@ -111,7 +111,7 @@ function getInput() {
     // check if a hashtag is entered
     if (document.tweetfinder.user.value[0] == "#") {
 	    myInput = document.tweetfinder.user.value;
-	    
+
     }
 
     else {
@@ -203,7 +203,7 @@ function getLinks(myInput) {
             //first search request for this hashtag - get first tweets (old behaviour)
             params['since_id'] = 1;
         } else {
-            //get next 100 tweets with tweetid <= last tweetid from previous search request 
+            //get next 100 tweets with tweetid <= last tweetid from previous search request
             //i.e. 100 tweets written before last tweet we got from search api before
             params['max_id'] = searchApiMaxId;
             //btw: we'll receive the last tweet again. we should use searchApiMaxId - 1,
@@ -216,7 +216,7 @@ function getLinks(myInput) {
             $('.userinfo').html("The latest links posted under hashtag " + myInput);
             //increment the search api request counter. we don't wanna send too many requests (limited by maxSearchApiRequests)
             searchApiRequests++;
-            //only try to get more links IF: we don't have minNrOfLinks already AND 
+            //only try to get more links IF: we don't have minNrOfLinks already AND
             //we didn't use the API more than maxSearchApiRequests times AND
             //the last api called contained tweets
             if (linksTotal < minNrOfLinks && searchApiRequests <= maxSearchApiRequests && !lastResultEmpty) {
@@ -230,7 +230,20 @@ function getLinks(myInput) {
             }
         });
 
-    } else {
+    } else if (myInput == "owntimeline") {
+	    var params = {
+	        'include_entities': true,
+	        'include_rts': false,
+	        'since_id': 1,
+	        'count' : tweetsToFetch,
+	    };
+        $.getJSON("http://tlinkstimeline.appspot.com/statuses/home_timeline.json?callback=?", params, function(data) {
+	        fetched_data = data.reverse();
+	        process_data(minNrOfLinks);
+        });
+
+
+    }else {
 	    var params = {
 	        'screen_name': myInput,
 	        'include_entities': true,
@@ -423,7 +436,6 @@ function enable_realtime_update(myInput) {
 
 }
 
-
 $(document).ready(function(){
     $(document).scroll(function(e){
         var myInput = document.tweetfinder.user.value;
@@ -433,6 +445,15 @@ $(document).ready(function(){
         if ($(window).scrollTop() >= ($(document).height() - $(window).height())*0.7){
             processing = true;
             process_data(minNrOfLinks);
+        }
+    });
+
+    $.getJSON("http://tlinkstimeline.appspot.com/loggedin?callback=?", function(isLoggedIn){
+        if (isLoggedIn) {
+            $("#twittersignin").hide();
+            getLinks("owntimeline");
+        } else {
+            $("#twittersignin").show();
         }
     });
 
