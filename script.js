@@ -59,6 +59,10 @@ $(function() {
         $('#bugfixing').html("");
         $('#embeds div').html("");
         $('.userinfo').html("");
+        //reset search api request counter, max_id and link counter
+        searchApiRequests = 0;
+        searchApiMaxId = null;
+        linksTotal = 0;
 
         // Get the articles from typed user
         var myInput = getInput();
@@ -174,6 +178,12 @@ var tweetsToFetch = 200, minNrOfLinks = 12;
 var linksTotal = 0;
 var processing; // used for scroll-loader
 var links = {}; // keep this hash, to check if we already know about a link.
+var searchApiRequests = 0;
+var searchApiMaxId = null;
+var maxSearchApiRequests = 10;
+//this will tell us whether the last api call didn't return any tweets
+//so we can stop trying to get more tweets
+var lastResultEmpty = false;
 
 function getLinks(myInput) {
     $('#status').addClass('state-loading').html("Looking for tweeted links...");
@@ -183,22 +193,38 @@ function getLinks(myInput) {
 
     if (myInput[0] == "#") {
     	//call search API with myInput as query
-    
-    	var params = {
-	        'q': myInput,
-	        'include_entities': true,
-	        'include_rts': false,
-	        'since_id': 1,
-	        'count' : 100,
-	    };
-	    $.getJSON('http://search.twitter.com/search.json?callback=?', params, function(data) {
-	        fetched_data = data.results.reverse();
-	        process_data(minNrOfLinks);
-	        $('.userinfo').html("The latest links posted under hashtag " + myInput);
-	    });
-	}
+      	var params = {
+            'q': myInput,
+            'include_entities': true,
+            'include_rts': false,
+            'count' : 100,
+        };
+        if (searchApiMaxId == null) {
+            //first search request for this hashtag - get first tweets (old behaviour)
+            params['since_id'] = 1;
+        } else {
+            //get next 100 tweets with tweetid <= last tweetid from previous search request 
+            //i.e. 100 tweets written before last tweet we got from search api before
+            params['max_id'] = searchApiMaxId;
+            //btw: we'll receive the last tweet again. we should use searchApiMaxId - 1,
+            //but since JavaScript can't handle 64 bit integers natively there's no easy way to do this.
+            //it's not perfect but since we're checking for duplicate links in process_data anyway it doesn't matter.
+        }
+        $.getJSON('http://search.twitter.com/search.json?callback=?', params, function(data) {
+            fetched_data = data.results.reverse();
+            process_data(minNrOfLinks);
+            $('.userinfo').html("The latest links posted under hashtag " + myInput);
+            //increment the search api request counter. we don't wanna send too many requests (limited by maxSearchApiRequests)
+            searchApiRequests++;
+            //only try to get more links IF: we don't have minNrOfLinks already AND 
+            //we didn't use the API more than maxSearchApiRequests times AND
+            //the last api called contained tweets
+            if (linksTotal < minNrOfLinks && searchApiRequests <= maxSearchApiRequests && !lastResultEmpty) {
+                getLinks(myInput);
+            }
+        });
 
-    else {
+    } else {
 	    var params = {
 	        'screen_name': myInput,
 	        'include_entities': true,
@@ -219,8 +245,10 @@ function process_data(nrOfLinks) {
     	warn("This user hasn't tweeted anything yet.");
     	$('#status').html("");
     	$('.userinfo').html("");
+        lastResultEmpty = true;
     	return;
-    	}
+    }
+    lastResultEmpty = false;
 
     processing = true;
     var n = nrOfLinks;
@@ -252,6 +280,7 @@ function process_data(nrOfLinks) {
             }
         });
     }
+    searchApiMaxId = tweetId;
 }
 
 //create oEmbed of link from tweet
