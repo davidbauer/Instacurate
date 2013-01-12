@@ -11,6 +11,11 @@ body {
     margin-bottom: 20px;
 }
 
+.userinfo {
+	border-top: 1px solid rgba(0,0,0,0.2);
+	padding-top: 10px;
+}
+
 #wrapper {
     min-height: 100%;
     /* Negative indent footer by it's height */
@@ -34,9 +39,8 @@ body {
 }
 
 form {
-	border-bottom: 1px solid rgba(0,0,0,0.2);
-    margin-bottom: 20px;
-    padding-bottom: 20px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
 }
 /*Fixed problem with the form on the mobile*/
 @media (min-width:400px){
