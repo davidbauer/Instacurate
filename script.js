@@ -194,7 +194,7 @@ function getLinks(myInput) {
     if (myInput[0] == "#") {
     	//call search API with myInput as query
       	var params = {
-            'q': myInput,
+            'q': myInput + " filter:links",
             'include_entities': true,
             'include_rts': false,
             'count' : 100,
