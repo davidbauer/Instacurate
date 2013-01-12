@@ -222,6 +222,12 @@ function getLinks(myInput) {
             if (linksTotal < minNrOfLinks && searchApiRequests <= maxSearchApiRequests && !lastResultEmpty) {
                 getLinks(myInput);
             }
+            else {
+	            //get rid of loading message if loading class is still applied
+	            if ($('#status').hasClass('state-loading')) {
+                	$('#status').removeClass('state-loading').html('');
+                	}
+            }
         });
 
     } else {
