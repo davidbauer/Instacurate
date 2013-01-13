@@ -448,10 +448,10 @@ $(document).ready(function(){
 
     $.getJSON("http://tlinkstimeline.appspot.com/loggedin?callback=?", function(isLoggedIn){
         if (isLoggedIn) {
-            $("#twittersignin").hide();
+            $(".signin").toggleClass('hide');
             getLinks("owntimeline");
         } else {
-            $("#twittersignin").show();
+            // $("#twittersignin").show();
         }
     });
 
