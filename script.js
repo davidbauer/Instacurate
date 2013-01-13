@@ -446,26 +446,27 @@ function enable_realtime_update(myInput) {
 
 }
 
+var isLoggedIn = false;
+
 $(document).ready(function(){
     $(document).scroll(function(e){
         var myInput = document.tweetfinder.user.value;
-        if (processing || myInput.length == 0)
+        if (processing || (myInput.length == 0 && isLoggedIn == false))
             return false;
 
-        if ($(window).scrollTop() >= ($(document).height() - $(window).height())*0.7){
+        if ($(window).scrollTop() >= ($(document).height() - $(window).height())*0.8){
             processing = true;
             process_data(minNrOfLinks);
         }
     });
 
-    $.getJSON("http://tlinkstimeline.appspot.com/loggedin?callback=?", function(isLoggedIn){
-        if (isLoggedIn) {
+    $.getJSON("http://tlinkstimeline.appspot.com/loggedin?callback=?", function(LoggedIn){
+        if (LoggedIn) {
             $(".signin").toggleClass('hide');
             getLinks("owntimeline");
+            isLoggedIn = true;
             label("",isLoggedIn);
-        } else {
-            // $("#twittersignin").show();
-        }
+        } 
     });
 
     //toggle supportbox
