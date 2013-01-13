@@ -6,12 +6,15 @@ body {
     background: url(background.png) top left repeat; 
 }
 
+
+
 .page-header {
     border-bottom: 1px solid rgba(0,0,0,0.2);
     margin-bottom: 20px;
 }
 
 .userinfo {
+	margin-top: 10px;
 	border-top: 1px solid rgba(0,0,0,0.2);
 	padding-top: 10px;
 }
@@ -27,6 +30,12 @@ body {
 }
 
 /* Lastly, apply responsive CSS fixes as necessary */
+
+@media (min-width: 768px) {
+h1 {display:inline;}
+.claim {margin-left: 10px;}
+}
+
 @media (max-width: 767px) {
     #footer {
         margin-left: -20px;
@@ -39,7 +48,7 @@ body {
 
 form {
     margin-bottom: 10px;
-    padding-bottom: 10px;
+
 }
 /*Fixed problem with the form on the mobile*/
 @media (min-width:400px){
