@@ -124,8 +124,7 @@ function getInput() {
 	        return "usernameistoolong";
 	     }
     }
-    searches.unshift(myInput); // store successful search term in searches array
-    console.log(searches);
+    
     console.log(myInput);
     return myInput;
 }
@@ -159,13 +158,18 @@ function checkUser(myInput) {
                 html += "The latest links posted by <a href='http://www.twitter.com/" + username + "'>" + name + "</a>. <iframe allowtransparency='true' frameborder='0' scrolling='no' src='//platform.twitter.com/widgets/follow_button.html?screen_name=" + username + "' style='width:300px; height:20px;margin-left:8px;'></iframe>"
                 getLinks(myInput); // getting those links from tweets
             }
-
-            $('#myUser').html("by " + name); // add user's name to header
-            document.title = "Twitter Times by " + name + " (beta)";
+            
+            //update headline and userinfo
+            label(myInput);
             $('.userinfo').html(html);
         }
     });
 }
+
+function label(myInput) {
+		$('h1').html(myInput + ", instacurated"); // add input name to headline
+        document.title = myInput + ", instacurated"; // add input to page title
+        }
 
 //extract links from tweets
 var user;
@@ -188,6 +192,7 @@ function getLinks(myInput) {
     user = myInput;
 
     if (myInput[0] == "#") {
+    	label(myInput);
     	//call search API with myInput as query
       	var params = {
             'q': myInput + " filter:links",
