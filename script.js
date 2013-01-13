@@ -350,7 +350,9 @@ function generateEmbed(linksTotal, link, tweetId, text) {
 
             //create a new teaser element with all subelements
             
-            if (provider != "Img.ly" && provider != "Img" ) {
+            var blocked = ["Img", "Img.ly"];
+            
+            if (jQuery.inArray(provider,blocked) == -1) {
             
             	$column.append($teaser);
             	$teaser.append($media);
