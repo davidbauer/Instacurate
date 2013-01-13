@@ -466,6 +466,7 @@ $(document).ready(function(){
             getLinks("owntimeline");
             isLoggedIn = true;
             label("",isLoggedIn);
+            $('.twi').html("See the latest links from your <a href='http://www.instacurate.com'>timeline</a>");
         } 
     });
 
