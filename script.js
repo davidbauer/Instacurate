@@ -34,7 +34,7 @@ $(function() {
         field = document.tweetfinder.user;
 
     if (hash) {
-	   if (hash[0] != '#') {
+	   if (hash[0] != '%23') {
             // Do the user magic
             checkUser(hash);
 
