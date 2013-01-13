@@ -473,8 +473,10 @@ $(document).ready(function(){
     $.getJSON("http://tlinkstimeline.appspot.com/loggedin?callback=?", function(LoggedIn){
         if (LoggedIn) {
             $(".signin").toggleClass('hide');
-            getLinks("owntimeline");
             isLoggedIn = true;
+            }
+        if (window.location.hash == "") {
+            getLinks("owntimeline");     
             label("",isLoggedIn);
             $('.twi').html("See the latest links from your <a href='http://www.instacurate.com'>timeline</a>");
         } 
