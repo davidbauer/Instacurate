@@ -25,10 +25,6 @@
 ;(function(window, document, $, undefined) {
     "use strict"; // best practice
 
-//display recent search terms
-var searches = []; // create array to store search terms
-displaySearches(searches);
-
 
 // Setup an event listener for the form that will execute checkUser()
 // when the form is submitted.
@@ -341,33 +337,38 @@ function generateEmbed(linksTotal, link, tweetId, text) {
             }
 
             //create a new teaser element with all subelements
-            $column.append($teaser);
-            $teaser.append($media);
-            $teaser.append($article);
-            $article.append($title);
-            $article.append($description);
-            $article.append($credits);
-            $teaser.append($tweet);
-            $tweet.append($tweetLink);
-
-            // crop long description
-            if (description && description.length > 140) {description = jQuery.trim(description).substring(0, 139).split(" ").slice(0, -1).join(" ") + " [...]"};
-            // crop long titles
-            if (title && title.length > 100) {title = jQuery.trim(title).substring(0, 99).split(" ").slice(0, -1).join(" ") + " [...]"};
-
-            //assign correct content to all those elements
-            if (type == "link" && img_url != undefined) {
-            		$media.html("<a href='" + link + "' target='_blank'>" + "<img src='" + img_url + "'></a><br/>")
-            		}
-            else if (type == "video" || type == "rich" || type == "audio") {
-            		$media.html(multimedia + "<br/>")
-            		};
-
-            $title.html("<a href='" + link + "' target='_blank'>" + title + "</a><br />");
-            $description.html(description + " <a href='"+ link + "' target='_blank'>read on</a>");
-
-            if (author != undefined) {$credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>, Author: " 				+ "<a href='" + author_url + "' title='" + author + "'>" + author + "</a>");}
-            else {$credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>");};
+            
+            if (provider != "Img.ly" && provider != "Img" ) {
+            
+            	$column.append($teaser);
+            	$teaser.append($media);
+            	$teaser.append($article);
+            	$article.append($title);
+            	$article.append($description);
+            	$article.append($credits);
+            	$teaser.append($tweet);
+            	$tweet.append($tweetLink);
+				
+            	// crop long description
+            	if (description && description.length > 140) {description = jQuery.trim(description).substring(0, 139).split(" ").slice(0, -1).join(" ") + " [...]"};
+            	// crop long titles
+            	if (title && title.length > 100) {title = jQuery.trim(title).substring(0, 99).split(" ").slice(0, -1).join(" ") + " [...]"};
+				
+            	//assign correct content to all those elements
+            	if (type == "link" && img_url != undefined) {
+            			$media.html("<a href='" + link + "' target='_blank'>" + "<img src='" + img_url + "'></a><br/>")
+            			}
+            	else if (type == "video" || type == "rich" || type == "audio") {
+            			$media.html(multimedia + "<br/>")
+            			};
+				
+            	$title.html("<a href='" + link + "' target='_blank'>" + title + "</a><br />");
+            	$description.html(description + " <a href='"+ link + "' target='_blank'>read on</a>");
+				
+            	if (author != undefined) {$credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>, Author: " 				+ "<a href='" + author_url + "' title='" + author + "'>" + author + "</a>");}
+            	else {$credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>");};
+            	
+            }
 
             //add the tweet as a tooltip
             $tweetLink.attr('href', 'http://twitter.com/'+ user +'/status/'+ tweetId).popover({
@@ -380,10 +381,7 @@ function generateEmbed(linksTotal, link, tweetId, text) {
 
 };
 
-//display latest search term (for starters, should be n latest search terms eventually)
-function displaySearches(searches) {
-	$('.searches').append("<a href='#' class='linkinput' data-user='" + searches[0] + "'>" + searches[0] + " </a>");
-};
+
 
 var tambur_conn, tambur_stream;
 function enable_realtime_update(myInput) {
