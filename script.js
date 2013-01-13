@@ -241,6 +241,7 @@ function getLinks(myInput) {
         $.getJSON("http://tlinkstimeline.appspot.com/statuses/home_timeline.json?callback=?", params, function(data) {
 	        fetched_data = data.reverse();
 	        process_data(minNrOfLinks);
+	        $('.userinfo').html("The latest links from your timeline.");
         });
 
 
