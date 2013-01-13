@@ -338,6 +338,7 @@ function generateEmbed(linksTotal, link, tweetId, text) {
                 $title = $('<h3 />'),
                 $description = $('<div class="description" />'),
                 $credits = $('<div class="credits" />'),
+                $instapaper = $('<div class="instapaper"/>'),
                 $tweet = $('<div class="tweet" />'),
                 $tweetLink = $('<a>see tweet</a>');
 
@@ -359,6 +360,7 @@ function generateEmbed(linksTotal, link, tweetId, text) {
             	$teaser.append($article);
             	$article.append($title);
             	$article.append($description);
+            	$teaser.append($instapaper);
             	$article.append($credits);
             	$teaser.append($tweet);
             	$tweet.append($tweetLink);
@@ -381,6 +383,12 @@ function generateEmbed(linksTotal, link, tweetId, text) {
 				
             	if (author != undefined) {$credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>, Author: " 				+ "<a href='" + author_url + "' title='" + author + "'>" + author + "</a>");}
             	else {$credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>");};
+            	
+            	//add instapaper button
+            	if (type == "link") {
+            	$instapaper.html("<iframe border='0' scrolling='no' width='78' height='17' allowtransparency='true' frameborder='0' style='margin-bottom: -3px; z-index: 1338; border: 0px; background-color: transparent; overflow: hidden;' src='http://www.instapaper.com/e2?url=" + link + "&title=" + title + "&description=" + description + " (via instacurate.com)'></iframe>");
+            	}
+
             	
             }
 

@@ -232,3 +232,8 @@ input, button{
     margin: 0 0 -12px 0;
     padding: 0;
 }
+
+.instapaper {
+	float:right;
+	margin-top: 2px;
+}
