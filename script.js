@@ -475,11 +475,11 @@ $(document).ready(function(){
             $(".signin").toggleClass('hide');
             isLoggedIn = true;
             }
-        if (window.location.hash == "") {
+        if (LoggedIn && window.location.hash == "") {
             getLinks("owntimeline");     
             label("",isLoggedIn);
-            $('.twi').html("See the latest links from your <a href='http://www.instacurate.com'>timeline</a>");
         } 
+        $('.twi').html("See the latest links from your <a href='http://www.instacurate.com'>timeline</a>");
     });
 
     //toggle supportbox
