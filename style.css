@@ -13,6 +13,8 @@ body {
     margin-bottom: 20px;
 }
 
+.signin {margin-bottom: 10px;}
+
 .userinfo {
 	margin-top: 10px;
 	border-top: 1px solid rgba(0,0,0,0.2);
@@ -60,13 +62,14 @@ input, button{
 
 @media (max-width:400px){
 .description {display:none;}
+.lead {margin-bottom: 5px;}
 }
 
 .lead {
     font-weight: normal;
 }
 
-.suggestions, .searches {
+.suggestions {
     font-size:12px;
     color: grey;
     margin:5px 0;
