@@ -166,9 +166,15 @@ function checkUser(myInput) {
     });
 }
 
-function label(myInput) {
-		$('h1').html(myInput + ", instacurated"); // add input name to headline
-        document.title = myInput + ", instacurated"; // add input to page title
+function label(myInput,isLoggedIn) {
+		if(isLoggedIn && decodeURIComponent(window.location.hash) == "") {
+			$('h1').html("Your timeline, instacurated");
+			document.title = "Your timeline, instacurated"; // add input to page title
+			}
+		else {
+			$('h1').html(myInput + ", instacurated"); // add input name to headline
+			document.title = myInput + ", instacurated"; // add input to page title
+			}
         }
 
 //extract links from tweets
@@ -456,6 +462,7 @@ $(document).ready(function(){
         if (isLoggedIn) {
             $(".signin").toggleClass('hide');
             getLinks("owntimeline");
+            label("",isLoggedIn);
         } else {
             // $("#twittersignin").show();
         }
