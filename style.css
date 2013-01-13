@@ -34,7 +34,6 @@ body {
         padding-left: 20px;
         padding-right: 20px;
     }
-    .description {display:none;}
     .slide {display:none;} 
 }
 
@@ -49,6 +48,11 @@ input, button{
     font-size: 25px !important;
 }
 }
+
+@media (max-width:400px){
+.description {display:none;}
+}
+
 .lead {
     font-weight: normal;
 }
