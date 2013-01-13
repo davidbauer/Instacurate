@@ -192,7 +192,7 @@ var maxSearchApiRequests = 10;
 var lastResultEmpty = false;
 
 function getLinks(myInput) {
-    $('#status').addClass('state-loading').html("Looking for tweeted links...");
+    $('#status').addClass('state-loading').html("<i class='icon-spinner icon-spin'></i> Looking for tweeted links...");
 
     // Save for reuse
     user = myInput;
