@@ -34,7 +34,7 @@ $(function() {
         field = document.tweetfinder.user;
 
     if (hash) {
-	   if (hash[0] != '%23') {
+	   if (hash[0] != '#') {
             // Do the user magic
             checkUser(hash);
 
@@ -155,7 +155,7 @@ function checkUser(myInput) {
                     followersNumber = data.followers_count,
                     tweetsNumber = data.statuses_count;
 
-                html += "The latest links posted by <a href='http://www.twitter.com/" + username + "'>" + name + "</a>. <iframe allowtransparency='true' frameborder='0' scrolling='no' src='//platform.twitter.com/widgets/follow_button.html?screen_name=" + username + "' style='width:300px; height:20px;margin-left:8px;'></iframe>"
+                html += "The latest links posted by <a href='https://www.twitter.com/" + username + "'>" + name + "</a>. <iframe allowtransparency='true' frameborder='0' scrolling='no' src='//platform.twitter.com/widgets/follow_button.html?screen_name=" + username + "' style='width:300px; height:20px;margin-left:8px;'></iframe>"
                 getLinks(myInput); // getting those links from tweets
             }
             
@@ -480,6 +480,7 @@ $(document).ready(function(){
             label("",isLoggedIn);
         } 
         $('.twi').html("See the latest links from your <a href='http://www.instacurate.com'>timeline</a>");
+         
     });
 
     //toggle supportbox
