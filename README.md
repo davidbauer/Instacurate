@@ -1,9 +1,7 @@
 Twitter-Times
 =============
 
-Get the best out of Twitter, fast. Fetches links from tweets (by username, hashtag or timeline) and displays them in a discovery friendly design.
-
-Live at www.instacurate.com
+Search for any Twitter user or hashtag to get teasers for all the latest links posted by the user / with the hashtag.
 
 Work in progress. Please check the Issues tab to see open tasks: https://github.com/davidbauer/Twitter-Times/issues
 
