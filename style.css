@@ -3,7 +3,8 @@ html, body {
 }
 
 body {
-    background: url(background.png) top left repeat; 
+    background: url(background.png) top left repeat;
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
 }
 
 
