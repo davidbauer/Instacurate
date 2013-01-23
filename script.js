@@ -36,15 +36,21 @@ $(function() {
     if (hash) {
 	   if (hash[0] != '#') {
             // Do the user magic
-            checkUser(hash);
+            checkUser(hash, function() {
+                enable_realtime_update(hash);
+            });
 
         } else {
             // Do the search magic
             getLinks(hash);
+            console.log(hash);
+            enable_realtime_update(hash);
         }
 
         // Fill field
         field.value = hash;
+    } else {
+        enable_realtime_update("davidbauer"); /* self promotion */
     }
 
 
@@ -124,7 +130,7 @@ function getInput() {
 	        return "usernameistoolong";
 	     }
     }
-    
+
     console.log(myInput);
     return myInput;
 }
@@ -134,7 +140,10 @@ function setInput(myInput) {
 }
 
 // call info about username via twitter api and get link data
-function checkUser(myInput) {
+function checkUser(myInput, success) {
+    if (typeof success == "undefined") {
+        success = function() {/* empty fun */};
+    }
     $.ajax({
         url: 'https://api.twitter.com/1/users/show.json',
         data: {
@@ -149,6 +158,7 @@ function checkUser(myInput) {
             if (data.error) {
                 warn("Twitter doesn't know this username. Try another one.");
             } else {
+                success();
                 var created = new Date(data.created_at),
                     name = data.name,
                     username = data.screen_name,
@@ -158,7 +168,7 @@ function checkUser(myInput) {
                 html += "The latest links posted by <a href='https://www.twitter.com/" + username + "'>" + name + "</a>. <iframe allowtransparency='true' frameborder='0' scrolling='no' src='//platform.twitter.com/widgets/follow_button.html?screen_name=" + username + "' style='width:300px; height:20px;margin-left:8px;'></iframe>"
                 getLinks(myInput); // getting those links from tweets
             }
-            
+
             //update headline and userinfo
             label(myInput);
             $('.userinfo').html(html);
@@ -350,11 +360,11 @@ function generateEmbed(linksTotal, link, tweetId, text) {
             }
 
             //create a new teaser element with all subelements
-            
+
             var blocked = ["Img", "Img.ly"];
-            
+
             if (jQuery.inArray(provider,blocked) == -1) {
-            
+
             	$column.append($teaser);
             	$teaser.append($media);
             	$teaser.append($article);
@@ -364,12 +374,12 @@ function generateEmbed(linksTotal, link, tweetId, text) {
             	$article.append($credits);
             	$teaser.append($tweet);
             	$tweet.append($tweetLink);
-				
+
             	// crop long description
             	if (description && description.length > 140) {description = jQuery.trim(description).substring(0, 139).split(" ").slice(0, -1).join(" ") + " [...]"};
             	// crop long titles
             	if (title && title.length > 100) {title = jQuery.trim(title).substring(0, 99).split(" ").slice(0, -1).join(" ") + " [...]"};
-				
+
             	//assign correct content to all those elements
             	if (type == "link" && img_url != undefined) {
             			$media.html("<a href='" + link + "' target='_blank'>" + "<img src='" + img_url + "'></a><br/>")
@@ -377,19 +387,19 @@ function generateEmbed(linksTotal, link, tweetId, text) {
             	else if (type == "video" || type == "rich" || type == "audio") {
             			$media.html(multimedia + "<br/>")
             			};
-				
+
             	$title.html("<a href='" + link + "' target='_blank'>" + title + "</a><br />");
             	$description.html(description + " <a href='"+ link + "' target='_blank'>read on</a>");
-				
+
             	if (author != undefined) {$credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>, Author: " 				+ "<a href='" + author_url + "' title='" + author + "'>" + author + "</a>");}
             	else {$credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>");};
-            	
+
             	//add instapaper button
             	if (type == "link") {
             	$instapaper.html("<iframe border='0' scrolling='no' width='78' height='17' allowtransparency='true' frameborder='0' style='margin-bottom: -3px; z-index: 1338; border: 0px; background-color: transparent; overflow: hidden;' src='http://www.instapaper.com/e2?url=" + link + "&title=" + title + "&description=" + description + " (via instacurate.com)'></iframe>");
             	}
 
-            	
+
             }
 
             //add the tweet as a tooltip
@@ -422,6 +432,9 @@ function enable_realtime_update(myInput) {
             tambur_stream.enable_presence(nick, res.token);
             tambur_stream.onpresence = function(e) {
                 var nick = e[0], presence_state = e[1];
+                if(nick == 'presence-placeholder') {
+                    return;
+                }
                 if(presence_state == 'up' && $("#readrightnow a[data-user='" + nick + "']").length == 0) {
                     var links = $("#readrightnow a");
                     $("#readrightnow").show();
@@ -476,11 +489,11 @@ $(document).ready(function(){
             isLoggedIn = true;
             }
         if (LoggedIn && window.location.hash == "") {
-            getLinks("owntimeline");     
+            getLinks("owntimeline");
             label("",isLoggedIn);
-        } 
+        }
         $('.twi').html("See the latest links from your <a href='http://www.instacurate.com'>timeline</a>");
-         
+
     });
 
     //toggle supportbox
