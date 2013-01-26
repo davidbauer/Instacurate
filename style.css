@@ -7,8 +7,6 @@ body {
     font-family: 'Open Sans', Helvetica, Arial, sans-serif;
 }
 
-
-
 .page-header {
     border-bottom: 1px solid rgba(0,0,0,0.2);
     margin-bottom: 20px;
@@ -249,4 +247,23 @@ input, button{
 .instapaper {
 	float:right;
 	margin-top: 2px;
+}
+
+/* navigation */
+.menu-trigger, .menu-trigger:hover {
+	color:black;
+	text-decoration: none;
+	margin-bottom: -20px;
+}
+.icon-reorder {
+	background-color: red;
+	padding:5px;}
+#jPanelMenu-menu ul {
+	margin-top: 20px;
+}
+
+#jPanelMenu-menu ul li {
+	display:block;
+	list-style: none;
+	padding:8px;
 }

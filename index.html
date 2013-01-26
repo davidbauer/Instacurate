@@ -48,7 +48,16 @@
     <body>
 
         <div id="wrapper">
-
+        
+        <!-- Sliding Navigation -->
+        <a href="#menu" class="menu-trigger clearfix"><i class='icon-reorder icon-large'></i></a>
+        <nav id="jPanelMenu-menu">
+	        <ul>
+		        <li><i class='icon-home'></i>Home</li>
+		        <li><i class='icon-cog'></i>Settings</li>
+	        </ul>
+        </nav>
+        
             <!-- Begin Page Content -->
             <div class="container">
 
@@ -175,7 +184,7 @@
         <div id="footer">
             <div class="container">
                 <p class="muted credit">
-                This is a project by <a href="http://www.davidbauer.ch">David Bauer</a> to document the progress in <a href="http://www.davidbauer.ch/2012/12/28/als-journalist-programmieren-lernen-bilanz-und-anleitung/">my quest to learn how to program</a>. Thanks to <a href="https://github.com/dergraf">Andre Graf</a> and <a href="https://github.com/backflip">Thomas Jaggi</a> for helping me with the tricky parts.
+                This is a project by <a href="http://www.davidbauer.ch">David Bauer</a> to document the progress in <a href="http://www.davidbauer.ch/2013/01/25/how-i-learnt-to-code-in-one-year/">my quest to learn how to program</a>. Thanks to <a href="https://github.com/dergraf">Andre Graf</a> and <a href="https://github.com/backflip">Thomas Jaggi</a> for helping me with the tricky parts.
                 </p>
                 <p>
                 <a href="https://twitter.com/instacurate" class="twitter-follow-button" data-show-count="false" data-dnt="true">Follow @instacurate</a>
@@ -195,6 +204,16 @@
         <script src="http://static.tambur.io/tambur.min.js"></script>
 
         <script src="script.js"></script>
+        <script src="jPanelMenu-1.1.0.min.js"></script>
+        <script>
+	        //initiate panel-menu
+var jPM = $.jPanelMenu();
+var jPM = $.jPanelMenu({
+    menu: '#menu',
+    trigger: '.menu-trigger'
+});
+jPM.on();
+        </script>
 
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
