@@ -50,7 +50,7 @@
         <div id="wrapper">
         
         <!-- Sliding Navigation -->
-        <a href="#menu" class="menu-trigger clearfix"><i class='icon-reorder icon-large'></i></a>
+        <a href="#menu" class="menu-trigger"><i class='icon-reorder icon-large'></i></a>
         <nav id="jPanelMenu-menu">
 	        <ul>
 		        <li><i class='icon-home'></i>Home</li>
@@ -210,7 +210,8 @@
 var jPM = $.jPanelMenu();
 var jPM = $.jPanelMenu({
     menu: '#menu',
-    trigger: '.menu-trigger'
+    trigger: '.menu-trigger',
+    duration: 10
 });
 jPM.on();
         </script>

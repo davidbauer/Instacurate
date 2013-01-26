@@ -187,11 +187,11 @@ input, button{
     display:block;
     position:absolute;
     right:100px;
-    padding-left: 10px;
+    padding: 0 5px;
     width:200px;
     height:25px;
     color:#ffffff;
-    background:rgba(204,0,0,0.75);
+    background:rgba(255,0,0,1);
     text-decoration:none;
     font-weight: bold;
     -moz-border-bottom-left-radius:5px;
@@ -258,6 +258,9 @@ input, button{
 .icon-reorder {
 	background-color: red;
 	padding:5px;}
+#jPanelMenu-menu {
+	background-color: rgba(255,0,0,1);
+}
 #jPanelMenu-menu ul {
 	margin-top: 20px;
 }
@@ -266,4 +269,8 @@ input, button{
 	display:block;
 	list-style: none;
 	padding:8px;
+	background: 
+}
+.jPanelMenu-panel {
+	background: url(background.png) top left repeat !important;
 }
