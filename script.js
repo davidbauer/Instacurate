@@ -214,7 +214,7 @@ function getLinks(myInput) {
       	var params = {
             'q': myInput + " filter:links",
             'include_entities': true,
-            'include_rts': false,
+            'include_rts': true,
             'count' : 100,
         };
         if (searchApiMaxId == null) {
@@ -251,7 +251,7 @@ function getLinks(myInput) {
     } else if (myInput == "owntimeline") {
 	    var params = {
 	        'include_entities': true,
-	        'include_rts': false,
+	        'include_rts': true,
 	        'since_id': 1,
 	        'count' : tweetsToFetch,
 	    };
@@ -362,7 +362,7 @@ function generateEmbed(linksTotal, link, tweetId, text) {
 
             //create a new teaser element with all subelements
 
-            var blocked = ["Img", "Img.ly"];
+            var blocked = ["Img", "Img.ly", "Mediagazer"];
 
             if (jQuery.inArray(provider,blocked) == -1) {
 
