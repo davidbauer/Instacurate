@@ -266,7 +266,7 @@ function getLinks(myInput) {
 	    var params = {
 	        'screen_name': myInput,
 	        'include_entities': true,
-	        'include_rts': false,
+	        'include_rts': true,
 	        'since_id': 1,
 	        'count' : tweetsToFetch,
 	    };
