@@ -322,7 +322,7 @@ function process_data(nrOfLinks) {
     searchApiMaxId = tweetId;
 };
 
-
+// create a timestamp string
 function createTimestamp (date) {
 	      var d1 = new Date(date);
 	      d1.toString('MMMM');
@@ -362,8 +362,6 @@ function generateEmbed(linksTotal, link, tweetId, text, timestamp) {
                 $tweet = $('<div class="tweet" />'),
                 $tweetLink = $('<a><i class="icon-twitter small"></i> </a>');
 
-            console.log(type + " " + multimedia); // testin'
-
             //get rid of loading message if loading class is still applied
             if ($status.hasClass('state-loading')) {
                 $status.removeClass('state-loading').html('');
@@ -373,7 +371,7 @@ function generateEmbed(linksTotal, link, tweetId, text, timestamp) {
 
             var blocked = ["Img", "Img.ly", "Mediagazer"];
 
-            if (jQuery.inArray(provider,blocked) == -1) {
+            if (jQuery.inArray(provider,blocked) == -1) { // exclude blocked providers
 
             	$column.append($teaser);
             	$teaser.append($media);
@@ -519,13 +517,5 @@ $(document).ready(function(){
 	});
 
 });
-
-//create embed for tweet
-// function generateTweetEmbed(tweetId) {
-// 	$.getJSON('https://api.twitter.com/1.1/statuses/oembed.json?id=' + tweetId + '&callback=?', function(embed) {
-// 		var tweetembed = embed.html;
-// 		return tweetembed;
-// 	});
-// };
 
 })(window, document, jQuery);
