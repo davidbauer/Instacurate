@@ -298,6 +298,7 @@ function process_data(nrOfLinks) {
         var text = tweet.text;
         var retweets = tweet.retweet_count;
         var tweetId = tweet.id_str; // needed later to link to tweet
+        var timestamp = createTimestamp(tweet.created_at);
         $.each(tweet.entities.urls, function(i, url_entity) {
             var link = url_entity.expanded_url;
             // we check if we have already stored this link inside
@@ -319,7 +320,15 @@ function process_data(nrOfLinks) {
         });
     }
     searchApiMaxId = tweetId;
-}
+};
+
+
+function createTimestamp (date) {
+	      var d1 = new Date(date);
+	      d1.toString('MMMM');
+	      return d1;
+        };
+
 
 //create oEmbed of link from tweet
 function generateEmbed(linksTotal, link, tweetId, text) {
