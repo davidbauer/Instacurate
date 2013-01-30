@@ -331,7 +331,7 @@ function createTimestamp (date) {
 
 
 //create oEmbed of link from tweet
-function generateEmbed(linksTotal, link, tweetId, text) {
+function generateEmbed(linksTotal, link, tweetId, text, timestamp) {
 
     //cache container DOM element
     var embeds_columns = $('#embeds div.column');
@@ -360,7 +360,7 @@ function generateEmbed(linksTotal, link, tweetId, text) {
                 $credits = $('<div class="credits" />'),
                 $instapaper = $('<div class="instapaper"/>'),
                 $tweet = $('<div class="tweet" />'),
-                $tweetLink = $('<a>see tweet</a>');
+                $tweetLink = $('<a><i class="icon-twitter small"></i> </a>');
 
             console.log(type + " " + multimedia); // testin'
 
@@ -413,7 +413,7 @@ function generateEmbed(linksTotal, link, tweetId, text) {
             }
 
             //add the tweet as a tooltip
-            $tweetLink.attr('href', 'http://twitter.com/'+ user +'/status/'+ tweetId).popover({
+            $tweetLink.append(timestamp).attr('href', 'http://twitter.com/'+ user +'/status/'+ tweetId).popover({
                 title: "<blockquote class='twitter-tweet'><p>"+text+"</p></blockquote><script src='//platform.twitter.com/widgets.js' charset='utf-8'></script>",
                 html: true,
                 trigger: "hover",
