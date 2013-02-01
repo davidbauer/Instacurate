@@ -356,7 +356,10 @@ function generateEmbed(linksTotal, link, tweetId, text, tstamp) {
  	var $column = $(embeds_columns[c]);
  	var $status = $('#status');
 
-    $.getJSON('http://api.embed.ly/1/oembed?key=ab0fdaa34f634136bf4eb2325e040527&url=' + link + '&maxwidth=268', function(embed) {
+    $.getJSON('./embed-cache.php?url=' + link + '&maxwidth=268', function(embed) {
+        if(embed.error) {
+            console.log("Error on requesting '"+link+"': "+embed.error);
+        } else {
             var title = embed.title,
                 description = embed.description,
                 url = embed.url,
@@ -434,6 +437,7 @@ function generateEmbed(linksTotal, link, tweetId, text, tstamp) {
                 trigger: "hover",
                 placement: "top"
             });
+        }
     });
 
 };
