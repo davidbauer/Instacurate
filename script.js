@@ -208,7 +208,7 @@ function getLinks(myInput) {
     // Save for reuse
     user = myInput;
 
-    if (myInput[0] == "#") {
+    if (myInput[0] == "#") { // if user is looking for a hashtag
     	label(myInput);
     	//call search API with myInput as query
       	var params = {
@@ -248,7 +248,7 @@ function getLinks(myInput) {
             }
         });
 
-    } else if (myInput == "owntimeline") {
+    } else if (myInput == "owntimeline") { // if user is looking at his/her own timeline
 	    var params = {
 	        'include_entities': true,
 	        'include_rts': true,
@@ -261,8 +261,24 @@ function getLinks(myInput) {
 	        $('.userinfo').html("The latest links from your timeline.");
         });
 
+    } else if (myInput.substring(0,4) == "list:") { // if user is looking at a list of his/her
 
-    }else {
+	    var params = {
+	        'owner_screen_name': davidbauer, // TODO: replace davidbauer with authenticating user (where's that info stored?) 
+	        'slug': myInput.substring(5,100),
+	        'include_entities': true,
+	        'include_rts': true,
+	        'since_id': 1,
+	        'count' : tweetsToFetch,
+	    };
+	    $.getJSON('https://api.twitter.com/1.1/lists/statuses.json?callback=?', params, function(data) {
+	        fetched_data = data.reverse();
+	        process_data(minNrOfLinks);
+	    });
+
+
+
+    } else { // uf user is looking for a username
 	    var params = {
 	        'screen_name': myInput,
 	        'include_entities': true,
@@ -501,6 +517,7 @@ $(document).ready(function(){
             getLinks("owntimeline");
             label("",isLoggedIn);
         }
+        
         $('.twi').html("See the latest links from your <a href='http://www.instacurate.com'>timeline</a>");
 
     });
