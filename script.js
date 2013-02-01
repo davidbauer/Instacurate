@@ -299,7 +299,6 @@ function process_data(nrOfLinks) {
         var retweets = tweet.retweet_count;
         var tweetId = tweet.id_str; // needed later to link to tweet
         var tstamp = createTimestamp(tweet.created_at);
-        console.log(tstamp);
         $.each(tweet.entities.urls, function(i, url_entity) {
             var link = url_entity.expanded_url;
             // we check if we have already stored this link inside
