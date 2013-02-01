@@ -298,7 +298,8 @@ function process_data(nrOfLinks) {
         var text = tweet.text;
         var retweets = tweet.retweet_count;
         var tweetId = tweet.id_str; // needed later to link to tweet
-        var timestamp = createTimestamp(tweet.created_at);
+        var tstamp = createTimestamp(tweet.created_at);
+        console.log(tstamp);
         $.each(tweet.entities.urls, function(i, url_entity) {
             var link = url_entity.expanded_url;
             // we check if we have already stored this link inside
@@ -308,7 +309,7 @@ function process_data(nrOfLinks) {
                 links[link] = true;
                 n -= 1;
                 linksTotal += 1;
-                generateEmbed(linksTotal, link, tweetId, text);
+                generateEmbed(linksTotal, link, tweetId, text, tstamp);
                 console.log("The link-url is: " + link + " and the tweet text is " + text + ". The tweet has been retweeted " + retweets + " times.");
 
                 if (n == 0) {
@@ -322,16 +323,17 @@ function process_data(nrOfLinks) {
     searchApiMaxId = tweetId;
 };
 
-// create a timestamp string
-function createTimestamp (date) {
-	      var d1 = new Date(date);
-	      d1.toString('MMMM');
-	      return d1;
-        };
 
+
+// create a timestamp string
+function createTimestamp (createdAt) {
+	
+	var date = new Date(Date.parse(createdAt)).toLocaleString().substr(0, 16); // convert to local string and remove seconds and year
+	return date.substr(4, 6);
+};
 
 //create oEmbed of link from tweet
-function generateEmbed(linksTotal, link, tweetId, text, timestamp) {
+function generateEmbed(linksTotal, link, tweetId, text, tstamp) {
 
     //cache container DOM element
     var embeds_columns = $('#embeds div.column');
@@ -411,7 +413,7 @@ function generateEmbed(linksTotal, link, tweetId, text, timestamp) {
             }
 
             //add the tweet as a tooltip
-            $tweetLink.append(timestamp).attr('href', 'http://twitter.com/'+ user +'/status/'+ tweetId).popover({
+            $tweetLink.append(tstamp).attr('href', 'http://twitter.com/'+ user +'/status/'+ tweetId).popover({
                 title: "<blockquote class='twitter-tweet'><p>"+text+"</p></blockquote><script src='//platform.twitter.com/widgets.js' charset='utf-8'></script>",
                 html: true,
                 trigger: "hover",
