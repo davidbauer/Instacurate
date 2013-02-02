@@ -511,7 +511,7 @@ $(document).ready(function(){
             process_data(minNrOfLinks);
         }
     });
-
+     
     $.getJSON("http://tlinkstimeline.appspot.com/loggedin?callback=?", function(LoggedIn){
         if (LoggedIn) {
             $(".signin").toggleClass('hide');
