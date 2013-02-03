@@ -516,13 +516,14 @@ $(document).ready(function(){
         if (LoggedIn) {
             $(".signin").toggleClass('hide');
             isLoggedIn = true;
+            $('.twi').html("See links from your <a href='http://www.instacurate.com'>timeline</a>");
             }
         if (LoggedIn && window.location.hash == "") {
             getLinks("owntimeline");
             label("",isLoggedIn);
         }
         
-        $('.twi').html("See the latest links from your <a href='http://www.instacurate.com'>timeline</a>");
+        
 
     });
 
