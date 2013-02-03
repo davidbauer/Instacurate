@@ -166,7 +166,7 @@ function checkUser(myInput, success) {
                     followersNumber = data.followers_count,
                     tweetsNumber = data.statuses_count;
 
-                html += "The latest links posted by <a href='https://www.twitter.com/" + username + "'>" + name + "</a>. <iframe allowtransparency='true' frameborder='0' scrolling='no' src='//platform.twitter.com/widgets/follow_button.html?screen_name=" + username + "' style='width:300px; height:20px;margin-left:8px;'></iframe>"
+                html += "The latest links posted by <a href='https://www.twitter.com/" + username + "'>" + name + "</a>. <iframe allowtransparency='true' frameborder='0' scrolling='no' src='//platform.twitter.com/widgets/follow_button.html?screen_name=" + username + "' style='width:250px; height:20px;margin-left:8px;'></iframe> Share this view: <a href='https://twitter.com/share' class='twitter-share-button' data-text='Great way to discover new content: The latest links posted by @" + username + ", instacurated.' data-via='instacurate' data-size='small'>Tweet</a>"
                 getLinks(myInput); // getting those links from tweets
             }
 
@@ -356,7 +356,7 @@ function generateEmbed(linksTotal, link, tweetId, text, tstamp) {
  	var $column = $(embeds_columns[c]);
  	var $status = $('#status');
 
-    $.getJSON('./embed-cache.php?url=' + link + '&maxwidth=268', function(embed) {
+    $.getJSON('./embed-cache/embed-cache.php?url=' + link + '&maxwidth=268', function(embed) {
         if(embed.error) {
             console.log("Error on requesting '"+link+"': "+embed.error);
         } else {
