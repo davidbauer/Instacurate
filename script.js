@@ -343,8 +343,9 @@ function process_data(nrOfLinks) {
 // create a timestamp string
 function createTimestamp (createdAt) {
 	
-	var date = new Date(Date.parse(createdAt)).toLocaleString().substr(0, 16); // convert to local string and remove seconds and year
-	return date.substr(4, 6);
+	var date = new Date(createdAt);
+	var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+	return date.getDate() + ". " + months[date.getMonth()] + " " + date.getFullYear();
 };
 
 //create oEmbed of link from tweet
