@@ -271,7 +271,7 @@ function getLinks(myInput) {
 	        'since_id': 1,
 	        'count' : tweetsToFetch,
 	    };
-	    $.getJSON('https://api.twitter.com/1.1/lists/statuses.json?callback=?', params, function(data) {
+	    $.getJSON('https://api.twitter.com/1.1/lists/statuses.json?callback=?', params, function(data) { // request needs to go to the server script
 	        fetched_data = data.reverse();
 	        process_data(minNrOfLinks);
 	    });
@@ -524,9 +524,15 @@ $(document).ready(function(){
             label("",isLoggedIn);
         }
         
-        
-
     });
+    
+     // test to get logged in user's name for further use   
+      $.getJSON("http://tlinkstimeline.appspot.com/loggedinuser?callback=?", function(loggedinuser){
+        if (loggedinuser) {
+        	var thename = loggedinuser;
+            console.log("hello " + thename);
+            };
+            });    
 
     //toggle supportbox
     $('.pull-me').click(function(event) {
