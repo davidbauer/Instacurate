@@ -131,8 +131,6 @@ function getInput() {
 	        return "usernameistoolong";
 	     }
     }
-
-    console.log(myInput);
     return myInput;
 }
 
@@ -158,7 +156,13 @@ function checkUser(myInput, success) {
 
             if (data.error) {
                 warn("Twitter doesn't know this username. Try another one.");
-            } else {
+            } 
+            
+            else if (data.protected == true) {
+	            warn("This user's tweets are protected. Can't access them. Try another one.");
+            }
+            
+            else {
                 success();
                 var created = new Date(data.created_at),
                     name = data.name,
@@ -357,7 +361,7 @@ function generateEmbed(linksTotal, link, tweetId, text, tstamp) {
  	var $column = $(embeds_columns[c]);
  	var $status = $('#status');
 
-    $.getJSON('./embed-cache/embed-cache.php?url=' + link + '&maxwidth=268', function(embed) {
+    $.getJSON('./embed-cache.php?url=' + link + '&maxwidth=268', function(embed) {
         if(embed.error) {
             console.log("Error on requesting '"+link+"': "+embed.error);
         } else {
