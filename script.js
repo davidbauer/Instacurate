@@ -363,7 +363,7 @@ function generateEmbed(linksTotal, link, tweetId, text, tstamp) {
  	var $column = $(embeds_columns[c]);
  	var $status = $('#status');
 
-    $.getJSON('./embed-cache.php?url=' + link + '&maxwidth=268', function(embed) {
+    $.getJSON('./embed-cache.php?url=' + link + '&maxwidth=332', function(embed) { //268 for 4 column layout
         if(embed.error) {
             console.log("Error on requesting '"+link+"': "+embed.error);
         } else {
@@ -398,7 +398,7 @@ function generateEmbed(linksTotal, link, tweetId, text, tstamp) {
 
             var blocked = ["Img", "Img.ly", "Mediagazer"];
 
-            if (jQuery.inArray(provider,blocked) == -1) { // exclude blocked providers
+            if (jQuery.inArray(provider,blocked) == -1 && title != undefined) { // exclude blocked providers
 
             	$column.append($teaser);
             	$teaser.append($media);
@@ -424,7 +424,7 @@ function generateEmbed(linksTotal, link, tweetId, text, tstamp) {
             			};
 
             	$title.html("<a href='" + link + "' target='_blank'>" + title + "</a><br />");
-            	$description.html(description + " <a href='"+ link + "' target='_blank'>read on</a>");
+            	if (description != undefined) $description.html(description + " <a href='"+ link + "' target='_blank'>read on</a>");
 
             	if (author != undefined) {$credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>, Author: " 				+ "<a href='" + author_url + "' title='" + author + "'>" + author + "</a>");}
             	else {$credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>");};
