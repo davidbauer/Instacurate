@@ -373,6 +373,7 @@ function generateEmbed(linksTotal, link, tweetId, text, tstamp) {
                 provider = embed.provider_name,
                 provider_url = embed.provider_url,
                 img_url = embed.thumbnail_url,
+                img_width = embed.thumbnail_width,
                 author = embed.author_name,
                 author_url = embed.author_url,
                 type = embed.type, // used to distinguish links from audio and video
@@ -416,7 +417,7 @@ function generateEmbed(linksTotal, link, tweetId, text, tstamp) {
             	if (title && title.length > 100) {title = jQuery.trim(title).substring(0, 99).split(" ").slice(0, -1).join(" ") + " [...]"};
 
             	//assign correct content to all those elements
-            	if (type == "link" && img_url != undefined) {
+            	if (type == "link" && img_url != undefined && img_width >= 150) {
             			$media.html("<a href='" + link + "' target='_blank'>" + "<img src='" + img_url + "'></a><br/>")
             			}
             	else if (type == "video" || type == "rich" || type == "audio") {
