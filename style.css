@@ -7,6 +7,8 @@ body {
     font-family: 'Open Sans', Helvetica, Arial, sans-serif;
 }
 
+
+
 .page-header {
     border-bottom: 1px solid rgba(0,0,0,0.2);
     margin-bottom: 20px;
@@ -29,6 +31,8 @@ body {
 #push, #footer {
     height: 60px;
 }
+
+.state-loading {position: fixed;bottom:100px;z-index: 11;}
 
 /* Lastly, apply responsive CSS fixes as necessary */
 
@@ -187,11 +191,11 @@ input, button{
     display:block;
     position:absolute;
     right:100px;
-    padding: 0 5px;
+    padding-left: 10px;
     width:200px;
     height:25px;
     color:#ffffff;
-    background:rgba(255,0,0,1);
+    background:rgba(204,0,0,0.75);
     text-decoration:none;
     font-weight: bold;
     -moz-border-bottom-left-radius:5px;
@@ -249,7 +253,9 @@ input, button{
 	margin-top: 2px;
 }
 
-/* navigation */
+/* Panel navigation
+
+
 .menu-trigger, .menu-trigger:hover {
 	color:black;
 	text-decoration: none;
@@ -274,3 +280,9 @@ input, button{
 .jPanelMenu-panel {
 	background: url(background.png) top left repeat !important;
 }
+
+
+
+
+
+ */

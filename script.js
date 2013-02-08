@@ -209,7 +209,7 @@ var maxSearchApiRequests = 10;
 var lastResultEmpty = false;
 
 function getLinks(myInput) {
-    $('#status').addClass('state-loading').html("<i class='icon-spinner icon-spin'></i> Looking for tweeted links...");
+    $('#status').addClass('state-loading alert alert-info').html("<i class='icon-spinner icon-spin'></i> Looking for tweeted links...");
 
     // Save for reuse
     user = myInput;
@@ -249,7 +249,7 @@ function getLinks(myInput) {
             else {
 	            //get rid of loading message if loading class is still applied
 	            if ($('#status').hasClass('state-loading')) {
-                	$('#status').removeClass('state-loading').html('');
+                	$('#status').removeClass('state-loading alert alert-info').html('');
                 	}
             }
         });
@@ -392,7 +392,7 @@ function generateEmbed(linksTotal, link, tweetId, text, tstamp) {
 
             //get rid of loading message if loading class is still applied
             if ($status.hasClass('state-loading')) {
-                $status.removeClass('state-loading').html('');
+                $status.removeClass('state-loading alert alert-info').html('');
             }
 
             //create a new teaser element with all subelements
@@ -516,6 +516,7 @@ $(document).ready(function(){
 
         if ($(window).scrollTop() >= ($(document).height() - $(window).height())*0.8){
             processing = true;
+            $('#status').addClass('state-loading alert alert-info').html("<i class='icon-spinner icon-spin'></i> Loading more links...");
             process_data(minNrOfLinks);
         }
     });
