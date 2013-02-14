@@ -362,7 +362,7 @@ function generateEmbed(linksTotal, link, tweetId, text, tstamp) {
     var c = (linksTotal -1) % embeds_columns.length;
  	var $column = $(embeds_columns[c]);
  	var $status = $('#status');
-
+ 	
     $.getJSON('./embed-cache.php?url=' + link + '&maxwidth=332', function(embed) { //268 for 4 column layout
         if(embed.error) {
             console.log("Error on requesting '"+link+"': "+embed.error);
@@ -389,12 +389,16 @@ function generateEmbed(linksTotal, link, tweetId, text, tstamp) {
                 $instapaper = $('<div class="instapaper"/>'),
                 $tweet = $('<div class="tweet" />'),
                 $tweetLink = $('<a><i class="icon-twitter small"></i> </a>');
+                
+                
 
             //get rid of loading message if loading class is still applied
             if ($status.hasClass('state-loading')) {
                 $status.removeClass('state-loading alert alert-info').html('');
             }
-
+            
+            var tweetcount = getTweetCount(link);
+            
             //create a new teaser element with all subelements
 
             var blocked = ["Img", "Img.ly", "Mediagazer"];
@@ -450,7 +454,13 @@ function generateEmbed(linksTotal, link, tweetId, text, tstamp) {
 
 };
 
+// get tweet count for given link
+function getTweetCount(link) {
 
+	$.getJSON('http://urls.api.twitter.com/1/urls/count.json?url=' + link + '&callback=?', function(linkdata) {
+            return linkdata.count;
+        });
+};
 
 var tambur_conn, tambur_stream;
 function enable_realtime_update(myInput) {
