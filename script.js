@@ -170,6 +170,8 @@ function checkUser(myInput, success) {
                     followersNumber = data.followers_count,
                     tweetsNumber = data.statuses_count;
 
+                var user = data;
+                
                 html += "The latest links posted by <a href='https://www.twitter.com/" + username + "'>" + name + "</a>. <iframe allowtransparency='true' frameborder='0' scrolling='no' src='//platform.twitter.com/widgets/follow_button.html?screen_name=" + username + "' style='width:250px; height:20px;margin-left:8px;'></iframe>" 
                 //"Share this view: <a href='https://twitter.com/share' class='twitter-share-button' data-text='Great way to discover new content: The latest links posted by @" + username + ", instacurated.' data-via='instacurate' data-size='small'>Tweet</a>"
                 
@@ -178,7 +180,8 @@ function checkUser(myInput, success) {
 
             //update headline and userinfo
             label(myInput);
-            $('.userinfo').html(html);
+            showProfile(user);
+            // $('.userinfo').html(html); we no longer need this now that we have showProfile();
         }
     });
 }
@@ -193,6 +196,14 @@ function label(myInput,isLoggedIn) {
 			document.title = myInput + ", instacurated"; // add input to page title
 			}
         }
+        
+function showProfile(user) {
+	var embeds_columns = $('#embeds div.column');
+	var $teaser = $('<div class="teaser"/>');
+	$(embeds_columns[0]).append($teaser);
+	$teaser.append("<img src='" + user.profile_image_url + "' >" + user.name + ": " + user.description + "<br />" + user.followers_count + " followers." + "<a href='" + user.url + "'>" + user.url + "</a><br /> <iframe allowtransparency='true' frameborder='0' scrolling='no' src='//platform.twitter.com/widgets/follow_button.html?screen_name=" + user.screen_name + "' style='width:250px; height:20px;margin-left:8px;'></iframe>");
+	
+}
 
 //extract links from tweets
 var user;
