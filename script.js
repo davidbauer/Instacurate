@@ -197,12 +197,15 @@ function label(myInput,isLoggedIn) {
 			}
         }
         
-function showProfile(user) {
+function showProfile(myInput) {
 	var embeds_columns = $('#embeds div.column');
-	var $teaser = $('<div class="teaser"/>');
-	$(embeds_columns[0]).append($teaser);
-	$teaser.append("<img src='" + user.profile_image_url + "' >" + user.name + ": " + user.description + "<br />" + user.followers_count + " followers." + "<a href='" + user.url + "'>" + user.url + "</a><br /> <iframe allowtransparency='true' frameborder='0' scrolling='no' src='//platform.twitter.com/widgets/follow_button.html?screen_name=" + user.screen_name + "' style='width:250px; height:20px;margin-left:8px;'></iframe>");
-	
+	var $userinfo = $('<div class="userinfo"/>');	
+	if (myInput[0] == "#") {} // might add some info later
+	else {
+	$(embeds_columns[0]).append($userinfo);
+	$userinfo.append("<h3>" + myInput.name + "</h3><p class='userimg' style='background:url(" + myInput.profile_image_url.replace(/_normal(\.[a-z]{3,4})$/, '_bigger$1') + ");'></p>");
+	$userinfo.append(myInput.name + ": " + myInput.description + "<br />" + "<a href='" + myInput.url + "'>" + myInput.url + "</a><br /> <iframe allowtransparency='true' frameborder='0' scrolling='no' src='//platform.twitter.com/widgets/follow_button.html?screen_name=" + myInput.screen_name + "' data-size='large' class='userfollow'></iframe>");
+		 }
 }
 
 //extract links from tweets
@@ -248,7 +251,7 @@ function getLinks(myInput) {
         $.getJSON('http://search.twitter.com/search.json?callback=?', params, function(data) {
             fetched_data = data.results.reverse();
             process_data(minNrOfLinks);
-            $('.userinfo').html("The latest links posted under hashtag " + myInput);
+            showProfile(myInput);
             //increment the search api request counter. we don't wanna send too many requests (limited by maxSearchApiRequests)
             searchApiRequests++;
             //only try to get more links IF: we don't have minNrOfLinks already AND
