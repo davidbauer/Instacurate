@@ -204,7 +204,9 @@ function showProfile(myInput) {
 	else {
 	$(embeds_columns[0]).append($userinfo);
 	$userinfo.append("<h3>" + myInput.name + "</h3><p class='userimg' style='background:url(" + myInput.profile_image_url.replace(/_normal(\.[a-z]{3,4})$/, '_bigger$1') + ");'></p>");
-	$userinfo.append(myInput.name + ": " + myInput.description + "<br />" + "<a href='" + myInput.url + "'>" + myInput.url + "</a><br /> <iframe allowtransparency='true' frameborder='0' scrolling='no' src='//platform.twitter.com/widgets/follow_button.html?screen_name=" + myInput.screen_name + "' data-size='large' class='userfollow'></iframe>");
+	$userinfo.append(myInput.name + ": " + myInput.description + "<br />");
+	if(myInput.url) {$userinfo.append("<a href='" + myInput.url + "'>" + myInput.url + "</a><br />")};
+	$userinfo.append("<iframe allowtransparency='true' frameborder='0' scrolling='no' src='//platform.twitter.com/widgets/follow_button.html?screen_name=" + myInput.screen_name + "' data-size='large' class='userfollow'></iframe>");
 		 }
 }
 
