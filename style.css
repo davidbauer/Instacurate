@@ -7,6 +7,12 @@ body {
     font-family: 'Open Sans', Helvetica, Arial, sans-serif;
 }
 
+#wrapper {
+    min-height: 100%;
+    /* Negative indent footer by it's height */
+    margin: 0 auto -60px;
+}
+
 .page-header {
     border-bottom: 1px solid rgba(0,0,0,0.2);
     margin-bottom: 20px;
@@ -43,51 +49,11 @@ body {
 	width:250px; height:20px;margin-left:8px;margin-top:10px;
 }
 
-#wrapper {
-    min-height: 100%;
-    /* Negative indent footer by it's height */
-    margin: 0 auto -60px;
-}
-
 #push, #footer {
     height: 60px;
 }
 
 .state-loading {position: fixed;bottom:100px;z-index: 11;}
-
-/* Lastly, apply responsive CSS fixes as necessary */
-
-@media (min-width: 768px) {
-h1 {display:inline;}
-.claim {margin-left: 10px;}
-}
-
-@media (max-width: 767px) {
-    #footer {
-        margin-left: -20px;
-        margin-right: -20px;
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-    .slide {display:none;} 
-}
-
-form {
-    margin-bottom: 10px;
-
-}
-/*Fixed problem with the form on the mobile*/
-@media (min-width:400px){
-input, button{ 
-    padding: 15px !important;    
-    font-size: 25px !important;
-}
-}
-
-@media (max-width:400px){
-.description {display:none;}
-.lead {margin-bottom: 5px;}
-}
 
 .lead {
     font-weight: normal;
@@ -142,6 +108,11 @@ input, button{
 
 .description {
     font-size: 0.9em;
+}
+
+.instapaper {
+	float:right;
+	margin-top: 2px;
 }
 
 .credits {
@@ -269,10 +240,6 @@ input, button{
     padding: 0;
 }
 
-.instapaper {
-	float:right;
-	margin-top: 2px;
-}
 
 /** read later styles **/
 .readlater {
@@ -317,7 +284,39 @@ input, button{
       text-decoration: none;
     }
 
+/* Responsive CSS fixes as necessary */
 
+@media (min-width: 768px) {
+h1 {display:inline;}
+.claim {margin-left: 10px;}
+}
+
+@media (max-width: 767px) {
+    #footer {
+        margin-left: -20px;
+        margin-right: -20px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .slide {display:none;} 
+}
+
+form {
+    margin-bottom: 10px;
+
+}
+/*Fixed problem with the form on the mobile*/
+@media (min-width:400px){
+input, button{ 
+    padding: 15px !important;    
+    font-size: 25px !important;
+}
+}
+
+@media (max-width:400px){
+.description {display:none;}
+.lead {margin-bottom: 5px;}
+}
 
 /* Panel navigation
 
