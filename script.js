@@ -450,13 +450,25 @@ function generateEmbed(linksTotal, link, tweetId, text, tstamp) {
             	if (author != undefined) {$credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>, Author: " 				+ "<a href='" + author_url + "' title='" + author + "'>" + author + "</a>");}
             	else {$credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>");};
 
-            	//add instapaper button
+            	//save readlater buttons
+            	var saveto = {
+	            	instapaper: "<iframe border='0' scrolling='no' width='78' height='17' allowtransparency='true' frameborder='0' style='margin-bottom: -3px; z-index: 1338; border: 0px; background-color: transparent; overflow: hidden;' src='http://www.instapaper.com/e2?url=" + link + "&title=" + title + "&description=" + description + " (via instacurate.com)'></iframe>" ,
+	            	pocket: "<script type='text/javascript'> RIL_button('" + link + "', '" + title + "');</script>" ,
+	            	readability: "<div class='rdbWrapper' data-show-read-now='0' data-show-read-later='1' data-show-send-to-kindle='1' data-show-print='0' data-show-email='0' data-orientation='1' data-version='1' data-bg-color='#ffffff'></div><script type='text/javascript'>(function() {var s = document.getElementsByTagName('script')[0],rdb = document.createElement('script'); rdb.type = 'text/javascript'; rdb.async = true; rdb.src = document.location.protocol + '//www.readability.com/embed.js'; s.parentNode.insertBefore(rdb, s); })();</script>"
+            	};
+            	
+            	//add readlater buttons to teasers
             	if (type == "link") {
-            	$instapaper.html("<iframe border='0' scrolling='no' width='78' height='17' allowtransparency='true' frameborder='0' style='margin-bottom: -3px; z-index: 1338; border: 0px; background-color: transparent; overflow: hidden;' src='http://www.instapaper.com/e2?url=" + link + "&title=" + title + "&description=" + description + " (via instacurate.com)'></iframe>");
+            	$readlater.html("<li>" + saveto.instapaper + "</li><li>" + saveto.readability + "</li>");
+            	}
+            	
+            	else {
+	            	$readlater.html("<li>" + saveto.readability + "</li>");
             	}
 
 
             }
+            
 
             //add the tweet as a tooltip
             $tweetLink.append(tstamp).attr('href', 'http://twitter.com/'+ user +'/status/'+ tweetId).popover({
