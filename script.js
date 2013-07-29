@@ -27,7 +27,7 @@
     "use strict"; // best practice
 
 
-// Setup an event listener for the form that will execute checkUser()
+/*/ Setup an event listener for the form that will execute checkUser()
 // when the form is submitted.
 $(function() {
     // extract and decode hash
@@ -51,7 +51,7 @@ $(function() {
         // Fill field
         field.value = hash;
     } else {
-        enable_realtime_update("davidbauer"); /* self promotion */
+        enable_realtime_update("davidbauer"); 
     }
 
 
@@ -89,6 +89,9 @@ $(function() {
     });
 });
 
+*/
+
+/*
 $(function() {
 
     $('.linkinput').live('click', function(e) {
@@ -101,6 +104,7 @@ $(function() {
         $('#searchform').submit();
     });
 });
+*/
 
 function warn(message) {
     $('#bugfixing').html("<div class='alert'><button type='button' class='close' data-dismiss='alert'>&times;</button><strong>Warning! </strong>" + message + "</div>");
@@ -187,6 +191,7 @@ function checkUser(myInput, success) {
 }
 
 function label(myInput,isLoggedIn) {
+		$('#demo').html("");
 		if(isLoggedIn && decodeURIComponent(window.location.hash) == "") {
 			$('h1').html("Your timeline, instacurated");
 			document.title = "Your timeline, instacurated"; // add input to page title
@@ -225,7 +230,7 @@ var maxSearchApiRequests = 10;
 var lastResultEmpty = false;
 
 function getLinks(myInput) {
-    $('#status').addClass('state-loading alert alert-info').html("<i class='icon-spinner icon-spin'></i> Looking for tweeted links...");
+    $('#status').addClass('state-loading alert alert-info').html("<i class='icon-spinner icon-spin'></i> Compiling news site...");
 
     // Save for reuse
     user = myInput;
@@ -300,7 +305,7 @@ function getLinks(myInput) {
 
 
 
-    } else { // uf user is looking for a username
+    } else { // if user is looking for a username
 	    var params = {
 	        'screen_name': myInput,
 	        'include_entities': true,
@@ -335,6 +340,10 @@ function process_data(nrOfLinks) {
         }
         var text = tweet.text;
         var retweets = tweet.retweet_count;
+        var tweepster = {}
+        tweepster.img = tweet.user.profile_image_url;
+        tweepster.realname = tweet.user.name;
+        tweepster.accountname = tweet.user.screen_name;
         var tweetId = tweet.id_str; // needed later to link to tweet
         var tstamp = createTimestamp(tweet.created_at);
         $.each(tweet.entities.urls, function(i, url_entity) {
@@ -346,7 +355,7 @@ function process_data(nrOfLinks) {
                 links[link] = true;
                 n -= 1;
                 linksTotal += 1;
-                generateEmbed(linksTotal, link, tweetId, text, tstamp);
+                generateEmbed(linksTotal, link, tweetId, text, tstamp, tweepster,retweets);
                 console.log("The link-url is: " + link + " and the tweet text is " + text + ". The tweet has been retweeted " + retweets + " times.");
 
                 if (n == 0) {
@@ -371,7 +380,7 @@ function createTimestamp (createdAt) {
 };
 
 //create oEmbed of link from tweet
-function generateEmbed(linksTotal, link, tweetId, text, tstamp) {
+function generateEmbed(linksTotal, link, tweetId, text, tstamp, tweepster, retweets) {
 
     //cache container DOM element
     var embeds_columns = $('#embeds div.column');
@@ -379,7 +388,7 @@ function generateEmbed(linksTotal, link, tweetId, text, tstamp) {
  	var $column = $(embeds_columns[c]);
  	var $status = $('#status');
  	
-    $.getJSON('./embed-cache.php?url=' + link + '&maxwidth=332', function(embed) { //268 for 4 column layout
+    $.getJSON('./embed-cache.php?url=' + link + '&maxwidth=332', function(embed) { //268 for 4 column layout, 332 for 3 column layout
         if(embed.error) {
             console.log("Error on requesting '"+link+"': "+embed.error);
         } else {
@@ -398,12 +407,13 @@ function generateEmbed(linksTotal, link, tweetId, text, tstamp) {
                 //cache teaser DOM elements for faster access
                 $teaser = $('<div class="teaser"/>'),
                 $media = $('<div class="media" />'),
-                $article = $('<article />'),
+                $article = $('<article class="article" />'),
                 $title = $('<h3 />'),
                 $description = $('<div class="description" />'),
                 $credits = $('<div class="credits" />'),
                 $instapaper = $('<div class="instapaper"/>'),
-                $tweet = $('<div class="tweet" />'),
+                $recommender = $('<div class="recommender"/>'), 
+                $tweet = $('<span class="rectext" />'),
                 $tweetLink = $('<a><i class="icon-twitter small"></i> </a>');
                 
                 
@@ -413,7 +423,7 @@ function generateEmbed(linksTotal, link, tweetId, text, tstamp) {
                 $status.removeClass('state-loading alert alert-info').html('');
             }
             
-            var tweetcount = getTweetCount(link);
+            // var tweetcount = getTweetCount(link);
             
             //create a new teaser element with all subelements
 
@@ -424,12 +434,12 @@ function generateEmbed(linksTotal, link, tweetId, text, tstamp) {
             	$column.append($teaser);
             	$teaser.append($media);
             	$teaser.append($article);
-            	$article.append($title);
-            	$article.append($description);
-            	$teaser.append($instapaper);
             	$article.append($credits);
-            	$teaser.append($tweet);
-            	$tweet.append($tweetLink);
+            	$article.append($title);
+            	$article.append($description); 	
+            	$teaser.append($recommender);
+
+            	
 
             	// crop long description
             	if (description && description.length > 140) {description = jQuery.trim(description).substring(0, 139).split(" ").slice(0, -1).join(" ") + " [...]"};
@@ -447,49 +457,47 @@ function generateEmbed(linksTotal, link, tweetId, text, tstamp) {
             	$title.html("<a href='" + link + "' target='_blank'>" + title + "</a><br />");
             	if (description != undefined) $description.html(description + " <a href='"+ link + "' target='_blank'>read on</a>");
 
-            	if (author != undefined) {$credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>, Author: " 				+ "<a href='" + author_url + "' title='" + author + "'>" + author + "</a>");}
-            	else {$credits.html("Published by: <a href='" + provider_url + "' title='" + provider + "'>" + provider + "</a>");};
+            	if (author != undefined) {$credits.html("<a href='" + author_url + "' title='" + author + "' target='_blank'>" + author + "</a>, " + "<a href='" + provider_url + "' title='" + provider + "' target='_blank'>" + provider + "</a>");}
+            	else {$credits.html("<a href='" + provider_url + "' title='" + provider + "' target='_blank'>" + provider + "</a>");};
 
-            	//save readlater buttons
-            	var saveto = {
-	            	instapaper: "<iframe border='0' scrolling='no' width='78' height='17' allowtransparency='true' frameborder='0' style='margin-bottom: -3px; z-index: 1338; border: 0px; background-color: transparent; overflow: hidden;' src='http://www.instapaper.com/e2?url=" + link + "&title=" + title + "&description=" + description + " (via instacurate.com)'></iframe>" ,
-	            	pocket: "<script type='text/javascript'> RIL_button('" + link + "', '" + title + "');</script>" ,
-	            	readability: "<div class='rdbWrapper' data-show-read-now='0' data-show-read-later='1' data-show-send-to-kindle='1' data-show-print='0' data-show-email='0' data-orientation='1' data-version='1' data-bg-color='#ffffff'></div><script type='text/javascript'>(function() {var s = document.getElementsByTagName('script')[0],rdb = document.createElement('script'); rdb.type = 'text/javascript'; rdb.async = true; rdb.src = document.location.protocol + '//www.readability.com/embed.js'; s.parentNode.insertBefore(rdb, s); })();</script>"
-            	};
-            	
-            	//add readlater buttons to teasers
+            	//add instapaper button
             	if (type == "link") {
-            	$readlater.html("<li>" + saveto.instapaper + "</li><li>" + saveto.readability + "</li>");
+            	$instapaper.html("<iframe border='0' scrolling='no' width='78' height='17' allowtransparency='true' frameborder='0' style='margin-bottom: -3px; z-index: 1338; border: 0px; background-color: transparent; overflow: hidden;' src='http://www.instapaper.com/e2?url=" + link + "&title=" + title + "&description=" + description + " (via instacurate.com)'></iframe>");
             	}
             	
-            	else {
-	            	$readlater.html("<li>" + saveto.readability + "</li>");
-            	}
-
+            	$recommender.html("<img src='" + tweepster.img + "'>" + "<p class='rectext'>Shared by <a href='http://www.twitter.com/" + tweepster.accountname + "'>" + tweepster.realname + "</a>.");
+				
+				$recommender.append($tweet);
+            	$tweet.append($tweetLink);
+            	$recommender.append($instapaper);
 
             }
-            
 
             //add the tweet as a tooltip
-            $tweetLink.append(tstamp).attr('href', 'http://twitter.com/'+ user +'/status/'+ tweetId).popover({
+            $tweetLink.append(tstamp).attr('href', 'http://twitter.com/'+ tweepster.accountname +'/status/'+ tweetId).popover({
                 title: "<blockquote class='twitter-tweet'><p>"+text+"</p></blockquote><script src='//platform.twitter.com/widgets.js' charset='utf-8'></script>",
                 html: true,
                 trigger: "hover",
                 placement: "top"
             });
+            
+            if (retweets != 0) {$tweetLink.append(", " + retweets + " retweets.")};
+            
         }
     });
 
 };
 
-// get tweet count for given link
+/*/ get tweet count for given link
 function getTweetCount(link) {
 
 	$.getJSON('http://urls.api.twitter.com/1/urls/count.json?url=' + link + '&callback=?', function(linkdata) {
             return linkdata.count;
         });
 };
+*/
 
+/*
 var tambur_conn, tambur_stream;
 function enable_realtime_update(myInput) {
     var ready = function(id, nick) {
@@ -543,18 +551,19 @@ function enable_realtime_update(myInput) {
     }
 
 }
+*/
 
 var isLoggedIn = false;
 
 $(document).ready(function(){
     $(document).scroll(function(e){
-        var myInput = document.tweetfinder.user.value;
+        var myInput = "owntimeline";
         if (processing || (myInput.length == 0 && isLoggedIn == false))
             return false;
 
         if ($(window).scrollTop() >= ($(document).height() - $(window).height())*0.8){
             processing = true;
-            $('#status').addClass('state-loading alert alert-info').html("<i class='icon-spinner icon-spin'></i> Loading more links...");
+            $('#status').addClass('state-loading alert alert-info').html("<i class='icon-spinner icon-spin'></i> Loading more stories...");
             process_data(minNrOfLinks);
         }
     });
@@ -563,7 +572,7 @@ $(document).ready(function(){
         if (LoggedIn) {
             $(".signin").toggleClass('hide');
             isLoggedIn = true;
-            $('.twi').html("See links from your <a href='http://www.instacurate.com'>timeline</a>");
+            $('.twi').html("Here's your personalised news site, based on your Twitter timeline.");
             }
         if (LoggedIn && window.location.hash == "") {
             getLinks("owntimeline");
@@ -572,13 +581,14 @@ $(document).ready(function(){
         
     });
     
-     // test to get logged in user's name for further use   
+     /*/ test to get logged in user's name for further use   
       $.getJSON("http://tlinkstimeline.appspot.com/loggedinuser?callback=?", function(loggedinuser){
         if (loggedinuser) {
         	var thename = loggedinuser;
             console.log("hello " + thename);
             };
             });    
+	*/
 
     //toggle supportbox
     $('.pull-me').click(function(event) {

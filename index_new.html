@@ -3,20 +3,21 @@
     <head>
         <meta charset="utf-8">
         <title>Instacurate</title>
-        <meta name="description" content="Turn your Twitter timeline into a personalised news site, in an instant." />
+        <meta name="description" content="Get the best out of Twitter, fast." />
         <meta name="author" content="David Bauer" />
         <meta name="keywords" content="Instacurate, Twitter, Curation, Links, Discovery, Twitter API" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta property="og:title" content="Instacurate"/>
         <meta property="og:type" content="website"/>
-        <meta property="og:image" content="http://www.instacurate.com/img/demo.png"/>
+        <meta property="og:image" content="http://www.instacurate.com/instacurate.png"/>
         <meta property="og:url" content="http://www.instacurate.com">
-        <meta property="og:description" content="Turn your Twitter timeline into a personalised news site, in an instant."/>
+        <meta property="og:description" content="Get the best out of Twitter, fast."/>
         <!-- CSS -->
         <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
         <link rel="stylesheet" href="bootstrap/css/bootstrap-responsive.min.css">
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="style_new.css">
         <link rel="stylesheet" href="font-awesome.min.css">
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
         <link rel="apple-touch-icon" href="touch-icons/apple-touch-icon.png" />
         <link rel="apple-touch-icon" sizes="72x72" href="touch-icons/apple-touch-icon-72x72.png" />
         <link rel="apple-touch-icon" sizes="114x114" href="touch-icons/apple-touch-icon-114x114.png" />
@@ -46,6 +47,35 @@
     </head>
     <body>
 
+	    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <h1>Instacurate</h1><span class="claim">Get the best out of Twitter, fast.</span>
+          
+          <div class="nav-collapse collapse" style="padding-top:3px;">
+            
+            <ul class="nav nav-pills">
+              
+              <li>search</li>
+              <li>
+	              <p style="margin-top:15px;"><a class="btn-large btn-info signin" type="button" href="http://tlinkstimeline.appspot.com/login"><i class="icon-twitter"></i>&nbsp;Sign in with Twitter</a></p>
+                        <a class="btn btn-small signin lead hide" href="http://tlinkstimeline.appspot.com/logout?next=http://www.instacurate.com"><i class="icon-twitter"></i>&nbsp;Log out</a>
+              </li>
+            </ul>
+            
+            
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+
+
         <div id="wrapper">
         
         
@@ -67,7 +97,7 @@
                         <h4>Spread the word</h4>
                         <ul>
                         <li class="tw">
-                            <a href="https://twitter.com/share" class="twitter-share-button" data-text="Great site: Instacurate. Turn your Twitter timeline into a personalised news site, in an instant." data-via="davidbauer" data-size="small">Tweet</a>
+                            <a href="https://twitter.com/share" class="twitter-share-button" data-text="Great site: Instacurate. Get the best out of Twitter, fast." data-via="davidbauer" data-size="small">Tweet</a>
                         </li>
                         <li class="g+">
                             <!-- Fügen Sie dieses Tag an der Stelle ein, an der die +1-Schaltfläche erscheinen soll. -->
@@ -125,42 +155,42 @@
 
 
 
-                <div class="page-header">
-                    <h1>Instacurate</h1>
-                    
-
-               
-
                 <div id="useractions" class="row">
 
-                    <div class="column span12">
+                    <div class="column span6">
 
-	                <p class="lead twi">Turn your Twitter timeline into a personalised news site, in an instant.</p>
+	                    <p class="lead">Enter a username or hashtag<span class="hidden-phone"> to see the latest links</span></p>
+	                    <div id="bugfixing"></div>
+	                    	<form id="searchform" name="tweetfinder">
+	                    	    <div class="input-append">
+	                    	        <input class="span3" type="text" id="user" name="username" autofocus="autofocus" required>
+	                    	        <button class="btn btn-primary" type="submit">Instacurate!</button>
+	                    	    </div>
+	                    	    <div class ="suggestions hidden-phone">Try: <a href="#" class="linkinput" data-user="longreads">Longreads</a>, <a href="#" class="linkinput" data-user="theeconomist">The Economist</a>, <a href="#" class="linkinput" data-user="brainpicker">Brain Pickings</a>, <a href="#" class="linkinput" data-user="poynter">Poynter</a>, <a href="#" class="linkinput" data-user="davidbauer">David Bauer</a>.</div>
+	                    	    <div id="readrightnow" style="display:none" class="suggestions hidden-phone">Instacurated by others: </div>
+
+	                    	</form>
+
+                    </div>
+
+                    <div class="column span6">
+                    <p class="lead twi hidden-phone">See the latest links from your timeline</p><p class="lead twi visible-phone">See links from your timeline</p>
                         <p style="margin-top:15px;"><a class="btn-large btn-info signin" type="button" href="http://tlinkstimeline.appspot.com/login"><i class="icon-twitter"></i>&nbsp;Sign in with Twitter</a></p>
                         <a class="btn btn-small signin lead hide" href="http://tlinkstimeline.appspot.com/logout?next=http://www.instacurate.com"><i class="icon-twitter"></i>&nbsp;Log out</a>
-	                    
                     </div>
+                    
+                    
 
                 </div> <!- #useractions ->
 
-				 </div> <!- page-header ->
                 <div class="row">
                     <div id="status"></div>
                 </div>
-                
-                <div class="row">
-                    <div id="demo" class="column span12">
-                    	<p style="font-size:10px;">This is V0.9, <a href="http://blog.instacurate.com/post/56228935091/roadmap">see the roadmap</a>.</p>
-   	                    <img src="img/demo.png">
-                    </div>
-                </div>
-                
                 <div id="embeds" class="row">
                     <!-- add more columns if you like -->
                     <div class="column span4"></div>
                     <div class="column span4"></div>
                     <div class="column span4"></div>
-                    
                  
                 </div>
             </div>
@@ -191,6 +221,18 @@
         <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
         <script src="http://static.tambur.io/tambur.min.js"></script>
         <script src="script.js"></script>
+        <script src="jPanelMenu-1.1.0.min.js"></script>
+        <script>
+	        //initiate panel-menu
+var jPM = $.jPanelMenu();
+var jPM = $.jPanelMenu({
+    menu: '#menu',
+    trigger: '.menu-trigger',
+    duration: 10
+});
+jPM.on();
+        </script>
+        
         <!-- tweet embeds -->
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
@@ -204,6 +246,10 @@
                 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
                 })();
         </script>
+        
+        <!-- pocket -->
+        <script type="text/javascript" src="http://getpocket.com/button/multi_v1.js"></script>
+
         
     </body>
 </html>

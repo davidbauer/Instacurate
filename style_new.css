@@ -3,20 +3,21 @@ html, body {
 }
 
 body {
-    background-color: #ececec;
+    background: url(background.png) top left repeat;
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
 }
 
-.page-header {
-    text-align: center;
-    
+#wrapper {
+    min-height: 100%;
+    /* Negative indent footer by it's height */
+    margin: 0 auto -60px;
 }
 
-.lead {margin-top: 6px;}
+.hide {
+	display:none;
+}
 
-.btn-info {margin-bottom: 10px;color:#ececec;}
-a:hover.btn-info {text-decoration: none;color:white;}
-
-#demo {text-align: center;margin-top: 15px;font-size: 16px;}
+.signin {margin-bottom: 10px;}
 
 #embeds {margin-top:10px;}
 
@@ -47,52 +48,11 @@ a:hover.btn-info {text-decoration: none;color:white;}
 	width:250px; height:20px;margin-left:8px;margin-top:10px;
 }
 
-#wrapper {
-    min-height: 100%;
-    /* Negative indent footer by it's height */
-    margin: 0 auto -60px;
-}
-
 #push, #footer {
     height: 60px;
 }
 
 .state-loading {position: fixed;bottom:100px;z-index: 11;}
-
-
-/* Lastly, apply responsive CSS fixes as necessary */
-
-@media (min-width: 768px) {
-h1 {display:inline;}
-.claim {margin-left: 10px;}
-}
-
-@media (max-width: 767px) {
-    #footer {
-        margin-left: -20px;
-        margin-right: -20px;
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-    .slide {display:none;} 
-}
-
-form {
-    margin-bottom: 10px;
-
-}
-/*Fixed problem with the form on the mobile*/
-@media (min-width:400px){
-input, button{ 
-    padding: 15px !important;    
-    font-size: 25px !important;
-}
-}
-
-@media (max-width:400px){
-.description {display:none;}
-.lead {margin-bottom: 10px;margin-top: 0;}
-}
 
 .lead {
     font-weight: normal;
@@ -113,14 +73,13 @@ input, button{
 .teaser {
            -moz-box-sizing: border-box;
         -webkit-box-sizing: border-box;
-    box-sizing:             border-box; 
+    box-sizing:             border-box;
+    border: 1px solid rgba(0,0,0,0.2);
     width:100%;
     float:left;
     margin-bottom: 20px;
+    padding: 20px;
     background: rgba(255,255,255,0.8);
-    -moz-box-shadow:    0px 2px 3px 0px #ccc;
-  -webkit-box-shadow: 0px 2px 3px 0px #ccc;
-  box-shadow:         0px 2px 3px 0px #ccc;
 }
 
 .teaser:nth-child(3n) {
@@ -131,15 +90,8 @@ input, button{
     font-weight: bold;
     text-decoration: none;
     color:black;
-    margin-top: 0px;
     margin-bottom: 5px;
     line-height: 1.2em;
-}
-
-.teaser h3 a:hover {
-	text-decoration: none;
-	background: #830000;
-	color:white;
 }
 
 .media {
@@ -151,59 +103,36 @@ input, button{
     display: block;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: -10px;
 }
-
-.article {margin: 0 20px 20px 20px;}
 
 .description {
     font-size: 0.9em;
 }
 
+.instapaper {
+	float:right;
+	margin-top: 2px;
+}
+
 .credits {
     font-size: 0.8em;
     color:grey;
-    margin-top: 15px;
-    text-transform: uppercase;
+    margin-top: 5px;
 }
 
 .credits a {
     color:grey;
 }
 
-.recommender {
-	border-top: 2px solid #ececec;
-	margin-top: 5px;
-	padding:6px 20px;
-	}
-
-.recommender img {
-	background: no-repeat center center;
-	width: 30px; 
-	height: 30px;
-	-webkit-border-radius:30px;
-	border-radius:30px;
-	margin-right:5px;
-	border: 2px solid #ececec;
-	float:left;}
-	
-.rectext {
-	font-size: 10px;
-	line-height: 12px;
-	color: grey;
-	margin-bottom: 0;
-	margin-top: 3px;
-}
-
 .twitter-follow-button {
     margin: 0px 3px 0 0;
 }
 
-#footer {
+#footnote {
     font-size:12px;
     color:grey;
+    margin-top: 150px;
     clear:both;
-    text-align: center;
 }
 
 .tweet {font-size: 10px;}
@@ -257,7 +186,7 @@ input, button{
     width:200px;
     height:25px;
     color:#ffffff;
-    background:#830000;
+    background:rgba(204,0,0,0.75);
     text-decoration:none;
     font-weight: bold;
     -moz-border-bottom-left-radius:5px;
@@ -310,6 +239,114 @@ input, button{
     padding: 0;
 }
 
-.instapaper {
-	float:right;
+
+/** read later styles **/
+.readlater {
+  font-size: 12px;
+  color: #000;
+  padding: 0 6px;
+  margin: 0;  
+  border-radius: 4px;
+  border: 1px  solid #8f8f8f;
+  height: 16px;
+  line-height: 16px;
+  width: 140px;
+  overflow: hidden; 
+  list-style-type: none;
+  float: right;
 }
+  
+.readlater:before {
+    content: attr(data-caption);
+    display: block;
+    height: 12px;
+    margin-bottom: 10px;
+  }
+  
+.readlater:hover {
+    height: auto;
+    padding-bottom: 10px;
+  }
+  
+  
+.readlater li {
+    padding: 0 5px;
+   } 
+    
+.readlater li:hover {
+     background-color: rgba(255, 255, 255, 0.3); 
+     @include border-radius(5px);      
+    }
+    
+.readlater li a {
+      color: #000;
+      text-decoration: none;
+    }
+
+/* Responsive CSS fixes as necessary */
+
+@media (min-width: 768px) {
+h1 {display:inline;}
+.claim {margin-left: 10px;}
+}
+
+@media (max-width: 767px) {
+    #footer {
+        margin-left: -20px;
+        margin-right: -20px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .slide {display:none;} 
+}
+
+form {
+    margin-bottom: 10px;
+
+}
+/*Fixed problem with the form on the mobile*/
+@media (min-width:400px){
+input, button{ 
+    padding: 15px !important;    
+    font-size: 25px !important;
+}
+}
+
+@media (max-width:400px){
+.description {display:none;}
+.lead {margin-bottom: 5px;}
+}
+
+/* Panel navigation
+
+
+.menu-trigger, .menu-trigger:hover {
+	color:black;
+	text-decoration: none;
+	margin-bottom: -20px;
+}
+.icon-reorder {
+	background-color: red;
+	padding:5px;}
+#jPanelMenu-menu {
+	background-color: rgba(255,0,0,1);
+}
+#jPanelMenu-menu ul {
+	margin-top: 20px;
+}
+
+#jPanelMenu-menu ul li {
+	display:block;
+	list-style: none;
+	padding:8px;
+	background: 
+}
+.jPanelMenu-panel {
+	background: url(background.png) top left repeat !important;
+}
+
+
+
+
+
+ */
