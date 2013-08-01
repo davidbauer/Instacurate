@@ -566,8 +566,8 @@ $(document).ready(function(){
             $('#status').addClass('state-loading alert alert-info').html("<i class='icon-spinner icon-spin'></i> Loading more stories...");
             process_data(minNrOfLinks);
         }
-    });
-     
+    }); 
+         
     $.getJSON("http://tlinkstimeline.appspot.com/loggedin?callback=?", function(LoggedIn){
         if (LoggedIn) {
             $(".signin").toggleClass('hide');
@@ -581,14 +581,14 @@ $(document).ready(function(){
         
     });
     
-     /*/ test to get logged in user's name for further use   
+     /* test to get logged in user's name for further use */  
       $.getJSON("http://tlinkstimeline.appspot.com/loggedinuser?callback=?", function(loggedinuser){
         if (loggedinuser) {
         	var thename = loggedinuser;
             console.log("hello " + thename);
+            $("#jPanelMenu-menu ul").prepend("<li><i class='icon-user'></i> Welcome, @" + thename + "</li>"); // add username to navigation
             };
-            });    
-	*/
+            });
 
     //toggle supportbox
     $('.pull-me').click(function(event) {

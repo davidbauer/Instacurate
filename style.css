@@ -50,7 +50,7 @@ a:hover.btn-info {text-decoration: none;color:white;}
 #wrapper {
     min-height: 100%;
     /* Negative indent footer by it's height */
-    margin: 0 auto -60px;
+    margin: -40px auto -60px;
 }
 
 #push, #footer {
@@ -58,41 +58,6 @@ a:hover.btn-info {text-decoration: none;color:white;}
 }
 
 .state-loading {position: fixed;bottom:100px;z-index: 11;}
-
-
-/* Lastly, apply responsive CSS fixes as necessary */
-
-@media (min-width: 768px) {
-h1 {display:inline;}
-.claim {margin-left: 10px;}
-}
-
-@media (max-width: 767px) {
-    #footer {
-        margin-left: -20px;
-        margin-right: -20px;
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-    .slide {display:none;} 
-}
-
-form {
-    margin-bottom: 10px;
-
-}
-/*Fixed problem with the form on the mobile*/
-@media (min-width:400px){
-input, button{ 
-    padding: 15px !important;    
-    font-size: 25px !important;
-}
-}
-
-@media (max-width:400px){
-.description {display:none;}
-.lead {margin-bottom: 10px;margin-top: 0;}
-}
 
 .lead {
     font-weight: normal;
@@ -253,7 +218,7 @@ input, button{
     display:block;
     position:absolute;
     right:100px;
-    padding-left: 10px;
+    padding: 0 5px;
     width:200px;
     height:25px;
     color:#ffffff;
@@ -312,4 +277,111 @@ input, button{
 
 .instapaper {
 	float:right;
+}
+
+/* navigation */
+.menu-trigger, .menu-trigger:hover {
+	color:black;
+	text-decoration: none;
+	margin-bottom: -20px;
+}
+.icon-reorder {
+	background-color: #ececec;
+	padding:5px;}
+
+#jPanelMenu-menu {
+    background: #3b3b3b;
+}
+#jPanelMenu-menu ul {
+    border-bottom: 1px solid #484848;
+    list-style: none;
+    margin-left: 0px;
+}
+
+
+#jPanelMenu-menu li {
+    background: #3b3b3b;
+    background: -o-linear-gradient(top,  #3e3e3e,  #383838);
+    background: -ms-linear-gradient(top,  #3e3e3e,  #383838);
+    background: -moz-linear-gradient(top,  #3e3e3e,  #383838);
+    background: -webkit-gradient(linear,  left top,  left bottom,  color-stop(0,  #3e3e3e),  color-stop(1,  #383838));
+    background: -webkit-linear-gradient(#3e3e3e,  #383838);
+    background: linear-gradient(top,  #3e3e3e,  #383838);
+    font-weight: 300;
+    font-weight: 700;
+    display: block;
+    padding: 0.8em 1em;
+    border-top: 1px solid #484848;
+    border-bottom: 1px solid #2e2e2e;
+    text-decoration: none;
+    text-shadow: 0 -1px 2px #222;
+    color: #f7f7f7;
+}
+
+
+#jPanelMenu-menu a li {
+    display: block;
+    text-decoration: none;
+    color: #f7f7f7;
+}
+#jPanelMenu-menu a:hover li, #jPanelMenu-menu a:focus li {
+    background: #404040;
+    background: -o-linear-gradient(top,  #484848,  #383838);
+    background: -ms-linear-gradient(top,  #484848,  #383838);
+    background: -moz-linear-gradient(top,  #484848,  #383838);
+    background: -webkit-gradient(linear,  left top,  left bottom,  color-stop(0,  #484848),  color-stop(1,  #383838));
+    background: -webkit-linear-gradient(#484848,  #383838);
+    background: linear-gradient(top,  #484848,  #383838);
+    text-decoration: none;
+}
+#jPanelMenu-menu li a:active {
+    background: #363636;
+    background: -o-linear-gradient(top,  #3e3e3e,  #2e2e2e);
+    background: -ms-linear-gradient(top,  #3e3e3e,  #2e2e2e);
+    background: -moz-linear-gradient(top,  #3e3e3e,  #2e2e2e);
+    background: -webkit-gradient(linear,  left top,  left bottom,  color-stop(0,  #3e3e3e),  color-stop(1,  #2e2e2e));
+    background: -webkit-linear-gradient(#3e3e3e,  #2e2e2e);
+    background: linear-gradient(top,  #3e3e3e,  #2e2e2e);
+    -moz-box-shadow: 0 2px 7px #222 inset;
+    -webkit-box-shadow: 0 2px 7px #222 inset;
+    box-shadow: 0 2px 7px #222 inset;
+    border-top-color: #222;
+    padding-top: 0.55em;
+    padding-bottom: 0.45em;
+}
+
+
+/* Responsive CSS fixes */
+
+@media (min-width: 768px) {
+h1 {display:inline;}
+.claim {margin-left: 10px;}
+}
+
+@media (max-width: 767px) {
+    #footer {
+        margin-left: -20px;
+        margin-right: -20px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .slide {display:none;} 
+    body {padding-left: 0;}
+}
+
+form {
+    margin-bottom: 10px;
+
+}
+
+@media (min-width:400px){
+input, button{ 
+    padding: 15px !important;    
+    font-size: 25px !important;
+}
+}
+
+@media (max-width:400px){
+.description {display:none;}
+.lead {margin-bottom: 10px;margin-top: 0;}
 }
