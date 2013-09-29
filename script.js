@@ -64,7 +64,7 @@ $(function() {
         $('.userinfo').html("");
         //reset search api request counter, max_id and link counter
         searchApiRequests = 0;
-        searchApiMaxId = null;
+        since_id = null;
         linksTotal = 0;
 
         // Get the articles from typed user
@@ -185,7 +185,6 @@ function checkUser(myInput, success) {
             //update headline and userinfo
             label(myInput);
             showProfile(user);
-            // $('.userinfo').html(html); we no longer need this now that we have showProfile();
         }
     });
 }
@@ -223,13 +222,13 @@ var linksTotal = 0;
 var processing; // used for scroll-loader
 var links = {}; // keep this hash, to check if we already know about a link.
 var searchApiRequests = 0;
-var searchApiMaxId = null;
+var since_id = 1;
 var maxSearchApiRequests = 10;
 //this will tell us whether the last api call didn't return any tweets
 //so we can stop trying to get more tweets
 var lastResultEmpty = false;
 
-function getLinks(myInput) {
+function getLinks(myInput,since_id,autorefresh) { // added two parameters for issue #63
     $('#status').addClass('state-loading alert alert-info').html("<i class='icon-spinner icon-spin'></i> Compiling news site...");
 
     // Save for reuse
@@ -244,14 +243,14 @@ function getLinks(myInput) {
             'include_rts': true,
             'count' : 100,
         };
-        if (searchApiMaxId == null) {
+        if (since_id == 1) {
             //first search request for this hashtag - get first tweets (old behaviour)
             params['since_id'] = 1;
         } else {
             //get next 100 tweets with tweetid <= last tweetid from previous search request
             //i.e. 100 tweets written before last tweet we got from search api before
-            params['max_id'] = searchApiMaxId;
-            //btw: we'll receive the last tweet again. we should use searchApiMaxId - 1,
+            params['max_id'] = since_id;
+            //btw: we'll receive the last tweet again. we should use since_id - 1,
             //but since JavaScript can't handle 64 bit integers natively there's no easy way to do this.
             //it's not perfect but since we're checking for duplicate links in process_data anyway it doesn't matter.
         }
@@ -279,13 +278,13 @@ function getLinks(myInput) {
 	    var params = {
 	        'include_entities': true,
 	        'include_rts': true,
-	        'since_id': 1,
+	        'since_id': since_id, // changed from 1 to now using parameter of the function (for #issue63)
 	        'count' : tweetsToFetch,
 	    };
         $.getJSON("http://tlinkstimeline.appspot.com/statuses/home_timeline.json?callback=?", params, function(data) {
 	        fetched_data = data.reverse();
-	        process_data(minNrOfLinks);
-	        $('.userinfo').html("The latest links from your timeline.");
+	        process_data(minNrOfLinks,autorefresh); // added autorefresh param for issue #63
+	        // $('.userinfo').html("The latest links from your timeline."); no longer needed
         });
 
     } else if (myInput.substring(0,4) == "list:") { // if user is looking at a list of his/her
@@ -320,7 +319,7 @@ function getLinks(myInput) {
     }
 };
 
-function process_data(nrOfLinks) {
+function process_data(nrOfLinks,autorefresh) { // added autorefresh param for issue #63
     //stop processing if there are no tweets
     if (fetched_data.length === 0) {
     	warn("This user hasn't tweeted anything yet.");
@@ -355,7 +354,8 @@ function process_data(nrOfLinks) {
                 links[link] = true;
                 n -= 1;
                 linksTotal += 1;
-                generateEmbed(linksTotal, link, tweetId, text, tstamp, tweepster,retweets);
+                if(autorefresh==true) {alert("new content found!")} // if we're autorefreshing we don't want to show the teasers right away but notify the user and let him show the new teasers by clicking on the notification #issue63
+                else {generateEmbed(linksTotal, link, tweetId, text, tstamp, tweepster,retweets)} ;
                 console.log("The link-url is: " + link + " and the tweet text is " + text + ". The tweet has been retweeted " + retweets + " times.");
 
                 if (n == 0) {
@@ -366,10 +366,8 @@ function process_data(nrOfLinks) {
             }
         });
     }
-    searchApiMaxId = tweetId;
+    since_id = tweetId;
 };
-
-
 
 // create a timestamp string
 function createTimestamp (createdAt) {
@@ -423,7 +421,6 @@ function generateEmbed(linksTotal, link, tweetId, text, tstamp, tweepster, retwe
                 $status.removeClass('state-loading alert alert-info').html('');
             }
             
-            // var tweetcount = getTweetCount(link);
             
             //create a new teaser element with all subelements
 
@@ -438,8 +435,7 @@ function generateEmbed(linksTotal, link, tweetId, text, tstamp, tweepster, retwe
             	$article.append($title);
             	$article.append($description); 	
             	$teaser.append($recommender);
-
-            	
+           	
 
             	// crop long description
             	if (description && description.length > 140) {description = jQuery.trim(description).substring(0, 139).split(" ").slice(0, -1).join(" ") + " [...]"};
@@ -487,15 +483,6 @@ function generateEmbed(linksTotal, link, tweetId, text, tstamp, tweepster, retwe
     });
 
 };
-
-/*/ get tweet count for given link
-function getTweetCount(link) {
-
-	$.getJSON('http://urls.api.twitter.com/1/urls/count.json?url=' + link + '&callback=?', function(linkdata) {
-            return linkdata.count;
-        });
-};
-*/
 
 /*
 var tambur_conn, tambur_stream;
@@ -556,7 +543,7 @@ function enable_realtime_update(myInput) {
 var isLoggedIn = false;
 
 $(document).ready(function(){
-    $(document).scroll(function(e){
+    $(document).scroll(function(e){ // load more links when user scolls down
         var myInput = "owntimeline";
         if (processing || (myInput.length == 0 && isLoggedIn == false))
             return false;
@@ -575,13 +562,16 @@ $(document).ready(function(){
             $('.twi').html("Here's your personalised news site, based on your Twitter timeline.");
             }
         if (LoggedIn && window.location.hash == "") {
-            getLinks("owntimeline");
+            getLinks("owntimeline", 1, false); // since_id = 1, autorefresh = false
             label("",isLoggedIn);
+            setInterval(function(){getLinks("owntimeline",tweetId,true)},60000); // autorefresh every 60 seconds, use tweetId as new since_id #issue 63
+            
         }
         
     });
     
-     /* test to get logged in user's name for further use */  
+    
+     /* get logged in user's name for further use */  
       $.getJSON("http://tlinkstimeline.appspot.com/loggedinuser?callback=?", function(loggedinuser){
         if (loggedinuser) {
         	var thename = loggedinuser;
@@ -594,7 +584,7 @@ $(document).ready(function(){
     $('.pull-me').click(function(event) {
         event.preventDefault();
 
-        //remove class on supportbox (allowing for correct initiation of Twitter buttons, see issue #35)
+        //remove class on supportbox (allowing for correct initiation of Twitter buttons)
         if ($('#supportbox').hasClass('state-hidden')) {
             $('#supportbox').removeClass('state-hidden').hide();
         }
