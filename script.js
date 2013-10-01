@@ -223,7 +223,6 @@ var processing; // used for scroll-loader
 var links = {}; // keep this hash, to check if we already know about a link.
 var searchApiRequests = 0;
 var since_id = 1;
-var tweetId;
 var maxSearchApiRequests = 10;
 //this will tell us whether the last api call didn't return any tweets
 //so we can stop trying to get more tweets
