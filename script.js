@@ -223,6 +223,7 @@ var processing; // used for scroll-loader
 var links = {}; // keep this hash, to check if we already know about a link.
 var searchApiRequests = 0;
 var since_id = 1;
+var tweetId;
 var maxSearchApiRequests = 10;
 //this will tell us whether the last api call didn't return any tweets
 //so we can stop trying to get more tweets
@@ -343,7 +344,7 @@ function process_data(nrOfLinks,autorefresh) { // added autorefresh param for is
         tweepster.img = tweet.user.profile_image_url;
         tweepster.realname = tweet.user.name;
         tweepster.accountname = tweet.user.screen_name;
-        var tweetId = tweet.id_str; // needed later to link to tweet
+        tweetId = tweet.id_str; // needed later to link to tweet
         var tstamp = createTimestamp(tweet.created_at);
         $.each(tweet.entities.urls, function(i, url_entity) {
             var link = url_entity.expanded_url;
