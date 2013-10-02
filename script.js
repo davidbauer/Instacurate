@@ -289,6 +289,7 @@ function getLinks(myInput,since_id,autorefresh) { // added two parameters for is
 	        	$('#autorefresh').html(fetched_data.length + " links found (click to load)").removeClass("hidden");
 	        	document.title = "(" + fetched_data.length + ") Your timeline, instacurated";
 	        	$('#autorefresh').click(function() {
+	        		$('#autorefresh').addClass("hidden");
 					process_data(minNrOfLinks);
 					});	        	
 	        }
