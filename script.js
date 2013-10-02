@@ -177,7 +177,7 @@ function checkUser(myInput, success) {
                 var user = data;
                 
                 html += "The latest links posted by <a href='https://www.twitter.com/" + username + "'>" + name + "</a>. <iframe allowtransparency='true' frameborder='0' scrolling='no' src='//platform.twitter.com/widgets/follow_button.html?screen_name=" + username + "' style='width:250px; height:20px;margin-left:8px;'></iframe>" 
-                //"Share this view: <a href='https://twitter.com/share' class='twitter-share-button' data-text='Great way to discover new content: The latest links posted by @" + username + ", instacurated.' data-via='instacurate' data-size='small'>Tweet</a>"
+                
                 
                 getLinks(myInput); // getting those links from tweets
             }
@@ -230,7 +230,7 @@ var maxSearchApiRequests = 10;
 var lastResultEmpty = false;
 
 function getLinks(myInput,since_id,autorefresh) { // added two parameters for issue #63
-    $('#status').addClass('state-loading alert alert-info').html("<i class='icon-spinner icon-spin'></i> Compiling news site...");
+    if (autorefresh == false) $('#status').addClass('state-loading alert alert-info').html("<i class='icon-spinner icon-spin'></i> Compiling news site...");
 
     // Save for reuse
     user = myInput;
@@ -284,8 +284,17 @@ function getLinks(myInput,since_id,autorefresh) { // added two parameters for is
 	    };
         $.getJSON("http://tlinkstimeline.appspot.com/statuses/home_timeline.json?callback=?", params, function(data) {
 	        fetched_data = data.reverse();
-	        process_data(minNrOfLinks,autorefresh); // added autorefresh param for issue #63
-	        // $('.userinfo').html("The latest links from your timeline."); no longer needed
+	        // if we're autorefreshing we don't want to show the teasers right away but notify the user 
+	        if (autorefresh == true && fetched_data.length > 0) { 
+	        	$('#autorefresh').html(fetched_data.length + " links found (click to load)").removeClass("hidden");
+	        	document.title = "(" + fetched_data.length + ") Your timeline, instacurated";
+	        	$('#autorefresh').click(function() {
+					process_data(minNrOfLinks);
+					});	        	
+	        }
+	        // if we're running this for the first time, just proceed 
+	        else {process_data(minNrOfLinks);} 
+	        
         });
 
     } else if (myInput.substring(0,4) == "list:") { // if user is looking at a list of his/her
@@ -320,7 +329,7 @@ function getLinks(myInput,since_id,autorefresh) { // added two parameters for is
     }
 };
 
-function process_data(nrOfLinks,autorefresh) { // added autorefresh param for issue #63
+function process_data(nrOfLinks, autorefresh) {
     //stop processing if there are no tweets
     if (fetched_data.length === 0) {
     	warn("This user hasn't tweeted anything yet.");
@@ -346,6 +355,8 @@ function process_data(nrOfLinks,autorefresh) { // added autorefresh param for is
         tweepster.accountname = tweet.user.screen_name;
         tweetId = tweet.id_str; // needed later to link to tweet
         var tstamp = createTimestamp(tweet.created_at);
+        
+        
         $.each(tweet.entities.urls, function(i, url_entity) {
             var link = url_entity.expanded_url;
             // we check if we have already stored this link inside
@@ -355,8 +366,7 @@ function process_data(nrOfLinks,autorefresh) { // added autorefresh param for is
                 links[link] = true;
                 n -= 1;
                 linksTotal += 1;
-                if(autorefresh==true) {alert("new content found!")} // if we're autorefreshing we don't want to show the teasers right away but notify the user and let him show the new teasers by clicking on the notification #issue63
-                else {generateEmbed(linksTotal, link, tweetId, text, tstamp, tweepster,retweets)} ;
+                {generateEmbed(linksTotal, link, tweetId, text, tstamp, tweepster,retweets, autorefresh)} ;
                 console.log("The link-url is: " + link + " and the tweet text is " + text + ". The tweet has been retweeted " + retweets + " times.");
 
                 if (n == 0) {
@@ -367,7 +377,7 @@ function process_data(nrOfLinks,autorefresh) { // added autorefresh param for is
             }
         });
     }
-    since_id = tweetId;
+    since_id = tweetId; // set since_id to last tweetId processed here so we can continue from there for the next autorefresh
 };
 
 // create a timestamp string
@@ -379,7 +389,7 @@ function createTimestamp (createdAt) {
 };
 
 //create oEmbed of link from tweet
-function generateEmbed(linksTotal, link, tweetId, text, tstamp, tweepster, retweets) {
+function generateEmbed(linksTotal, link, tweetId, text, tstamp, tweepster, retweets, autorefresh) {
 
     //cache container DOM element
     var embeds_columns = $('#embeds div.column');
@@ -429,7 +439,8 @@ function generateEmbed(linksTotal, link, tweetId, text, tstamp, tweepster, retwe
 
             if (jQuery.inArray(provider,blocked) == -1 && title != undefined) { // exclude blocked providers
 
-            	$column.append($teaser);
+            	if (autorefresh == true) {$column.prepend($teaser)}
+            	else {$column.append($teaser)};
             	$teaser.append($media);
             	$teaser.append($article);
             	$article.append($credits);
