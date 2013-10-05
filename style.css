@@ -109,9 +109,15 @@ a:hover.btn-info {text-decoration: none;color:white;}
 
 .teaser h3 a:hover {
 	text-decoration: none;
-	background: #830000;
+	background: rgba(130,0,0,0.8);
 	color:white;
 }
+
+/* special styles for special media types */
+.video {background: black;color:grey;}
+.video h3 a {color:grey;}
+.audio {}
+.rich {}
 
 .media {
     
