@@ -464,6 +464,7 @@ function generateEmbed(linksTotal, link, tweetId, text, tstamp, tweepster, retwe
             			$media.html("<a href='" + link + "' target='_blank'>" + "<img src='" + img_url + "'></a><br/>")
             			}
             	else if (type == "video" || type == "rich" || type == "audio") {
+            			$teaser.addClass(type); // add type as class to teaser for later styling
             			$media.html(multimedia + "<br/>")
             			};
 
