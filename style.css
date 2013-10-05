@@ -6,6 +6,10 @@ body {
     background-color: #ececec;
 }
 
+.container {
+	margin-top: 40px;
+}
+
 .page-header {
     text-align: center;
     

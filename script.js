@@ -231,6 +231,8 @@ var lastResultEmpty = false;
 
 function getLinks(myInput,since_id,autorefresh) { // added two parameters for issue #63
     if (autorefresh == false) $('#status').addClass('state-loading alert alert-info').html("<i class='icon-spinner icon-spin'></i> Compiling news site...");
+    
+    if(autorefresh) {console.log("autorefresh started")};
 
     // Save for reuse
     user = myInput;
@@ -286,10 +288,12 @@ function getLinks(myInput,since_id,autorefresh) { // added two parameters for is
 	        fetched_data = data.reverse();
 	        // if we're autorefreshing we don't want to show the teasers right away but notify the user 
 	        if (autorefresh == true && fetched_data.length > 0) { 
+	        	console.log("autorefresh successful, data found");
 	        	$('#autorefresh').html(fetched_data.length + " links found (click to load)").removeClass("hidden");
 	        	document.title = "(" + fetched_data.length + ") Your timeline, instacurated";
 	        	$('#autorefresh').click(function() {
 	        		$('#autorefresh').addClass("hidden");
+	        		document.title = "Your timeline, instacurated";
 					process_data(minNrOfLinks);
 					});	        	
 	        }
