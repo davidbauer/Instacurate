@@ -402,7 +402,7 @@ function generateEmbed(linksTotal, link, tweetId, text, tstamp, tweepster, retwe
  	var $column = $(embeds_columns[c]);
  	var $status = $('#status');
  	
-    $.getJSON('./embed-cache.php?url=' + link + '&maxwidth=332', function(embed) { //268 for 4 column layout, 332 for 3 column layout
+    $.getJSON('./embed-cache.php?url=' + link + '&maxwidth=370', function(embed) { // maxwidth needed for correct multimedia element size
         if(embed.error) {
             console.log("Error on requesting '"+link+"': "+embed.error);
         } else {
