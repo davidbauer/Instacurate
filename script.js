@@ -21,583 +21,499 @@
         }
     }
 }());
+/////--
+/////--
+/////-- ;(function(window, document, $, undefined) {
+/////--     "use strict"; // best practice
+/////--
+/////--
+/////-- /*/ Setup an event listener for the form that will execute checkUser()
+/////-- // when the form is submitted.
+/////-- $(function() {
+/////--     // extract and decode hash
+/////--     var hash = decodeURIComponent(window.location.hash.substr(1)),
+/////--         field = document.tweetfinder.user;
+/////--
+/////--     if (hash) {
+/////-- 	   if (hash[0] != '#') {
+/////--             // Do the user magic
+/////--             checkUser(hash, function() {
+/////--                 enable_realtime_update(hash);
+/////--             });
+/////--
+/////--         } else {
+/////--             // Do the search magic
+/////--             getLinks(hash);
+/////--             console.log(hash);
+/////--             enable_realtime_update(hash);
+/////--         }
+/////--
+/////--         // Fill field
+/////--         field.value = hash;
+/////--     } else {
+/////--         enable_realtime_update("davidbauer");
+/////--     }
+/////--
+/////--
+/////--     $('#searchform').submit(function(e) {
+/////--         // Stop the form from sending and reloading the page
+/////--         e.preventDefault();
+/////--         // clean up
+/////--         $('#bugfixing').html("");
+/////--         $('#embeds div').html("");
+/////--         $('.userinfo').html("");
+/////--         //reset search api request counter, max_id and link counter
+/////--         searchApiRequests = 0;
+/////--         since_id = null;
+/////--         linksTotal = 0;
+/////--
+/////--         // Get the articles from typed user
+/////--         var myInput = getInput();
+/////--
+/////--         //proceed with either hashtag or username
+/////--         if (myInput[0] == '#') {
+/////-- 	        getLinks(myInput);
+/////-- 	         // Update URL
+/////-- 	         window.location.hash = "%23" + myInput.substring(1);
+/////--         }
+/////--
+/////--         else {
+/////--         	if (myInput != "usernameistoolong") {
+/////--         		checkUser(myInput);
+/////--                 enable_realtime_update(myInput);
+/////--         		}
+/////--         		 // Update URL
+/////--         		 window.location.hash = myInput;
+/////--         	}
+/////--
+/////--     });
+/////-- });
+/////--
+/////-- */
+/////--
+/////-- /*
+/////-- $(function() {
+/////--
+/////--     $('.linkinput').live('click', function(e) {
+/////--         e.preventDefault();
+/////--
+/////--         var myInput = $(this).attr('data-user');
+/////--
+/////--         setInput(myInput);
+/////--
+/////--         $('#searchform').submit();
+/////--     });
+/////-- });
+/////-- */
+/////--
+/////-- function warn(message) {
+/////--     $('#bugfixing').html("<div class='alert'><button type='button' class='close' data-dismiss='alert'>&times;</button><strong>Warning! </strong>" + message + "</div>");
+/////--     console.log("warning: " + message);
+/////-- }
+/////--
+/////-- // store username given via input
+/////-- function getInput() {
+/////--     var myInput;
+/////--
+/////--     // check if a hashtag is entered
+/////--     if (document.tweetfinder.user.value[0] == "#") {
+/////-- 	    myInput = document.tweetfinder.user.value;
+/////--
+/////--     }
+/////--
+/////--     else {
+/////--
+/////-- 		// Check if cleanup of the @ is needed
+/////-- 	    if (document.tweetfinder.user.value[0] == "@") {
+/////-- 	        myInput = document.tweetfinder.user.value.substring(1,20); //get rid of the @
+/////-- 	    }
+/////-- 	    else { myInput = document.tweetfinder.user.value };
+/////--
+/////-- 	    // Validate length of username
+/////-- 	     if (myInput.length > 16) { // TODO: if true, return error msg and don't continue
+/////-- 	        warn("This doesn't seem to be a username, too long.");
+/////-- 	        return "usernameistoolong";
+/////-- 	     }
+/////--     }
+/////--     return myInput;
+/////-- }
+/////--
+/////-- function setInput(myInput) {
+/////--     document.tweetfinder.user.value = myInput;
+/////-- }
+/////--
+/////-- // call info about username via twitter api and get link data
+/////-- function checkUser(myInput, success) {
+/////--     if (typeof success == "undefined") {
+/////--         success = function() {/* empty fun */};
+/////--     }
+/////--     $.ajax({
+/////--         url: 'https://api.twitter.com/1/users/show.json',
+/////--         data: {
+/////--             screen_name: myInput,
+/////--             include_entities: true,
+/////--             suppress_response_codes: true
+/////--         },
+/////--         dataType: 'jsonp',
+/////--         success: function(data) {
+/////--             var html = "";
+/////--
+/////--             if (data.error) {
+/////--                 warn("Twitter doesn't know this username. Try another one.");
+/////--             }
+/////--
+/////--             else if (data.protected == true) {
+/////-- 	            warn("This user's tweets are protected. Can't access them. Try another one.");
+/////--             }
+/////--
+/////--             else {
+/////--                 success();
+/////--                 var created = new Date(data.created_at),
+/////--                     name = data.name,
+/////--                     username = data.screen_name,
+/////--                     followersNumber = data.followers_count,
+/////--                     tweetsNumber = data.statuses_count;
+/////--
+/////--                 var user = data;
+/////--
+/////--                 html += "The latest links posted by <a href='https://www.twitter.com/" + username + "'>" + name + "</a>. <iframe allowtransparency='true' frameborder='0' scrolling='no' src='//platform.twitter.com/widgets/follow_button.html?screen_name=" + username + "' style='width:250px; height:20px;margin-left:8px;'></iframe>"
+/////--
+/////--
+/////--                 getLinks(myInput); // getting those links from tweets
+/////--             }
+/////--
+/////--             //update headline and userinfo
+/////--             label(myInput);
+/////--             showProfile(user);
+/////--         }
+/////--     });
+/////-- }
+/////--
+/////-- function label(myInput,isLoggedIn) {
+/////-- 		$('#demo').html("");
+/////-- 		if(isLoggedIn && decodeURIComponent(window.location.hash) == "") {
+/////-- 			$('h1').html("Your timeline, instacurated");
+/////-- 			document.title = "Your timeline, instacurated"; // add input to page title
+/////-- 			}
+/////-- 		else {
+/////-- 			$('h1').html(myInput + ", instacurated"); // add input name to headline
+/////-- 			document.title = myInput + ", instacurated"; // add input to page title
+/////-- 			}
+/////--         }
+/////--
+/////-- function showProfile(myInput) {
+/////-- 	var embeds_columns = $('#embeds div.column');
+/////-- 	var $userinfo = $('<div class="userinfo"/>');
+/////-- 	if (myInput[0] == "#") {} // might add some info later
+/////-- 	else {
+/////-- 	$(embeds_columns[0]).append($userinfo);
+/////-- 	$userinfo.append("<h3>" + myInput.name + "</h3><p class='userimg' style='background:url(" + myInput.profile_image_url.replace(/_normal(\.[a-z]{3,4})$/, '_bigger$1') + ");'></p>");
+/////-- 	$userinfo.append(myInput.name + ": " + myInput.description + "<br />");
+/////-- 	if(myInput.url) {$userinfo.append("<a href='" + myInput.url + "'>" + myInput.url + "</a><br />")};
+/////-- 	$userinfo.append("<iframe allowtransparency='true' frameborder='0' scrolling='no' src='//platform.twitter.com/widgets/follow_button.html?screen_name=" + myInput.screen_name + "' data-size='large' class='userfollow'></iframe>");
+/////-- 		 }
+/////-- }
 
 
-;(function(window, document, $, undefined) {
-    "use strict"; // best practice
+function Tweet(t, urlEntity, container) {
+    this.text = t.text;
+    this.retweets = t.retweet_count;
+    this.img = t.user.profile_image_url;
+    this.realname = t.user.name;
+    this.accountname = t.user.screen_name;
+    this.id = t.id_str;
+    this.link = urlEntity.expanded_url;
+    // this.embedCacheUrl = 'http://instacurate.com/embed-cache.php?url=';
+    // I used my own embed.ly API-Key so instacurate.com wont run into rate limits
+    this.embedCacheUrl = 'http://api.embed.ly/1/oembed?key=b7a73332e1314db5aca72ad7ffb12b55&url=';
 
+	var date = new Date(t.created_at);
+	var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+	this.tstamp =  date.getDate() + ". " + months[date.getMonth()] + " " + date.getFullYear();
+    var tw = this;
 
-/*/ Setup an event listener for the form that will execute checkUser()
-// when the form is submitted.
-$(function() {
-    // extract and decode hash
-    var hash = decodeURIComponent(window.location.hash.substr(1)),
-        field = document.tweetfinder.user;
-
-    if (hash) {
-	   if (hash[0] != '#') {
-            // Do the user magic
-            checkUser(hash, function() {
-                enable_realtime_update(hash);
-            });
-
-        } else {
-            // Do the search magic
-            getLinks(hash);
-            console.log(hash);
-            enable_realtime_update(hash);
-        }
-
-        // Fill field
-        field.value = hash;
-    } else {
-        enable_realtime_update("davidbauer"); 
-    }
-
-
-    $('#searchform').submit(function(e) {
-        // Stop the form from sending and reloading the page
-        e.preventDefault();
-        // clean up
-        $('#bugfixing').html("");
-        $('#embeds div').html("");
-        $('.userinfo').html("");
-        //reset search api request counter, max_id and link counter
-        searchApiRequests = 0;
-        since_id = null;
-        linksTotal = 0;
-
-        // Get the articles from typed user
-        var myInput = getInput();
-
-        //proceed with either hashtag or username
-        if (myInput[0] == '#') {
-	        getLinks(myInput);
-	         // Update URL
-	         window.location.hash = "%23" + myInput.substring(1);
-        }
-
-        else {
-        	if (myInput != "usernameistoolong") {
-        		checkUser(myInput);
-                enable_realtime_update(myInput);
-        		}
-        		 // Update URL
-        		 window.location.hash = myInput;
-        	}
-
-    });
-});
-
-*/
-
-/*
-$(function() {
-
-    $('.linkinput').live('click', function(e) {
-        e.preventDefault();
-
-        var myInput = $(this).attr('data-user');
-
-        setInput(myInput);
-
-        $('#searchform').submit();
-    });
-});
-*/
-
-function warn(message) {
-    $('#bugfixing').html("<div class='alert'><button type='button' class='close' data-dismiss='alert'>&times;</button><strong>Warning! </strong>" + message + "</div>");
-    console.log("warning: " + message);
-}
-
-// store username given via input
-function getInput() {
-    var myInput;
-
-    // check if a hashtag is entered
-    if (document.tweetfinder.user.value[0] == "#") {
-	    myInput = document.tweetfinder.user.value;
-
-    }
-
-    else {
-
-		// Check if cleanup of the @ is needed
-	    if (document.tweetfinder.user.value[0] == "@") {
-	        myInput = document.tweetfinder.user.value.substring(1,20); //get rid of the @
-	    }
-	    else { myInput = document.tweetfinder.user.value };
-
-	    // Validate length of username
-	     if (myInput.length > 16) { // TODO: if true, return error msg and don't continue
-	        warn("This doesn't seem to be a username, too long.");
-	        return "usernameistoolong";
-	     }
-    }
-    return myInput;
-}
-
-function setInput(myInput) {
-    document.tweetfinder.user.value = myInput;
-}
-
-// call info about username via twitter api and get link data
-function checkUser(myInput, success) {
-    if (typeof success == "undefined") {
-        success = function() {/* empty fun */};
-    }
-    $.ajax({
-        url: 'https://api.twitter.com/1/users/show.json',
-        data: {
-            screen_name: myInput,
-            include_entities: true,
-            suppress_response_codes: true
-        },
-        dataType: 'jsonp',
-        success: function(data) {
-            var html = "";
-
-            if (data.error) {
-                warn("Twitter doesn't know this username. Try another one.");
-            } 
-            
-            else if (data.protected == true) {
-	            warn("This user's tweets are protected. Can't access them. Try another one.");
-            }
-            
-            else {
-                success();
-                var created = new Date(data.created_at),
-                    name = data.name,
-                    username = data.screen_name,
-                    followersNumber = data.followers_count,
-                    tweetsNumber = data.statuses_count;
-
-                var user = data;
-                
-                html += "The latest links posted by <a href='https://www.twitter.com/" + username + "'>" + name + "</a>. <iframe allowtransparency='true' frameborder='0' scrolling='no' src='//platform.twitter.com/widgets/follow_button.html?screen_name=" + username + "' style='width:250px; height:20px;margin-left:8px;'></iframe>" 
-                
-                
-                getLinks(myInput); // getting those links from tweets
-            }
-
-            //update headline and userinfo
-            label(myInput);
-            showProfile(user);
-        }
-    });
-}
-
-function label(myInput,isLoggedIn) {
-		$('#demo').html("");
-		if(isLoggedIn && decodeURIComponent(window.location.hash) == "") {
-			$('h1').html("Your timeline, instacurated");
-			document.title = "Your timeline, instacurated"; // add input to page title
-			}
-		else {
-			$('h1').html(myInput + ", instacurated"); // add input name to headline
-			document.title = myInput + ", instacurated"; // add input to page title
-			}
-        }
-        
-function showProfile(myInput) {
-	var embeds_columns = $('#embeds div.column');
-	var $userinfo = $('<div class="userinfo"/>');	
-	if (myInput[0] == "#") {} // might add some info later
-	else {
-	$(embeds_columns[0]).append($userinfo);
-	$userinfo.append("<h3>" + myInput.name + "</h3><p class='userimg' style='background:url(" + myInput.profile_image_url.replace(/_normal(\.[a-z]{3,4})$/, '_bigger$1') + ");'></p>");
-	$userinfo.append(myInput.name + ": " + myInput.description + "<br />");
-	if(myInput.url) {$userinfo.append("<a href='" + myInput.url + "'>" + myInput.url + "</a><br />")};
-	$userinfo.append("<iframe allowtransparency='true' frameborder='0' scrolling='no' src='//platform.twitter.com/widgets/follow_button.html?screen_name=" + myInput.screen_name + "' data-size='large' class='userfollow'></iframe>");
-		 }
-}
-
-//extract links from tweets
-var user;
-var fetched_data = [];
-var tweetsToFetch = 200, minNrOfLinks = 12;
-var linksTotal = 0;
-var processing; // used for scroll-loader
-var links = {}; // keep this hash, to check if we already know about a link.
-var searchApiRequests = 0;
-var since_id = 1;
-var tweetId;
-var maxSearchApiRequests = 10;
-//this will tell us whether the last api call didn't return any tweets
-//so we can stop trying to get more tweets
-var lastResultEmpty = false;
-
-function getLinks(myInput,since_id,autorefresh) { // added two parameters for issue #63
-    if (autorefresh == false) $('#status').addClass('state-loading alert alert-info').html("<i class='icon-spinner icon-spin'></i> Compiling news site...");
-    
-    if(autorefresh) {console.log("autorefresh started")};
-
-    // Save for reuse
-    user = myInput;
-
-    if (myInput[0] == "#") { // if user is looking for a hashtag
-    	label(myInput);
-    	//call search API with myInput as query
-      	var params = {
-            'q': myInput + " filter:links",
-            'include_entities': true,
-            'include_rts': true,
-            'count' : 100,
-        };
-        if (since_id == 1) {
-            //first search request for this hashtag - get first tweets (old behaviour)
-            params['since_id'] = 1;
-        } else {
-            //get next 100 tweets with tweetid <= last tweetid from previous search request
-            //i.e. 100 tweets written before last tweet we got from search api before
-            params['max_id'] = since_id;
-            //btw: we'll receive the last tweet again. we should use since_id - 1,
-            //but since JavaScript can't handle 64 bit integers natively there's no easy way to do this.
-            //it's not perfect but since we're checking for duplicate links in process_data anyway it doesn't matter.
-        }
-        $.getJSON('http://search.twitter.com/search.json?callback=?', params, function(data) {
-            fetched_data = data.results.reverse();
-            process_data(minNrOfLinks);
-            showProfile(myInput);
-            //increment the search api request counter. we don't wanna send too many requests (limited by maxSearchApiRequests)
-            searchApiRequests++;
-            //only try to get more links IF: we don't have minNrOfLinks already AND
-            //we didn't use the API more than maxSearchApiRequests times AND
-            //the last api called contained tweets
-            if (linksTotal < minNrOfLinks && searchApiRequests <= maxSearchApiRequests && !lastResultEmpty) {
-                getLinks(myInput);
-            }
-            else {
-	            //get rid of loading message if loading class is still applied
-	            if ($('#status').hasClass('state-loading')) {
-                	$('#status').removeClass('state-loading alert alert-info').html('');
-                	}
+    this.init = function(url, container) {
+        $.getJSON(this.embedCacheUrl + url + '&maxwidth=370&callback?', function(embed) {
+            // maxwidth needed for correct multimedia element size
+            if(embed.error) {
+                console.log("Error on requesting '"+link+"': "+embed.error);
+            } else {
+                tw.title = embed.title;
+                tw.description = embed.description;
+                tw.url = embed.url;
+                tw.provider = embed.provider_name;
+                tw.provider_url = embed.provider_url;
+                tw.img_url = embed.thumbnail_url;
+                tw.img_width = embed.thumbnail_width;
+                tw.author = embed.author_name;
+                tw.author_url = embed.author_url;
+                tw.type = embed.type; // used to distinguish links from audio and video
+                tw.multimedia = embed.html;
+                tw.render(container);
             }
         });
+    },
+    this.render = function(container) {
 
-    } else if (myInput == "owntimeline") { // if user is looking at his/her own timeline
-	    var params = {
-	        'include_entities': true,
-	        'include_rts': true,
-	        'since_id': since_id, // changed from 1 to now using parameter of the function (for #issue63)
-	        'count' : tweetsToFetch,
-	    };
-        $.getJSON("http://tlinkstimeline.appspot.com/statuses/home_timeline.json?callback=?", params, function(data) {
-	        fetched_data = data.reverse();
-	        // if we're autorefreshing we don't want to show the teasers right away but notify the user 
-	        if (autorefresh == true && fetched_data.length > 0) { 
-	        	console.log("autorefresh successful, data found");
-	        	$('#autorefresh').html(fetched_data.length + " links found (click to load)").removeClass("hidden");
-	        	document.title = "(" + fetched_data.length + ") Your timeline, instacurated";
-	        	$('#autorefresh').click(function() {
-	        		$('#autorefresh').addClass("hidden");
-	        		document.title = "Your timeline, instacurated";
-					process_data(minNrOfLinks);
-					});	        	
-	        }
-	        // if we're running this for the first time, just proceed 
-	        else {process_data(minNrOfLinks);} 
-	        
-        });
+        var blocked = ["Img", "Img.ly", "Mediagazer"];
 
-    } else if (myInput.substring(0,4) == "list:") { // if user is looking at a list of his/her
-
-	    var params = {
-	        'owner_screen_name': davidbauer, // TODO: replace davidbauer with authenticating user (where's that info stored?) 
-	        'slug': myInput.substring(5,100),
-	        'include_entities': true,
-	        'include_rts': true,
-	        'since_id': 1,
-	        'count' : tweetsToFetch,
-	    };
-	    $.getJSON('https://api.twitter.com/1.1/lists/statuses.json?callback=?', params, function(data) { // request needs to go to the server script
-	        fetched_data = data.reverse();
-	        process_data(minNrOfLinks);
-	    });
-
-
-
-    } else { // if user is looking for a username
-	    var params = {
-	        'screen_name': myInput,
-	        'include_entities': true,
-	        'include_rts': true,
-	        'since_id': 1,
-	        'count' : tweetsToFetch,
-	    };
-	    $.getJSON('https://api.twitter.com/1/statuses/user_timeline.json?&callback=?', params, function(data) {
-	        fetched_data = data.reverse();
-	        process_data(minNrOfLinks);
-	    });
-    }
-};
-
-function process_data(nrOfLinks, autorefresh) {
-    //stop processing if there are no tweets
-    if (fetched_data.length === 0) {
-    	warn("This user hasn't tweeted anything yet.");
-    	$('#status').html("");
-    	$('.userinfo').html("");
-        lastResultEmpty = true;
-    	return;
-    }
-    lastResultEmpty = false;
-
-    processing = true;
-    var n = nrOfLinks;
-    while (n > 0) {
-        var tweet = fetched_data.pop();
-        if (typeof tweet == "undefined") {
-            break;
-        }
-        var text = tweet.text;
-        var retweets = tweet.retweet_count;
-        var tweepster = {}
-        tweepster.img = tweet.user.profile_image_url;
-        tweepster.realname = tweet.user.name;
-        tweepster.accountname = tweet.user.screen_name;
-        tweetId = tweet.id_str; // needed later to link to tweet
-        var tstamp = createTimestamp(tweet.created_at);
-        
-        
-        $.each(tweet.entities.urls, function(i, url_entity) {
-            var link = url_entity.expanded_url;
-            // we check if we have already stored this link inside
-            // our global links hash, this could be done more efficient
-            // but I guess it's good enough for the moment.
-            if(typeof links[link] == "undefined" && text[0] != "@") { // exclude duplicate links and links from @-replies
-                links[link] = true;
-                n -= 1;
-                linksTotal += 1;
-                {generateEmbed(linksTotal, link, tweetId, text, tstamp, tweepster,retweets, autorefresh)} ;
-                console.log("The link-url is: " + link + " and the tweet text is " + text + ". The tweet has been retweeted " + retweets + " times.");
-
-                if (n == 0) {
-                    // we break the each loop here since we have enough links found
-                    processing = false;
-                    return false;
-                }
-            }
-        });
-    }
-    since_id = tweetId; // set since_id to last tweetId processed here so we can continue from there for the next autorefresh
-};
-
-// create a timestamp string
-function createTimestamp (createdAt) {
-	
-	var date = new Date(createdAt);
-	var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-	return date.getDate() + ". " + months[date.getMonth()] + " " + date.getFullYear();
-};
-
-//create oEmbed of link from tweet
-function generateEmbed(linksTotal, link, tweetId, text, tstamp, tweepster, retweets, autorefresh) {
-
-    //cache container DOM element
-    var embeds_columns = $('#embeds div.column');
-    var c = (linksTotal -1) % embeds_columns.length;
- 	var $column = $(embeds_columns[c]);
- 	var $status = $('#status');
- 	
-    $.getJSON('./embed-cache.php?url=' + link + '&maxwidth=370', function(embed) { // maxwidth needed for correct multimedia element size
-        if(embed.error) {
-            console.log("Error on requesting '"+link+"': "+embed.error);
-        } else {
-            var title = embed.title,
-                description = embed.description,
-                url = embed.url,
-                provider = embed.provider_name,
-                provider_url = embed.provider_url,
-                img_url = embed.thumbnail_url,
-                img_width = embed.thumbnail_width,
-                author = embed.author_name,
-                author_url = embed.author_url,
-                type = embed.type, // used to distinguish links from audio and video
-                multimedia = embed.html,
-
-                //cache teaser DOM elements for faster access
-                $teaser = $('<div class="teaser"/>'),
+        if (jQuery.inArray(tw.provider, blocked) == -1 && tw.title != undefined) {
+            // exclude blocked providers
+            //
+            //cache teaser DOM elements for faster access
+            var $teaser = $('<div class="teaser"/>'),
                 $media = $('<div class="media" />'),
                 $article = $('<article class="article" />'),
                 $title = $('<h3 />'),
                 $description = $('<div class="description" />'),
                 $credits = $('<div class="credits" />'),
                 $instapaper = $('<div class="instapaper"/>'),
-                $recommender = $('<div class="recommender"/>'), 
+                $recommender = $('<div class="recommender"/>'),
                 $tweet = $('<span class="rectext" />'),
                 $tweetLink = $('<a><i class="icon-twitter small"></i> </a>');
-                
-                
+            $teaser.append($media);
+            $teaser.append($article);
+            $article.append($credits);
+            $article.append($title);
+            $article.append($description);
+            $teaser.append($recommender);
 
-            //get rid of loading message if loading class is still applied
-            if ($status.hasClass('state-loading')) {
-                $status.removeClass('state-loading alert alert-info').html('');
+            // crop long description
+            if (this.description && this.description.length > 140) {
+                this.description = jQuery.trim(this.description).substring(0, 139).split(" ").slice(0, -1).join(" ") + " [...]"};
+            // crop long titles
+            if (this.title && this.title.length > 100) {
+                this.title = jQuery.trim(this.title).substring(0, 99).split(" ").slice(0, -1).join(" ") + " [...]"};
+
+            //assign correct content to all those elements
+            if (this.type === "link" && this.img_url !== undefined && this.img_width >= 150) {
+                $media.html("<a href='" + this.link + "' target='_blank'>" + "<img src='" + this.img_url + "'></a><br/>")
             }
-            
-            
-            //create a new teaser element with all subelements
+            else if (this.type === "video" || this.type === "rich" || this.type === "audio") {
+                $teaser.addClass(this.type); // add type as class to teaser for later styling
+                $media.html(this.multimedia + "<br/>")
+            };
 
-            var blocked = ["Img", "Img.ly", "Mediagazer"];
+            $title.html("<a href='" + this.link + "' target='_blank'>" + this.title + "</a><br />");
+            if (this.description !== undefined)
+                $description.html(this.description + " <a href='"+ this.link + "' target='_blank'>read on</a>");
 
-            if (jQuery.inArray(provider,blocked) == -1 && title != undefined) { // exclude blocked providers
+            if (this.author !== undefined) {
+                $credits.html("<a href='" + this.author_url + "' title='" + this.author + "' target='_blank'>" + this.author + "</a>, " + "<a href='" + this.provider_url + "' title='" + this.provider + "' target='_blank'>" + this.provider + "</a>");}
+            else {$credits.html("<a href='" + this.provider_url + "' title='" + this.provider + "' target='_blank'>" + this.provider + "</a>");};
 
-            	if (autorefresh == true) {$column.prepend($teaser)}
-            	else {$column.append($teaser)};
-            	$teaser.append($media);
-            	$teaser.append($article);
-            	$article.append($credits);
-            	$article.append($title);
-            	$article.append($description); 	
-            	$teaser.append($recommender);
-           	
-
-            	// crop long description
-            	if (description && description.length > 140) {description = jQuery.trim(description).substring(0, 139).split(" ").slice(0, -1).join(" ") + " [...]"};
-            	// crop long titles
-            	if (title && title.length > 100) {title = jQuery.trim(title).substring(0, 99).split(" ").slice(0, -1).join(" ") + " [...]"};
-
-            	//assign correct content to all those elements
-            	if (type == "link" && img_url != undefined && img_width >= 150) {
-            			$media.html("<a href='" + link + "' target='_blank'>" + "<img src='" + img_url + "'></a><br/>")
-            			}
-            	else if (type == "video" || type == "rich" || type == "audio") {
-            			$teaser.addClass(type); // add type as class to teaser for later styling
-            			$media.html(multimedia + "<br/>")
-            			};
-
-            	$title.html("<a href='" + link + "' target='_blank'>" + title + "</a><br />");
-            	if (description != undefined) $description.html(description + " <a href='"+ link + "' target='_blank'>read on</a>");
-
-            	if (author != undefined) {$credits.html("<a href='" + author_url + "' title='" + author + "' target='_blank'>" + author + "</a>, " + "<a href='" + provider_url + "' title='" + provider + "' target='_blank'>" + provider + "</a>");}
-            	else {$credits.html("<a href='" + provider_url + "' title='" + provider + "' target='_blank'>" + provider + "</a>");};
-
-            	//add instapaper button
-            	if (type == "link") {
-            	$instapaper.html("<iframe border='0' scrolling='no' width='78' height='17' allowtransparency='true' frameborder='0' style='margin-bottom: -3px; z-index: 1338; border: 0px; background-color: transparent; overflow: hidden;' src='http://www.instapaper.com/e2?url=" + link + "&title=" + title + "&description=" + description + " (via instacurate.com)'></iframe>");
-            	}
-            	
-            	$recommender.html("<img src='" + tweepster.img + "'>" + "<p class='rectext'>Shared by <a href='http://www.twitter.com/" + tweepster.accountname + "'>" + tweepster.realname + "</a>.");
-				
-				$recommender.append($tweet);
-            	$tweet.append($tweetLink);
-            	$recommender.append($instapaper);
-
+            //add instapaper button
+            if (this.type === "link") {
+                $instapaper.html("<iframe border='0' scrolling='no' width='78' height='17' allowtransparency='true' frameborder='0' style='margin-bottom: -3px; z-index: 1338; border: 0px; background-color: transparent; overflow: hidden;' src='http://www.instapaper.com/e2?url=" + this.link + "&title=" + this.title + "&description=" + this.description + " (via instacurate.com)'></iframe>");
             }
+
+            $recommender.html("<img src='" + this.img + "'>" + "<p class='rectext'>Shared by <a href='http://www.twitter.com/" + this.accountname + "'>" + this.realname + "</a>.");
+            $recommender.append($tweet);
+            $tweet.append($tweetLink);
+            $recommender.append($instapaper);
 
             //add the tweet as a tooltip
-            $tweetLink.append(tstamp).attr('href', 'http://twitter.com/'+ tweepster.accountname +'/status/'+ tweetId).popover({
-                title: "<blockquote class='twitter-tweet'><p>"+text+"</p></blockquote><script src='//platform.twitter.com/widgets.js' charset='utf-8'></script>",
+            $tweetLink.append(this.tstamp).attr('href', 'http://twitter.com/'+ this.accountname +'/status/'+ this.id).popover({
+                title: "<blockquote class='twitter-tweet'><p>"+ this.text+"</p></blockquote><script src='//platform.twitter.com/widgets.js' charset='utf-8'></script>",
                 html: true,
                 trigger: "hover",
                 placement: "top"
             });
-            
-            if (retweets != 0) {$tweetLink.append(", " + retweets + " retweets.")};
-            
-        }
-    });
 
-};
-
-/*
-var tambur_conn, tambur_stream;
-function enable_realtime_update(myInput) {
-    var ready = function(id, nick) {
-        $.getJSON("http://149.126.0.41/token?id=" + id +"&nick="+nick+"&callback=?", function(res){
-            var list = jQuery.parseJSON(res.initial_list);
-            $("#readrightnow a").remove();
-            if (list.length > 0) {
-                for (var i=0; i<list.length; i++) {
-                    var a = $("<a href='#' class='linkinput btn btn-mini' style='display:none' data-user='"+list[i]+"'>"+list[i]+"</a> ");
-                    $("#readrightnow").append(a);
-                    a.fadeIn();
-                }
-                $("#readrightnow").fadeIn();
+            if (this.retweets != 0) {
+                $tweetLink.append(", " + this.retweets + " retweets.")
             }
-            tambur_stream.enable_presence(nick, res.token);
-            tambur_stream.onpresence = function(e) {
-                var nick = e[0], presence_state = e[1];
-                if(nick == 'presence-placeholder') {
-                    return;
-                }
-                if(presence_state == 'up' && $("#readrightnow a[data-user='" + nick + "']").length == 0) {
-                    var links = $("#readrightnow a");
-                    $("#readrightnow").show();
-                    if(links.length > 40) {
-                        // we remove the oldest entry
-                        links[0].fadeOut().remove();
-                    }
-                    var a = $("<a href='#' class='linkinput btn btn-mini' style='display:none' data-user='" + nick + "'>" + nick + "</a> ")
-                    $("#readrightnow").append(a);
-                    a.fadeIn();
-                } else if(presence_state == 'down') {
-                    $("#readrightnow a[data-user='" + nick + "']").fadeOut().remove();
-                }
-            };
-        });
+            // add tweet to the dom
+            container.append($teaser);
+        }
     };
-    if(typeof tambur_conn == "undefined") {
-        // connect to tambur.io
-        tambur_conn = new tambur.Connection("a1892d4076a7421aa9e1ac6b2fb5dd68", "twitter-times-11");
-        tambur_stream = tambur_conn.get_stream("current");
-        tambur_stream.ready = function() {
-            ready(tambur_conn.subscriber_id, myInput);
-        }
-    } else {
-        // we already have a tambur connection
-        // we disable presence
-        tambur_stream.disable_presence();
-        tambur_stream.ondisabled = function() {
-            ready(tambur_conn.subscriber_id, myInput);
-        };
-    }
-
+    this.init(urlEntity.expanded_url, container);
 }
-*/
 
-var isLoggedIn = false;
+function TimeLine(query) {
+    this.query = query;
+    this.processedTweets = {};
+    this.nrOfProcessedLinks = 0;
+    this.tweetsToFetch = 200;
+    this.minNrOfLinks = 12;
+    this.lastTweetId = 1;
+    this.isLoggedIn = false;
+    this.loggedInUser = null;
+    this.processing = false;
+    this.rawTweets = [];
+    this.twitterMaxSearchApiRequests = 10;
+    this.autoRefresh = true;
+    this.autoRefreshInterval = 60000;
+    this.autoRefreshTimer = null;
+    this.appServerUrl = "http://tlinkstimeline.appspot.com";
+    this.isLoggedInCallback = function() {
+        $(".signin").toggleClass('hide');
+        $('.twi').html("Here's your personalised news site, based on your Twitter timeline.");
+    };
 
-$(document).ready(function(){
-    $(document).scroll(function(e){ // load more links when user scolls down
-        var myInput = "owntimeline";
-        if (processing || (myInput.length == 0 && isLoggedIn == false))
-            return false;
+    this.init = function() {
+        var tl = this;
+        if (typeof tl.loggedInUser === 'undefined') {
+            $.getJSON(tl.appServerUrl + "/loggedinuser?callback=?", function(username){
+                if (username) {
+                    tl.loggedInUser = username;
+                    tl.init();
+                }
+            });
+        } else {
+            // check if the given user is logged in
+            $.getJSON(tl.appServerUrl + "/loggedin?callback=?", function(isLoggedIn){
+                tl.isLoggedIn = isLoggedIn;
+                if (isLoggedIn) {
+                    tl.isLoggedInCallback();
+                    tl.query = typeof query === 'undefined' || query === '' ? 'owntimeline' : query;
+                    tl.fetchTweetsForQuery();
+                } else {
+                    // place logic here to deal with non-registered users
+                }
+            });
+            $(document).unbind('scroll');
+            $(document).scroll(function(e){ // load more links when user scolls down
+                if (tl.processing || tl.isLoggedIn == false)
+                    return false;
 
-        if ($(window).scrollTop() >= ($(document).height() - $(window).height())*0.8){
-            processing = true;
-            $('#status').addClass('state-loading alert alert-info').html("<i class='icon-spinner icon-spin'></i> Loading more stories...");
-            process_data(minNrOfLinks);
-        }
-    }); 
-         
-    $.getJSON("http://tlinkstimeline.appspot.com/loggedin?callback=?", function(LoggedIn){
-        if (LoggedIn) {
-            $(".signin").toggleClass('hide');
-            isLoggedIn = true;
-            $('.twi').html("Here's your personalised news site, based on your Twitter timeline.");
-            }
-        if (LoggedIn && window.location.hash == "") {
-            getLinks("owntimeline", 1, false); // since_id = 1, autorefresh = false
-            label("",isLoggedIn);
-            setInterval(function(){getLinks("owntimeline",tweetId,true)},60000); // autorefresh every 60 seconds, use tweetId as new since_id #issue 63
-            
-        }
-        
-    });
-    
-    
-     /* get logged in user's name for further use */  
-      $.getJSON("http://tlinkstimeline.appspot.com/loggedinuser?callback=?", function(loggedinuser){
-        if (loggedinuser) {
-        	var thename = loggedinuser;
-            console.log("hello " + thename);
-            $("#jPanelMenu-menu ul").prepend("<li><i class='icon-user'></i> Welcome, @" + thename + "</li>"); // add username to navigation
-            };
+                if ($(window).scrollTop() >= ($(document).height() - $(window).height())*0.8){
+                    $('#status').addClass('state-loading alert alert-info').html("<i class='icon-spinner icon-spin'></i> Loading more stories...");
+                    tl.fetchTweetsForQuery();
+                }
             });
 
+        }
+    };
+
+    this.fetchTweetsForQuery = function() {
+        var tl = this;
+        tl.processing = true;
+        var params = {
+            'include_entities': true,
+            'include_rts': true,
+            'since_id': tl.lastTweetId,
+            'count' : tl.tweetsToFetch,
+        };
+        if (tl.query === 'owntimeline') {
+            $.getJSON(tl.appServerUrl + "/statuses/home_timeline.json?callback=?", params, function(data) {
+                tl.rawTweets = tl.rawTweets.concat(data.reverse());
+                tl._processTweets();
+                if (tl.nrOfProcessedLinks < tl.minNrOfLinks) {
+                    tl.fetchTweetsForQuery();
+                } else {
+                    tl.finishedFetchTweetsForQuery();
+                }
+            });
+        } else if (tl.query.substring(0,4) == "list:") {
+            // if user is looking at a list of his/her
+            params['slug'] = tl.query.substring(5,100);
+            params['owner_screen_name'] = tl.loggedInUser;
+	        $.getJSON('https://api.twitter.com/1.1/lists/statuses.json?callback=?', params, function(data) {
+                // request needs to go to the server script
+                tl.rawTweets = tl.rawTweets.concat(data.reverse());
+                tl._processTweets();
+                if (tl.nrOfProcessedLinks < tl.minNrOfLinks) {
+                    tl.fetchTweetsForQuery();
+                } else {
+                    tl.finishedFetchTweetsForQuery();
+                }
+	        });
+        } else if (tl.query[0] === '@') {
+            params['screen_name'] = tl.query.substring(1,100);
+            $.getJSON(tl.appServerUrl + '/statuses/user_timeline.json?&callback=?', params, function(data) {
+                // request needs to go to the server script
+                tl.rawTweets = tl.rawTweets.concat(data.reverse());
+                tl._processTweets();
+                if (tl.nrOfProcessedLinks < tl.minNrOfLinks) {
+                    tl.fetchTweetsForQuery();
+                } else {
+                    tl.finishedFetchTweetsForQuery();
+                }
+            });
+        } else {
+            params['q'] = tl.query + " filter:links";
+            if (tl.lastTweetId !== 1) {
+                //get next 100 tweets with tweetid <= last tweetid from previous search request
+                //i.e. 100 tweets written before last tweet we got from search api before
+                params['max_id'] = tl.lastTweetId;
+                //btw: we'll receive the last tweet again. we should use since_id - 1,
+                //but since JavaScript can't handle 64 bit integers natively there's no easy way to do this.
+                //it's not perfect but since we're checking for duplicate links in process_data anyway it doesn't matter.
+            }
+            $.getJSON('https://api.twitter.com/1.1/search/tweets.json?callback=?', params, function(data) {
+                    // request needs to go to the server script
+                    tl.rawTweets = tl.rawTweets.concat(data.reverse());
+                    //decrement the search api request counter. we don't wanna send too many requests (limited by maxSearchApiRequests)
+                    var nrOfFetchedTweets = data.results.length;
+                    if (nrOfFetchedTweets > 0) {
+                        tl._processTweets();
+                        tl.twitterMaxSearchApiRequests--;
+                    } else {
+                        tl.twitterMaxSearchApiRequests = 0;
+                    }
+                    //only try to get more links IF: we don't have minNrOfLinks already AND
+                    //we didn't use the API more than maxSearchApiRequests times AND
+                    //the last api called contained tweets
+                    if (tl.twitterMaxSearchApiRequests > 0 && tl.nrOfProcessedLinks < tl.minNrOfLinks) {
+                        tl.fetchTweetsForQuery();
+                    } else {
+                        tl.finishedFetchTweetsForQuery();
+                    }
+            });
+        }
+    };
+
+    this._processTweets = function() {
+        var tl = this;
+        var n = tl.minNrOfLinks;
+        while (n && tl.rawTweets.length > 0) {
+            var t = tl.rawTweets.pop();
+            if (typeof t === 'undefined') {
+                break;
+            }
+            //cache container DOM element
+            var embedCols = $('#embeds div.column');
+            var nrOfEmbedCols = embedCols.length;
+
+            $.each(t.entities.urls, function(i, urlEntity) {
+                var url = urlEntity.expanded_url;
+                if (typeof tl.processedTweets[url] === 'undefined' && t.text[0] !== '@') {
+                    // exclude duplicate links and links from @-replies
+                    tl.nrOfProcessedLinks++;
+                    n -= 1;
+                    var c = (tl.nrOfProcessedLinks -1) % nrOfEmbedCols;
+                    var $container = $(embedCols[c]);
+                    tl.lastTweetId = t.id_str; // store the last TweetId
+                    tl.processedTweets[url] = new Tweet(t, urlEntity, $container);
+                    if (n == 0) {
+                        return false;
+                    }
+                }
+            });
+        }
+    };
+
+    this.finishedFetchTweetsForQuery = function() {
+        //get rid of loading message if loading class is still applied
+        if ($('#status').hasClass('state-loading')) {
+            $('#status').removeClass('state-loading alert alert-info').html('');
+        }
+        var tl = this;
+        tl.processing = false;
+
+        tl.autoRefreshTimer = setTimeout(function() {
+            if (tl.autoRefresh) {
+                tl.fetchTweetsForQuery();
+            }
+        }, tl.autoRefreshInterval);
+
+    }
+
+    this.init();
+}
+
+$(document).ready(function() {
     //toggle supportbox
     $('.pull-me').click(function(event) {
         event.preventDefault();
@@ -610,6 +526,7 @@ $(document).ready(function(){
 		$('#supportbox').slideToggle('slow');
 	});
 
-});
+    //TODO: we have to remove main image
+    var t = new TimeLine();
 
-})(window, document, jQuery);
+});
