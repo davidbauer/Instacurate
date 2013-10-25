@@ -11,7 +11,8 @@ I'm a journalist, not a programmer. If you add some magic to the code (and I enc
 
 ![Instacurate Demo](http://instacurate.com/img/demo.png)
 
-*Latest release notes*
+Latest release notes
+--------------------
 API (working):
 new TimeLine(); will figure out if a Twitter user is logged in and show its timeline, if no user is logged in nothing happens
 new TimeLine('@username'); will show the timeline of another Twitter user
