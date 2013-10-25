@@ -527,6 +527,7 @@ $(document).ready(function() {
 	});
 
     //TODO: we have to remove main image
+    $('#demo').html("");
     var t = new TimeLine();
 
 });
