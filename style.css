@@ -46,6 +46,21 @@ a:hover.btn-info {text-decoration: none;color:white;}
 	border-radius:73px;
 	margin-left:auto;
 	margin-right:auto;}
+	
+.score {
+	background-color: #EFF7FF;
+	border: 1px solid rgba(36,215,255,0.7);
+	-webkit-border-radius: 999px;
+    -moz-border-radius: 999px;
+    border-radius: 999px;
+    behavior: url(PIE.htc);
+    height: 20px;
+    padding: 7px 5px 5px 5px;
+    text-align: center;
+    font: 16px Arial, sans-serif;
+    float:left;
+    margin-right:8px;
+}
 
 .userfollow {
 	width:250px; height:20px;margin-left:8px;margin-top:10px;
