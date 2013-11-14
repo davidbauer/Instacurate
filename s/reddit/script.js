@@ -96,8 +96,6 @@ function warn(message) {
 function getInput() {
     var myInput;
     
-    // TODO: Use Regex to check content of field
-    
     // TODO later: Check typed content against list of existing subreddits and autocomplete
     
     if (document.redditsearch.input.value == "") {
@@ -125,7 +123,7 @@ function label(myInput) {
 //extract links from subreddit
 var subreddit;
 var fetched_data = [];
-var postsToFetch = 100, minNrOfLinks = 25;
+var postsToFetch = 24, minNrOfLinks = 24;
 var linksTotal = 0;
 var processing; // used for scroll-loader
 var links = {}; // keep this hash, to check if we already know about a link.
@@ -291,7 +289,7 @@ function generateEmbed(linksTotal, link, text, score, comments, redditor, postli
             }
 
             //add the tweet as a tooltip
-            $rectext.append(tstamp).attr('target', '_blank').attr('href', 'http://www.reddit.com' + postlink).popover({
+            $rectext.append(/*tstamp + */" (view on reddit)").attr('target', '_blank').attr('href', 'http://www.reddit.com' + postlink).popover({
                 title: "<blockquote class='twitter-tweet'><p>"+text+"</p></blockquote>",
                 html: true,
                 trigger: "hover",
@@ -303,14 +301,6 @@ function generateEmbed(linksTotal, link, text, score, comments, redditor, postli
 
 };
 
-/*/ get tweet count for given link
-function getTweetCount(link) {
-
-	$.getJSON('http://urls.api.twitter.com/1/urls/count.json?url=' + link + '&callback=?', function(linkdata) {
-            return linkdata.count;
-        });
-};
-*/
 
 /*
 var tambur_conn, tambur_stream;
