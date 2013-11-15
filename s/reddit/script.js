@@ -269,6 +269,11 @@ function generateEmbed(linksTotal, link, text, score, comments, redditor, postli
             	if (type == "link" && img_url != undefined && img_width >= 150) {
             			$media.html("<a href='" + link + "' target='_blank'>" + "<img src='" + img_url + "'></a><br/>")
             			}
+            			
+            	else if (type == "photo" && url != undefined) {
+            			$media.html("<a href='" + link + "' target='_blank'>" + "<img src='" + url + "'></a><br/>")
+            			}
+            			
             	else if (type == "video" || type == "rich" || type == "audio") {
             			$teaser.addClass(type); // add type as class to teaser for later styling
             			$media.html(multimedia + "<br/>")
@@ -379,18 +384,9 @@ $(document).scroll(function(e){
 
 
 $(document).ready(function(){
-        	
-    //toggle supportbox
-    $('.pull-me').click(function(event) {
-        event.preventDefault();
-
-        //remove class on supportbox (allowing for correct initiation of Twitter buttons, see issue #35)
-        if ($('#supportbox').hasClass('state-hidden')) {
-            $('#supportbox').removeClass('state-hidden').hide();
-        }
-
-		$('#supportbox').slideToggle('slow');
-	});
+    
+    // load some default content to start with
+    // getLinks("all");
 
 });
 

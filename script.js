@@ -289,6 +289,11 @@ function Tweet(t, urlEntity, container) {
             if (this.type === "link" && this.img_url !== undefined && this.img_width >= 150) {
                 $media.html("<a href='" + this.link + "' target='_blank'>" + "<img src='" + this.img_url + "'></a><br/>")
             }
+            
+            else if (type == "photo" && url != undefined) {
+            			$media.html("<a href='" + link + "' target='_blank'>" + "<img src='" + url + "'></a><br/>")
+            			}
+            
             else if (this.type === "video" || this.type === "rich" || this.type === "audio") {
                 $teaser.addClass(this.type); // add type as class to teaser for later styling
                 $media.html(this.multimedia + "<br/>")
@@ -514,19 +519,8 @@ function TimeLine(query) {
 }
 
 $(document).ready(function() {
-    //toggle supportbox
-    $('.pull-me').click(function(event) {
-        event.preventDefault();
-
-        //remove class on supportbox (allowing for correct initiation of Twitter buttons)
-        if ($('#supportbox').hasClass('state-hidden')) {
-            $('#supportbox').removeClass('state-hidden').hide();
-        }
-
-		$('#supportbox').slideToggle('slow');
-	});
-
-    //TODO: we have to remove main image
+    
+    //remove demo image
     $('#demo').html("");
     var t = new TimeLine();
 
