@@ -290,8 +290,8 @@ function Tweet(t, urlEntity, container) {
                 $media.html("<a href='" + this.link + "' target='_blank'>" + "<img src='" + this.img_url + "'></a><br/>")
             }
             
-            else if (type == "photo" && url != undefined) {
-            			$media.html("<a href='" + link + "' target='_blank'>" + "<img src='" + url + "'></a><br/>")
+            else if (this.type == "photo" && this.url != undefined) {
+            			$media.html("<a href='" + this.link + "' target='_blank'>" + "<img src='" + this.url + "'></a><br/>")
             			}
             
             else if (this.type === "video" || this.type === "rich" || this.type === "audio") {
