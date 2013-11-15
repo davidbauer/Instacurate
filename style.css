@@ -61,9 +61,10 @@ a:hover.btn-info {text-decoration: none;color:white;}
     float:left;
     margin-right:8px;
 }
-
+/*
 nav {float: left;padding: 5px;position: absolute;left:30px;}
 nav a:hover {text-decoration: none; background-color: rgba(36,215,255,0.1); }
+*/
 
 .userfollow {
 	width:250px; height:20px;margin-left:8px;margin-top:10px;
@@ -320,32 +321,32 @@ nav a:hover {text-decoration: none; background-color: rgba(36,215,255,0.1); }
 	padding:5px;}
 
 #jPanelMenu-menu {
-    background: #3b3b3b;
+    background: rgba(0,116,136,0.3);
 }
-#jPanelMenu-menu ul {
-    border-bottom: 1px solid #484848;
+
+#jPanelMenu-menu a {
+   text-decoration: none;
+}
+
+#jPanelMenu-menu ul.navi {
     list-style: none;
     margin-left: 0px;
 }
 
-
-#jPanelMenu-menu li {
-    background: #3b3b3b;
-    background: -o-linear-gradient(top,  #3e3e3e,  #383838);
-    background: -ms-linear-gradient(top,  #3e3e3e,  #383838);
-    background: -moz-linear-gradient(top,  #3e3e3e,  #383838);
-    background: -webkit-gradient(linear,  left top,  left bottom,  color-stop(0,  #3e3e3e),  color-stop(1,  #383838));
-    background: -webkit-linear-gradient(#3e3e3e,  #383838);
-    background: linear-gradient(top,  #3e3e3e,  #383838);
+#jPanelMenu-menu ul.navi li {
     font-weight: 300;
-    font-weight: 700;
+    font-size: 15px;
     display: block;
     padding: 0.8em 1em;
-    border-top: 1px solid #484848;
-    border-bottom: 1px solid #2e2e2e;
+    border-bottom: 1px solid rgba(0,85,100,0.3);
     text-decoration: none;
-    text-shadow: 0 -1px 2px #222;
     color: #f7f7f7;
+}
+
+#support {margin: 0.5em 1em; }
+
+#support h3 {font-weight: 500;
+	font-size: 14px;
 }
 
 
@@ -355,29 +356,8 @@ nav a:hover {text-decoration: none; background-color: rgba(36,215,255,0.1); }
     color: #f7f7f7;
 }
 #jPanelMenu-menu a:hover li, #jPanelMenu-menu a:focus li {
-    background: #404040;
-    background: -o-linear-gradient(top,  #484848,  #383838);
-    background: -ms-linear-gradient(top,  #484848,  #383838);
-    background: -moz-linear-gradient(top,  #484848,  #383838);
-    background: -webkit-gradient(linear,  left top,  left bottom,  color-stop(0,  #484848),  color-stop(1,  #383838));
-    background: -webkit-linear-gradient(#484848,  #383838);
-    background: linear-gradient(top,  #484848,  #383838);
     text-decoration: none;
-}
-#jPanelMenu-menu li a:active {
-    background: #363636;
-    background: -o-linear-gradient(top,  #3e3e3e,  #2e2e2e);
-    background: -ms-linear-gradient(top,  #3e3e3e,  #2e2e2e);
-    background: -moz-linear-gradient(top,  #3e3e3e,  #2e2e2e);
-    background: -webkit-gradient(linear,  left top,  left bottom,  color-stop(0,  #3e3e3e),  color-stop(1,  #2e2e2e));
-    background: -webkit-linear-gradient(#3e3e3e,  #2e2e2e);
-    background: linear-gradient(top,  #3e3e3e,  #2e2e2e);
-    -moz-box-shadow: 0 2px 7px #222 inset;
-    -webkit-box-shadow: 0 2px 7px #222 inset;
-    box-shadow: 0 2px 7px #222 inset;
-    border-top-color: #222;
-    padding-top: 0.55em;
-    padding-bottom: 0.45em;
+    background: rgba(0,116,136,0.5);
 }
 
 

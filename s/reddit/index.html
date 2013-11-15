@@ -46,23 +46,18 @@
     </head>
     <body>
 
-
-        <div id="wrapper">
-
-        
-			<nav>
-            	<a href="http://www.instacurate.com"><i class="icon-twitter"></i> Instacurate for Twitter</a> | <a href="http://www.weeklyfilet.com"><i class="icon-envelope"></i> Weekly Filet</a>
-        </nav>
-   
-
-        
-            <!-- Begin Page Content -->
-            <div class="container">
-            
-            	
-
-                <div id="supportbox" class="state-hidden">
-                    <p>Thanks for supporting us. You rock.</p>
+<!-- Sliding Navigation-->
+        <a href="#menu" class="menu-trigger"><i class='icon-reorder icon-large'></i> <i class='icon-arrow-left'></i> There's more</a>
+        <nav id="jPanelMenu-menu">
+	        <ul class="navi">
+		        <a href="http://www.instacurate.com"><li><i class='icon-twitter'></i> Instacurate for Twitter</li></a>
+		        <a href="http://www.instacurate.com/s/reddit"><li><i class='icon-list-alt'></i> Instacurate for Reddit</li></a>
+		        <a href="http://blog.instacurate.com/"><li><i class='icon-book'></i> Blog</li></a>
+	        </ul>
+           
+	        <div id="support">
+	        
+	        <h3>Instacurate needs your support.</h3>
                     <div class="s share">
                         <h4>Spread the word</h4>
                         <ul>
@@ -118,12 +113,18 @@
                         <a href="https://twitter.com/backflip" class="twitter-follow-button" data-show-count="false">Follow @backflip</a>
                         <a href="https://twitter.com/oliverwehn" class="twitter-follow-button" data-show-count="false">Follow @oliverwehn</a>
                     </div>
+	        
+	        
+	        
+        </div> <!-- /support-->
+        
+		</nav>
 
-                </div>
-                <p class="slide"><a href="#" class="pull-me">Like this site? Support it!</a></p>
 
-
-
+        <div id="wrapper">
+    
+            <!-- Begin Page Content -->
+            <div class="container">
 
                 <div class="page-header">
                     <h1>Instacurate</h1>
@@ -199,6 +200,12 @@
         <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
         <!--<script src="http://static.tambur.io/tambur.min.js"></script>-->
         <script src="script.js"></script>
+        <script src="../../jpanelmenu.js"></script>
+        <script>
+	        //initiate panel-menu
+			var jPM = $.jPanelMenu();
+			jPM.on();
+        </script>
         <!-- tweet embeds -->
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
