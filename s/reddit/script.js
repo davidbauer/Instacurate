@@ -82,7 +82,7 @@ $(function() {
         var myInput = $(this).attr('data-input');
 
         setInput(myInput);
-
+        
         $('#searchform').submit();
     });
 });
@@ -159,11 +159,15 @@ function process_data(nrOfLinks) {
     var n = nrOfLinks;
     while (n > 0) {
         var post = fetched_data.pop();
-        console.log("post is: " + post);
-        console.log("post title: " + post.data.title);
-        if (typeof post == "undefined") {
+        
+        if (post == "undefined") {
+            console.log("post undefined, can't do nothing with it");
             break;
         }
+        
+        console.log("post is: " + post);
+        console.log("post title: " + post.data.title);
+        
         var link = post.data.url;
         var text = post.data.title;
         var score = post.data.score;
@@ -358,10 +362,9 @@ function enable_realtime_update(myInput) {
 }
 */
 
-// TODO: make the reload by scrolling work again
 
-$(document).ready(function(){
-    $(document).scroll(function(e){
+// TODO: make the reload by scrolling work again
+$(document).scroll(function(e){
         var myInput = "";
         if (processing || myInput.length == 0)
             return false;
@@ -372,23 +375,11 @@ $(document).ready(function(){
             process_data(minNrOfLinks);
         }
     });
+    
 
-/*
-    $.getJSON("http://tlinkstimeline.appspot.com/loggedin?callback=?", function(LoggedIn){
-        if (LoggedIn) {
-            $(".signin").toggleClass('hide');
-            isLoggedIn = true;
-            $('.twi').html("Here's your personalised news site, based on your Twitter timeline.");
-            }
-        if (LoggedIn && window.location.hash == "") {
-            getLinks("owntimeline");
-            label("",isLoggedIn);
-        }
-        
-    });
-*/
-       
-	
+
+$(document).ready(function(){
+        	
     //toggle supportbox
     $('.pull-me').click(function(event) {
         event.preventDefault();

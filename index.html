@@ -45,25 +45,23 @@
 
     </head>
     <body>
-    
-    <!-- Sliding Navigation
-        <a href="#menu" class="menu-trigger"><i class='icon-reorder icon-2x'></i></a>
-        <nav id="jPanelMenu-menu">
-	        <ul>
-		        <a href="#"><li><i class='icon-home'></i> Home</li></a>
-		        <a href="#"><li><i class='icon-th-list'></i> List: News</li></a>
-		        <a href="#"><li><i class='icon-th-list'></i> List: Music</li></a>
-		        <a href="#"><li><i class='icon-search'></i> Search: "#longreads"</li></a>
-		        <a href="#"><li><i class='icon-cog'></i> Settings</li></a>
-	        </ul>
-        </nav>
-    -->
 
         <div id="wrapper">
         
+        <nav>
+            	<a href="http://www.instacurate.com/s/reddit"><i class="icon-arrow-up"></i> Instacurate for Reddit</a> | <a href="http://www.weeklyfilet.com"><i class="icon-envelope"></i> Weekly Filet</a>
+        </nav>
         
         
-        
+        <!-- Sliding Navigation
+        <a href="#menu" class="menu-trigger"><i class='icon-reorder icon-large'></i></a>
+        <nav id="jPanelMenu-menu">
+	        <ul>
+		        <li><i class='icon-home'></i>Home</li>
+		        <li><i class='icon-cog'></i>Settings</li>
+	        </ul>
+        </nav>
+        -->
             <!-- Begin Page Content -->
             <div class="container">
 
@@ -144,7 +142,7 @@
 	                <p class="lead twi">Turn your Twitter timeline into a personalised news site, in an instant.</p>
                         <p style="margin-top:15px;"><a class="btn-large btn-info signin" type="button" href="http://tlinkstimeline.appspot.com/login"><i class="icon-twitter"></i>&nbsp;Sign in with Twitter</a></p>
                         <a class="btn btn-small signin lead hide" href="http://tlinkstimeline.appspot.com/logout?next=http://www.instacurate.com"><i class="icon-twitter"></i>&nbsp;Log out</a>
-         
+	                    
                     </div>
 
                 </div> <!- #useractions ->
@@ -163,12 +161,7 @@
                 
                 <div id="embeds" class="row">
                     <!-- add more columns if you like -->
-                    <div class="column span4">
-	                    <div id="autorefresh" class="alert alert-info hidden">
-							<button type="button" class="close" data-dismiss="alert">&times;</button>
-							n new links
-  						</div>
-                    </div>
+                    <div class="column span4"></div>
                     <div class="column span4"></div>
                     <div class="column span4"></div>
                     
@@ -199,21 +192,9 @@
         <!-- Scripts (at the end of the page for faster page build-up-->
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script src="bootstrap/js/bootstrap.min.js"></script>
-        <!--<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
-        <script src="http://static.tambur.io/tambur.min.js"></script>-->
+        <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+        <!--<script src="http://static.tambur.io/tambur.min.js"></script>-->
         <script src="script.js"></script>
-        <script src="jPanelMenu-1.1.0.min.js"></script>
-        <script>
-	        //initiate panel-menu, more options can be defined, see jpanelmenu.com
-var jPM = $.jPanelMenu();
-var jPM = $.jPanelMenu({
-    menu: '#menu',
-    trigger: '.menu-trigger',
-    duration: 100
-});
-jPM.on();
-        </script>
-        
         <!-- tweet embeds -->
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
