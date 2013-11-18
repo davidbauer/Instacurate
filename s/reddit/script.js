@@ -101,6 +101,11 @@ function getInput() {
     if (document.redditsearch.input.value == "") {
     	warn("You can't enter nothing and expect something to show up.");
     }
+    
+    else if (document.redditsearch.input.value.substr(0, 5) == "feed=") { //check if a user feed has been entered
+		myInput = document.redditsearch.input.value;
+		return myInput;
+    }
 
 	else {
 		myInput = document.redditsearch.input.value;
@@ -114,14 +119,24 @@ function setInput(myInput) {
 
 
 function label(myInput) {
-		$('h1').html(myInput + ", instacurated"); // add input name to headline
-		$('.twi').html("");
-		document.title = myInput + ", instacurated"; // add input to page title
+		
+		if (myInput.substring(0,5) == "feed=") {
+			$('h1').html("Your front page, instacurated"); // add input name to headline
+			$('.twi').html("");
+			document.title = "Your front page, instacurated"; // add input to page title	
+		}
+		
+		else {
+			$('h1').html(myInput + ", instacurated"); // add input name to headline
+			$('.twi').html("");
+			document.title = myInput + ", instacurated"; // add input to page title
+		}
 }
 
 
 //extract links from subreddit
 var subreddit;
+var thisuser;
 var fetched_data = [];
 var postsToFetch = 24, minNrOfLinks = 24;
 var linksTotal = 0;
@@ -132,7 +147,12 @@ function getLinks(myInput) {
     $('#status').addClass('state-loading alert alert-info').html("<i class='icon-spinner icon-spin'></i> Checking...");
 
     // Save for reuse
-    subreddit = myInput;
+    if (myInput.substring(0, 5) == "feed=") {
+	    thisuser = myInput;
+	    getFrontpage(thisuser);
+    }
+    else { 
+    	subreddit = myInput;
 
     // get data for subreddit via API
 	    var params = {
@@ -151,8 +171,30 @@ function getLinks(myInput) {
 	    .success(function() {
 	    	process_data(minNrOfLinks); 
 	    	$('#status').removeClass('alert-info').addClass('alert-success').html("<i class='icon-spinner icon-spin'></i> Compiling...");
-	    });   
+	    });
+	  };   
 };
+
+function getFrontpage(username) {
+	// get data for user via API
+	    var params = {
+	         'limit' : postsToFetch,
+	    };
+	    $.getJSON('http://www.reddit.com/.json?' + username + '&jsonp=?', params, function(data) {
+	        fetched_data = data.data.children.reverse();
+	        console.log(fetched_data.length + " posts fetched.");
+	        console.log(fetched_data[0].data.title);
+	        
+	    })
+	    .error(function() {
+	    	$('#status').html("");
+	    	warn("Something went wrong, we're sorry.");
+	    })
+	    .success(function() {
+	    	process_data(minNrOfLinks); 
+	    	$('#status').removeClass('alert-info').addClass('alert-success').html("<i class='icon-spinner icon-spin'></i> Compiling...");
+	    });
+}
 
 function process_data(nrOfLinks) {
     //stop processing if there are no posts with links
@@ -168,7 +210,7 @@ function process_data(nrOfLinks) {
     while (n > 0) {
         var post = fetched_data.pop();
         
-        if (post == "undefined") {
+        if (post == undefined) {
             console.log("post undefined, can't do nothing with it");
             break;
         }
