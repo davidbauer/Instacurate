@@ -129,7 +129,7 @@ var processing; // used for scroll-loader
 var links = {}; // keep this hash, to check if we already know about a link.
 
 function getLinks(myInput) {
-    $('#status').addClass('state-loading alert alert-info').html("<i class='icon-spinner icon-spin'></i> Compiling...");
+    $('#status').addClass('state-loading alert alert-info').html("<i class='icon-spinner icon-spin'></i> Checking...");
 
     // Save for reuse
     subreddit = myInput;
@@ -142,7 +142,15 @@ function getLinks(myInput) {
 	        fetched_data = data.data.children.reverse();
 	        console.log(fetched_data.length + " posts fetched.");
 	        console.log(fetched_data[0].data.title);
-	        process_data(minNrOfLinks);
+	        
+	    })
+	    .error(function() {
+	    	$('#status').html("");
+	    	warn("No such subreddit seems to exist. Try another one.");
+	    })
+	    .success(function() {
+	    	process_data(minNrOfLinks); 
+	    	$('#status').removeClass('alert-info').addClass('alert-success').html("<i class='icon-spinner icon-spin'></i> Compiling...");
 	    });   
 };
 
