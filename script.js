@@ -225,7 +225,7 @@ function Tweet(t, urlEntity, container) {
     this.link = urlEntity.expanded_url;
     // this.embedCacheUrl = 'http://instacurate.com/embed-cache.php?url=';
     // I used my own embed.ly API-Key so instacurate.com wont run into rate limits
-    this.embedCacheUrl = 'http://api.embed.ly/1/oembed?key=b7a73332e1314db5aca72ad7ffb12b55&url=';
+    this.embedCacheUrl = 'http://api.embed.ly/1/oembed?key=ab0fdaa34f634136bf4eb2325e040527&url=';
 
 	var date = new Date(t.created_at);
 	var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
