@@ -145,7 +145,7 @@
                                             <input class="span3" type="text" id="input" name="username" autofocus="autofocus">
                                             <button class="btn btn-primary" type="submit">Instacurate!</button>
                                         </div>
-                                        <div class ="suggestions hidden-phone">Try: <a href="#" class="linkinput" data-input="news">News</a>, <a href="#" class="linkinput" data-input="politics">Politics</a>, <a href="#" class="linkinput" data-input="technology">Technology</a>, <a href="#" class="linkinput" data-input="history">History</a>, <a href="#" class="linkinput" data-input="science">Science</a>, <a href="#" class="linkinput" data-input="fullmoviesonyoutube">Full Movies on YouTube</a>, <a href="#" class="linkinput" data-input="dataisbeautiful">Data Is Beautiful</a>.</div>
+                                        <div class ="suggestions">Try: <a href="#" class="linkinput" data-input="news">News</a>, <a href="#" class="linkinput" data-input="politics">Politics</a>, <a href="#" class="linkinput" data-input="technology">Technology</a>, <a href="#" class="linkinput" data-input="history">History</a>, <a href="#" class="linkinput" data-input="science">Science</a>, <a href="#" class="linkinput" data-input="fullmoviesonyoutube">Full Movies on YouTube</a>, <a href="#" class="linkinput" data-input="dataisbeautiful">Data Is Beautiful</a>.</div>
                                         <div id="readrightnow" style="display:none" class="suggestions hidden-phone">Instacurated by others: </div>
 
                                     </form>
@@ -203,8 +203,12 @@
         <script src="../../jpanelmenu.js"></script>
         <script>
 	        //initiate panel-menu
-			var jPM = $.jPanelMenu();
-			jPM.on();
+			var jPM = $.jPanelMenu({
+    menu: '#menu',
+    trigger: '.menu-trigger',
+    duration: 150
+});
+jPM.on();
         </script>
         <!-- tweet embeds -->
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
