@@ -206,8 +206,8 @@ function process_data(nrOfLinks) {
 
 // create a timestamp string
 function createTimestamp (createdAt) {	
-	var date = new Date(createdAt);
-	var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+	var date = new Date(createdAt*1000);
+	var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 	return date.getDate() + ". " + months[date.getMonth()] + " " + date.getFullYear();
 };
 
@@ -306,7 +306,7 @@ function generateEmbed(linksTotal, link, text, score, comments, redditor, postli
             }
 
             //add the tweet as a tooltip
-            $rectext.append(/*tstamp + */" (view on reddit)").attr('target', '_blank').attr('href', 'http://www.reddit.com' + postlink).popover({
+            $rectext.append(tstamp + " (view on reddit)").attr('target', '_blank').attr('href', 'http://www.reddit.com' + postlink).popover({
                 title: "<blockquote class='twitter-tweet'><p>"+text+"</p></blockquote>",
                 html: true,
                 trigger: "hover",
