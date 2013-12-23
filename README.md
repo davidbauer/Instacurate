@@ -13,21 +13,27 @@ I'm a journalist, not a programmer. If you add some magic to the code (and I enc
 
 Latest release notes
 --------------------
+
 API (working):
-new TimeLine(); will figure out if a Twitter user is logged in and show its timeline, if no user is logged in nothing happens
-new TimeLine('@username'); will show the timeline of another Twitter user
+
+* `new TimeLine()` - will figure out if a Twitter user is logged in and show its timeline, if no user is logged in nothing happens
+* `new TimeLine('@username')` - will show the timeline of another Twitter user
 
 API (not working):
-new TimeLine('query'); should create a Timeline given a query
-new TimeLine('list:...') should create a Timeline taking links of a twitter list of the logged in user
 
-Tweaking the TimeLine
+* `new TimeLine('query')` - should create a Timeline given a query
+* `new TimeLine('list:...')` - should create a Timeline taking links of a twitter list of the logged in user
+
+Tweaking the TimeLine: 
+
+```js
 var tl = new TimeLine();
 tl.tweetsToFetch = 200; // nr of tweets it should load in the buffer
 tl.minNrOfLinks = 12; // nr of links it should present in one cycle (initial load, scroll, auto-refresh)
 tl.twitterMaxSearchApiRequests = 10; // rate limit of nr of twitter api requests for this timeline
 tl.autoRefresh = true; // autoRefresh
 tl.autoRefreshInterval = 60000; // refresh interval in milis
+```
 
 open TODOs:
 [check the Issues tab to see all open tasks](https://github.com/davidbauer/instacurate/issues)
@@ -39,4 +45,3 @@ reimplement url-hash
 reimplement warning-messages
 the rendering-logic for the links can/should be further encapsulated.
 further improve OOP, this is just a first attempt
-
