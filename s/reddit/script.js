@@ -140,7 +140,7 @@ var thisuser;
 var fetched_data = [];
 var postsToFetch = 24, minNrOfLinks = 24;
 var linksTotal = 0;
-var processing; // used for scroll-loader
+var processing = true; // used for scroll-loader
 var links = {}; // keep this hash, to check if we already know about a link.
 
 function getLinks(myInput) {
@@ -202,10 +202,10 @@ function process_data(nrOfLinks) {
     	warn("This subreddit seems to have no recent links posted in it.");
     	$('#status').html("");
     	$('.userinfo').html("");
+    	processing = false;
     	return;
     }
 
-    processing = true;
     var n = nrOfLinks;
     while (n > 0) {
         var post = fetched_data.pop();
@@ -347,7 +347,7 @@ function generateEmbed(linksTotal, link, text, score, comments, redditor, postli
 
             }
 
-            //add the tweet as a tooltip
+            //add post title as a tooltip
             $rectext.append(tstamp + " (view on reddit)").attr('target', '_blank').attr('href', 'http://www.reddit.com' + postlink).popover({
                 title: "<blockquote class='twitter-tweet'><p>"+text+"</p></blockquote>",
                 html: true,
@@ -420,14 +420,14 @@ function enable_realtime_update(myInput) {
 
 // TODO: make the reload by scrolling work again
 $(document).scroll(function(e){
-        var myInput = "";
+        var myInput = document.redditsearch.input.value;
         if (processing || myInput.length == 0)
             return false;
 
         if ($(window).scrollTop() >= ($(document).height() - $(window).height())*0.8){
             processing = true;
             $('#status').addClass('state-loading alert alert-info').html("<i class='icon-spinner icon-spin'></i> Loading more links...");
-            process_data(minNrOfLinks);
+            process_data(12); // load 12 more links
         }
     });
     
