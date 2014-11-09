@@ -331,6 +331,7 @@ nav a:hover {text-decoration: none; background-color: rgba(36,215,255,0.1); }
 #jPanelMenu-menu ul.navi {
     list-style: none;
     margin-left: 0px;
+    padding: 0;
 }
 
 #jPanelMenu-menu ul.navi li {
