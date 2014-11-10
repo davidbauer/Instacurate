@@ -1,223 +1,263 @@
 <!DOCTYPE HTML>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Instacurate</title>
-        <meta name="description" content="Turn your Twitter timeline into a personalised news site, in an instant." />
-        <meta name="author" content="David Bauer" />
-        <meta name="keywords" content="Instacurate, Twitter, Curation, Links, Discovery, Twitter API" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta property="og:title" content="Instacurate"/>
-        <meta property="og:type" content="website"/>
-        <meta property="og:image" content="http://www.instacurate.com/img/demo.png"/>
-        <meta property="og:url" content="http://www.instacurate.com">
-        <meta property="og:description" content="Turn your Twitter timeline into a personalised news site, in an instant."/>
-        <!-- CSS -->
-        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-        <link rel="stylesheet" href="bootstrap/css/bootstrap-responsive.min.css">
-        <link rel="stylesheet" href="style.css">
-        <link rel="stylesheet" href="font-awesome.min.css">
-        <link rel="apple-touch-icon" href="touch-icons/apple-touch-icon.png" />
-        <link rel="apple-touch-icon" sizes="72x72" href="touch-icons/apple-touch-icon-72x72.png" />
-        <link rel="apple-touch-icon" sizes="114x114" href="touch-icons/apple-touch-icon-114x114.png" />
-        <link rel="apple-touch-icon" sizes="144x144" href="touch-icons/apple-touch-icon-144x144.png" />
-        
-        
-        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-        <!--[if lt IE 9]>
-            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>Instacurate</title>
+    <meta name="description" content="Turn your Twitter timeline into a personalised news site, in an instant."/>
+    <meta name="author" content="David Bauer"/>
+    <meta name="keywords" content="Instacurate, Twitter, Curation, Links, Discovery, Twitter API"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="Instacurate"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content="http://www.instacurate.com/img/demo.png"/>
+    <meta property="og:url" content="http://www.instacurate.com">
+    <meta property="og:description" content="Turn your Twitter timeline into a personalised news site, in an instant."/>
+    <!-- CSS -->
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="font-awesome.min.css">
+    <link rel="apple-touch-icon" href="touch-icons/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="touch-icons/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="touch-icons/apple-touch-icon-114x114.png"/>
+    <link rel="apple-touch-icon" sizes="144x144" href="touch-icons/apple-touch-icon-144x144.png"/>
 
-        <!-- Google Analytics -->
-        <script type="text/javascript">
 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-18717219-6']);
-  _gaq.push(['_trackPageview']);
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
+    <!-- Google Analytics -->
+    <script type="text/javascript">
 
-</script>
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-18717219-6']);
+        _gaq.push(['_trackPageview']);
 
-    </head>
-    <body>
-    
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+
+    </script>
+
+</head>
+<body>
     <!-- Sliding Navigation-->
-        <a href="#menu" class="menu-trigger"><i class='icon-reorder icon-large'></i> <i class='icon-arrow-left'></i> There's more</a>
-        <nav id="jPanelMenu-menu">
-	        <ul class="navi">
-		        <a href="http://www.instacurate.com"><li><i class='icon-twitter'></i> Instacurate for Twitter</li></a>
-		        <a href="http://www.instacurate.com/s/reddit"><li><i class='icon-list-alt'></i> Instacurate for Reddit</li></a>
-		        <a href="http://blog.instacurate.com/"><li><i class='icon-book'></i> Blog</li></a>
-	        </ul>
-           
-	        <div id="support">
-	        
-	        <h3>Instacurate needs your support.</h3>
-                    <div class="s share">
-                        <h4>Spread the word</h4>
-                        <ul>
-                        <li class="tw">
-                            <a href="https://twitter.com/share" class="twitter-share-button" data-text="Great site: Instacurate. Turn your Twitter timeline into a personalised news site, in an instant." data-via="davidbauer" data-size="small">Tweet</a>
-                        </li>
-                        <li class="g+">
-                            <!-- Fügen Sie dieses Tag an der Stelle ein, an der die +1-Schaltfläche erscheinen soll. -->
-                            <div class="g-plusone" data-size="medium"></div>
-                        </li>
-                        <li>
-                            <iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Flabs.davidbauer.ch%2Ftwitter-times&amp;send=false&amp;layout=button_count&amp;width=80&amp;show_faces=false&amp;font=arial&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=320131728095347" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:80px; height:21px;" allowTransparency="true"></iframe>
-                        </li>
+    <a href="#menu" class="menu-trigger"><i class='icon-reorder icon-large'></i> <i class='icon-arrow-left'></i> There's more</a>
+    <nav id="jPanelMenu-menu">
+        <ul class="navi">
+            <a href="http://www.instacurate.com">
+                <li><i class='icon-twitter'></i> Instacurate for Twitter</li>
+            </a>
+            <a href="http://www.instacurate.com/s/reddit">
+                <li><i class='icon-list-alt'></i> Instacurate for Reddit</li>
+            </a>
+            <a href="http://blog.instacurate.com/">
+                <li><i class='icon-book'></i> Blog</li>
+            </a>
+        </ul>
 
-                        </ul>
+        <div id="support">
 
-                    </div>
+            <h3>Instacurate needs your support.</h3>
 
-                    <div class="s donate">
-                        <h4>Help us pay the bills</h4>
-                        <ul>
-							<li class="flattr">
-								<a href="http://flattr.com/thing/1121214/Instacurate-get-the-best-out-of-Twitter-fast" target="_blank">
-								<img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" /></a>
-							</li>
-							<li class="paypal">
-								<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-									<input type="hidden" name="cmd" value="_s-xclick">
-									<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
-									">
-									<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-									<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-									</form>
+            <div class="s share">
+                <h4>Spread the word</h4>
+                <ul>
+                    <li class="tw">
+                        <a href="https://twitter.com/share" class="twitter-share-button"
+                           data-text="Great site: Instacurate. Turn your Twitter timeline into a personalised news site, in an instant."
+                           data-via="davidbauer" data-size="small">Tweet</a>
+                    </li>
+                    <li class="g+">
+                        <!-- Fügen Sie dieses Tag an der Stelle ein, an der die +1-Schaltfläche erscheinen soll. -->
+                        <div class="g-plusone" data-size="medium"></div>
+                    </li>
+                    <li>
+                        <iframe
+                          src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Flabs.davidbauer.ch%2Ftwitter-times&amp;send=false&amp;layout=button_count&amp;width=80&amp;show_faces=false&amp;font=arial&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=320131728095347"
+                          scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:80px; height:21px;"
+                          allowTransparency="true"></iframe>
+                    </li>
 
-							</li>
-                        </ul>
-                    </div>
+                </ul>
 
-                    <div class="s contribute">
-                        <h4>Improve the code</h4>
+            </div>
 
-                        <iframe src="http://ghbtns.com/github-btn.html?user=davidbauer&repo=Instacurate&type=watch"
-                        allowtransparency="true" frameborder="0" scrolling="0" width="53" height="20"></iframe>
-                        <iframe src="http://ghbtns.com/github-btn.html?user=davidbauer&repo=Instacurate&type=fork"
-                        allowtransparency="true" frameborder="0" scrolling="0" width="53" height="20"></iframe>
-                    </div>
+            <div class="s donate">
+                <h4>Help us pay the bills</h4>
+                <ul>
+                    <li class="flattr">
+                        <a href="http://flattr.com/thing/1121214/Instacurate-get-the-best-out-of-Twitter-fast"
+                           target="_blank">
+                            <img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this"
+                                 title="Flattr this" border="0"/></a>
+                    </li>
+                    <li class="paypal">
+                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+                            <input type="hidden" name="cmd" value="_s-xclick">
+                            <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----MIIHTwYJKoZIhvcNAQcEoIIHQDCCBzwCAQExggEwMIIBLAIBADCBlDCBjjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNBMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtQYXlQYWwgSW5jLjETMBEGA1UECxQKbGl2ZV9jZXJ0czERMA8GA1UEAxQIbGl2ZV9hcGkxHDAaBgkqhkiG9w0BCQEWDXJlQHBheXBhbC5jb20CAQAwDQYJKoZIhvcNAQEBBQAEgYCqE/+HY5j7Dd4a/CP2lswM7TcHyqBw0zZd8ZKb09NCN368Jt/hcdpB+453qP8Po5JWBKQXB0JpGq3zQvhKBSrvKGSsCFk86esG2hkZibnItL3qOSK4mNJriTPFrUfBv/30xphyI/aWqWFpYd4PWI2khxQ2zEmYWWibZk2GubDX3jELMAkGBSsOAwIaBQAwgcwGCSqGSIb3DQEHATAUBggqhkiG9w0DBwQI+TYZaglMgnCAgagiZQFhqgh/z6oppatfkzoT7V/AtfRjCZHQNO+b4RyrJog/gfdUa05GYGKmy9J8Ck2xl/S9SOWmJ6GBACimjGdpjoLG2XnFaCptIa2bTB+gbOTMAO+wEVfCc3x0Cke1msRCtpC+KVlhrTNdkPX1yUOL2ZNUhOLAvIr4St+FjVBgXxgslHsyzqHD9JfFqGHyKU3vpanvc1lmk3AHaZppc1AFLmW8Ia4ZpE6gggOHMIIDgzCCAuygAwIBAgIBADANBgkqhkiG9w0BAQUFADCBjjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNBMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtQYXlQYWwgSW5jLjETMBEGA1UECxQKbGl2ZV9jZXJ0czERMA8GA1UEAxQIbGl2ZV9hcGkxHDAaBgkqhkiG9w0BCQEWDXJlQHBheXBhbC5jb20wHhcNMDQwMjEzMTAxMzE1WhcNMzUwMjEzMTAxMzE1WjCBjjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNBMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtQYXlQYWwgSW5jLjETMBEGA1UECxQKbGl2ZV9jZXJ0czERMA8GA1UEAxQIbGl2ZV9hcGkxHDAaBgkqhkiG9w0BCQEWDXJlQHBheXBhbC5jb20wgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMFHTt38RMxLXJyO2SmS+Ndl72T7oKJ4u4uw+6awntALWh03PewmIJuzbALScsTS4sZoS1fKciBGoh11gIfHzylvkdNe/hJl66/RGqrj5rFb08sAABNTzDTiqqNpJeBsYs/c2aiGozptX2RlnBktH+SUNpAajW724Nv2Wvhif6sFAgMBAAGjge4wgeswHQYDVR0OBBYEFJaffLvGbxe9WT9S1wob7BDWZJRrMIG7BgNVHSMEgbMwgbCAFJaffLvGbxe9WT9S1wob7BDWZJRroYGUpIGRMIGOMQswCQYDVQQGEwJVUzELMAkGA1UECBMCQ0ExFjAUBgNVBAcTDU1vdW50YWluIFZpZXcxFDASBgNVBAoTC1BheVBhbCBJbmMuMRMwEQYDVQQLFApsaXZlX2NlcnRzMREwDwYDVQQDFAhsaXZlX2FwaTEcMBoGCSqGSIb3DQEJARYNcmVAcGF5cGFsLmNvbYIBADAMBgNVHRMEBTADAQH/MA0GCSqGSIb3DQEBBQUAA4GBAIFfOlaagFrl71+jq6OKidbWFSE+Q4FqROvdgIONth+8kSK//Y/4ihuE4Ymvzn5ceE3S/iBSQQMjyvb+s2TWbQYDwcp129OPIbD9epdr4tJOUNiSojw7BHwYRiPh58S1xGlFgHFXwrEBb3dgNbMUa+u4qectsMAXpVHnD9wIyfmHMYIBmjCCAZYCAQEwgZQwgY4xCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJDQTEWMBQGA1UEBxMNTW91bnRhaW4gVmlldzEUMBIGA1UEChMLUGF5UGFsIEluYy4xEzARBgNVBAsUCmxpdmVfY2VydHMxETAPBgNVBAMUCGxpdmVfYXBpMRwwGgYJKoZIhvcNAQkBFg1yZUBwYXlwYWwuY29tAgEAMAkGBSsOAwIaBQCgXTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0xMzAxMTYxNDUyNDJaMCMGCSqGSIb3DQEJBDEWBBSVylwpKusT+Q7xb3Gii1hio9YmzTANBgkqhkiG9w0BAQEFAASBgLmPehRny5EJnCi+hMVSsYDrg8ssCRkYmJfpmZvHtlguW6lCCTH63hhscIuVA6Uc31XySDNrogKWJ5hGFU413TZfEQLk6q0YRav8dfmvR+YoDL9P2bvVKsj6A7Vz8CXf4dhFhE27gV4JsE/u6p67joo6XcFS7mkE6rlQga5gZFRW-----END PKCS7-----
+                                        ">
+                            <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0"
+                                   name="submit" alt="PayPal - The safer, easier way to pay online!">
+                            <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1"
+                                 height="1">
+                        </form>
 
-                    <div class="s impressum">
-                        <h4>Follow us on Twitter</h4>
-                        <a href="https://twitter.com/instacurate" class="twitter-follow-button" data-show-count="false" data-dnt="true">Follow @instacurate</a>
-                        <a href="https://twitter.com/davidbauer" class="twitter-follow-button" data-show-count="false">Follow @davidbauer</a>
-                        <a href="https://twitter.com/der_graf" class="twitter-follow-button" data-show-count="false">Follow @der_graf</a>
-                        <a href="https://twitter.com/backflip" class="twitter-follow-button" data-show-count="false">Follow @backflip</a>
-                        <a href="https://twitter.com/oliverwehn" class="twitter-follow-button" data-show-count="false">Follow @oliverwehn</a>
-                    </div>
-	        
-	        
-	        
-        </div> <!-- /support-->
-        
-		</nav>
+                    </li>
+                </ul>
+            </div>
 
-        <div id="wrapper">
-        
-            <!-- Begin Page Content -->
-            <div class="container">
+            <div class="s contribute">
+                <h4>Improve the code</h4>
+                <iframe src="http://ghbtns.com/github-btn.html?user=davidbauer&repo=Instacurate&type=watch" allowtransparency="true" frameborder="0" scrolling="0" width="53" height="20"></iframe>
+                <iframe src="http://ghbtns.com/github-btn.html?user=davidbauer&repo=Instacurate&type=fork" allowtransparency="true" frameborder="0" scrolling="0" width="53" height="20"></iframe>
+            </div>
 
-                <div class="page-header">
-                    <h1>Instacurate</h1>
-                    
+            <div class="s impressum">
+                <h4>Follow us on Twitter</h4>
+                <a href="https://twitter.com/instacurate" class="twitter-follow-button" data-show-count="false" data-dnt="true">Follow @instacurate</a>
+                <a href="https://twitter.com/davidbauer" class="twitter-follow-button" data-show-count="false">Follow @davidbauer</a>
+                <a href="https://twitter.com/der_graf" class="twitter-follow-button" data-show-count="false">Follow @der_graf</a>
+                <a href="https://twitter.com/backflip" class="twitter-follow-button" data-show-count="false">Follow @backflip</a>
+                <a href="https://twitter.com/oliverwehn" class="twitter-follow-button" data-show-count="false">Follow @oliverwehn</a>
+            </div>
 
-               
+
+        </div>
+        <!-- /support-->
+
+    </nav>
+
+    <div id="wrapper">
+
+        <!-- Begin Page Content -->
+        <div class="container">
+
+            <div class="page-header">
+                <h1>Instacurate</h1>
+
 
                 <div id="useractions" class="row">
 
-                    <div class="column span12">
+                    <div class="column col-sm-12">
 
-	                <p class="lead twi">Turn your Twitter timeline into a personalised news site, in an instant.</p>
-                        <p style="margin-top:15px;"><a class="btn-large btn-info signin" type="button" href="http://tlinkstimeline.appspot.com/login"><i class="icon-twitter"></i>&nbsp;Sign in with Twitter</a></p>
-                        <a class="btn btn-small signin lead hide" href="http://tlinkstimeline.appspot.com/logout?next=http://www.instacurate.com"><i class="icon-twitter"></i>&nbsp;Log out</a>
-	                    
+                        <p class="lead twi">Turn your Twitter timeline into a personalised news site, in an instant.</p>
+
+                        <p style="margin-top:15px;">
+                            <a class="btn-large btn-info signin" type="button" href="http://tlinkstimeline.appspot.com/login">
+                                <i class="icon-twitter"></i>&nbsp;Sign in with Twitter
+                            </a>
+                        </p>
+                        <a class="btn btn-default btn-sm signin lead hide" href="http://tlinkstimeline.appspot.com/logout?next=http://www.instacurate.com"><i class="icon-twitter"></i>&nbsp;Log out</a>
+
                     </div>
 
-                </div> <!- #useractions ->
+                </div>
+                <!- #useractions ->
 
-				 </div> <!- page-header ->
-                <div class="row">
-                    <div id="status"></div>
-                </div>
-                
-                <div class="row">
-                    <div id="demo" class="column span12">
-                    	<p style="font-size:10px;">This is V0.9, <a href="http://blog.instacurate.com/post/56228935091/roadmap">see the roadmap</a>.</p>
-   	                    <img src="img/demo.png">
-                    </div>
-                </div>
-                
-                <div id="embeds" class="row">
-                    <!-- add more columns if you like -->
-                    <div class="column span4"></div>
-                    <div class="column span4"></div>
-                    <div class="column span4"></div>
-                    
-                 
+            </div>
+            <!- page-header ->
+            <div class="row">
+                <div id="status"></div>
+            </div>
+
+            <div class="row">
+                <div id="demo" class="column col-sm-12">
+                    <p style="font-size:10px;">This is V0.9, <a href="http://blog.instacurate.com/post/56228935091/roadmap">see
+                        the roadmap</a>.</p>
+                    <img src="img/demo.png">
                 </div>
             </div>
 
-            <!-- push footer down to the bottom of the page -->
-            <div id="push"></div>
-        </div> <!-- wrapper -->
+            <div id="embeds" class="row">
+                <!-- add more columns if you like -->
+                <div class="column col-sm-4"></div>
+                <div class="column col-sm-4"></div>
+                <div class="column col-sm-4"></div>
 
-        <div id="footer">
-            <div class="container">
-                <p class="muted credit">
-                This is a project by <a href="http://www.davidbauer.ch">David Bauer</a> to document the progress in <a href="http://www.davidbauer.ch/2013/01/25/how-i-learnt-to-code-in-one-year/">my quest to learn how to program</a>. Thanks to <a href="https://github.com/dergraf">Andre Graf</a> and <a href="https://github.com/backflip">Thomas Jaggi</a> for helping me with the tricky parts.
-                </p>
-                <p>
-                <a href="https://twitter.com/instacurate" class="twitter-follow-button" data-show-count="false" data-dnt="true">Follow @instacurate</a>
-                <a href="https://twitter.com/davidbauer" class="twitter-follow-button" data-show-count="false" data-dnt="true">Follow @davidbauer</a>
-                <iframe src="http://ghbtns.com/github-btn.html?user=davidbauer&repo=Twitter-Times&type=watch"
-                    allowtransparency="true" frameborder="0" scrolling="0" width="53" height="20"></iframe>
-                <iframe src="http://ghbtns.com/github-btn.html?user=davidbauer&repo=Twitter-Times&type=fork"
-                    allowtransparency="true" frameborder="0" scrolling="0" width="53" height="20"></iframe>
-                </p>
+
             </div>
         </div>
 
-        <!-- Scripts (at the end of the page for faster page build-up-->
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-        <script src="bootstrap/js/bootstrap.min.js"></script>
-        <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
-        <!--<script src="http://static.tambur.io/tambur.min.js"></script>-->
-        <script src="script.js"></script>
-        
-        <script src="jpanelmenu.js"></script>
-        <script>
-	        //initiate panel-menu
-var jPM = $.jPanelMenu();
-var jPM = $.jPanelMenu({
-    menu: '#menu',
-    trigger: '.menu-trigger',
-    duration: 150
-});
-jPM.on();
-        </script>
-        
-        
-        <!-- tweet embeds -->
-        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+        <!-- push footer down to the bottom of the page -->
+        <div id="push"></div>
+    </div>
+    <!-- wrapper -->
 
-        <!-- plusone button -->
-        <script type="text/javascript">
-            window.___gcfg = {lang: 'en-GB'};
+    <div id="footer">
+        <div class="container">
+            <p class="muted credit">
+                This is a project by <a href="http://www.davidbauer.ch">David Bauer</a> to document the progress in <a
+              href="http://www.davidbauer.ch/2013/01/25/how-i-learnt-to-code-in-one-year/">my quest to learn how to
+                program</a>. Thanks to <a href="https://github.com/dergraf">Andre Graf</a> and <a
+              href="https://github.com/backflip">Thomas Jaggi</a> for helping me with the tricky parts.
+            </p>
 
-            (function() {
-                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-                po.src = 'https://apis.google.com/js/plusone.js';
-                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-                })();
-        </script>
-        
-    </body>
+            <p>
+                <a href="https://twitter.com/instacurate" class="twitter-follow-button" data-show-count="false"
+                   data-dnt="true">Follow @instacurate</a>
+                <a href="https://twitter.com/davidbauer" class="twitter-follow-button" data-show-count="false"
+                   data-dnt="true">Follow @davidbauer</a>
+                <iframe src="http://ghbtns.com/github-btn.html?user=davidbauer&repo=Twitter-Times&type=watch"
+                        allowtransparency="true" frameborder="0" scrolling="0" width="53" height="20"></iframe>
+                <iframe src="http://ghbtns.com/github-btn.html?user=davidbauer&repo=Twitter-Times&type=fork"
+                        allowtransparency="true" frameborder="0" scrolling="0" width="53" height="20"></iframe>
+            </p>
+        </div>
+    </div>
+
+    <!-- Scripts (at the end of the page for faster page build-up-->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+    <!--<script src="http://static.tambur.io/tambur.min.js"></script>-->
+    <script src="script.js"></script>
+
+    <script src="jpanelmenu.js"></script>
+    <script>
+        //initiate panel-menu
+        var jPM = $.jPanelMenu();
+        var jPM = $.jPanelMenu({
+            menu: '#menu',
+            trigger: '.menu-trigger',
+            duration: 150
+        });
+        jPM.on();
+    </script>
+
+
+    <!-- tweet embeds -->
+    <script>
+        !function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (!d.getElementById(id)) {
+                js = d.createElement(s);
+                js.id = id;
+                js.src = "//platform.twitter.com/widgets.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }
+        }(document, "script", "twitter-wjs");
+    </script>
+
+    <!-- plusone button -->
+    <script type="text/javascript">
+        window.___gcfg = {lang: 'en-GB'};
+
+        (function () {
+            var po = document.createElement('script');
+            po.type = 'text/javascript';
+            po.async = true;
+            po.src = 'https://apis.google.com/js/plusone.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(po, s);
+        })();
+    </script>
+
+</body>
 </html>
