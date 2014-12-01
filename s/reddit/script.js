@@ -142,6 +142,7 @@ var postsToFetch = 24, minNrOfLinks = 24;
 var linksTotal = 0;
 var processing = true; // used for scroll-loader
 var links = {}; // keep this hash, to check if we already know about a link.
+var lastPost = '';
 
 function getLinks(myInput) {
     $('#status').addClass('state-loading alert alert-info').html("<i class='icon-spinner icon-spin'></i> Checking...");
@@ -153,14 +154,21 @@ function getLinks(myInput) {
     }
     else { 
 
+        // If the search is new, reset the last post variable
+        if (subreddit !== myInput) {
+            lastPost = '';
+        }
+
     	subreddit = myInput;
 
         // get data for subreddit via API
 	    var params = {
 	         'limit' : postsToFetch,
+             'after': lastPost
 	    };
 	    $.getJSON('http://www.reddit.com/r/'+ subreddit +'.json?&jsonp=?', params, function(data) {
 	        fetched_data = data.data.children.reverse();
+            lastPost = data.data.after;
 	        console.log(fetched_data.length + " posts fetched.");
 	        console.log(fetched_data[0].data.title);
 	        
@@ -432,7 +440,7 @@ $(document).scroll(function(e){
     if ($(window).scrollTop() >= ($(document).height() - $(window).height())*0.8){
         processing = true;
         $('#status').addClass('state-loading alert alert-info').html("<i class='icon-spinner icon-spin'></i> Loading more links...");
-        process_data(12); // load 12 more links
+        getLinks(myInput);
     }
 });
     
