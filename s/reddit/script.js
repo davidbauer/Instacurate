@@ -152,6 +152,7 @@ function getLinks(myInput) {
 	    getFrontpage(thisuser);
     }
     else { 
+
     	subreddit = myInput;
 
         // get data for subreddit via API
@@ -317,27 +318,31 @@ function generateEmbed(linksTotal, link, text, score, comments, redditor, postli
 
             	//assign correct content to all those elements
             	if (type == "link" && typeof img_url != undefined && img_width >= 150) {
-            			$media.html("<a href='" + link + "' target='_blank'>" + "<img src='" + img_url + "'></a><br/>")
-            			}
+            		$media.html("<a href='" + link + "' target='_blank'>" + "<img src='" + img_url + "'></a><br/>")
+            	}
             			
             	else if (type == "photo" && typeof url != undefined) {
-            			$media.html("<a href='" + link + "' target='_blank'>" + "<img src='" + url + "'></a><br/>")
-            			}
+            	   $media.html("<a href='" + link + "' target='_blank'>" + "<img src='" + url + "'></a><br/>")
+            	}
             			
             	else if (type == "video" || type == "rich" || type == "audio") {
-            			$teaser.addClass(type); // add type as class to teaser for later styling
-            			$media.html(multimedia + "<br/>")
-            			};
+            		$teaser.addClass(type); // add type as class to teaser for later styling
+            		$media.html(multimedia + "<br/>")
+            	};
 
             	$title.html("<a href='" + link + "' target='_blank'>" + title + "</a><br />");
-            	if (description != undefined) $description.html(description + " <a href='"+ link + "' target='_blank'>read on</a>");
+            	
+                if (description != undefined) $description.html(description + " <a href='"+ link + "' target='_blank'>read on</a>");
 
-            	if (author != undefined) {$credits.html("<a href='" + author_url + "' title='" + author + "' target='_blank'>" + author + "</a>, " + "<a href='" + provider_url + "' title='" + provider + "' target='_blank'>" + provider + "</a>");}
-            	else {$credits.html("<a href='" + provider_url + "' title='" + provider + "' target='_blank'>" + provider + "</a>");};
+            	if (author != undefined) {
+                    $credits.html("<a href='" + author_url + "' title='" + author + "' target='_blank'>" + author + "</a>, " + "<a href='" + provider_url + "' title='" + provider + "' target='_blank'>" + provider + "</a>");
+                } else {
+                    $credits.html("<a href='" + provider_url + "' title='" + provider + "' target='_blank'>" + provider + "</a>");
+                };
 
             	//add instapaper button
             	if (type == "link") {
-            	$instapaper.html("<iframe border='0' scrolling='no' width='78' height='17' allowtransparency='true' frameborder='0' style='margin-bottom: -3px; z-index: 1338; border: 0px; background-color: transparent; overflow: hidden;' src='http://www.instapaper.com/e2?url=" + link + "&title=" + title + "&description=" + description + " (via instacurate.com)'></iframe>");
+                	$instapaper.html("<iframe border='0' scrolling='no' width='78' height='17' allowtransparency='true' frameborder='0' style='margin-bottom: -3px; z-index: 1338; border: 0px; background-color: transparent; overflow: hidden;' src='http://www.instapaper.com/e2?url=" + link + "&title=" + title + "&description=" + description + " (via instacurate.com)'></iframe>");
             	}
             	
             	$recommender.html("<div class='score'>" + score + "</div><p class='rectext'>Shared by <a href='http://www.reddit.com/user/" + redditor + "'>" + redditor + "</a>");
@@ -420,16 +425,16 @@ function enable_realtime_update(myInput) {
 
 // TODO: make the reload by scrolling work again
 $(document).scroll(function(e){
-        var myInput = document.redditsearch.input.value;
-        if (processing || myInput.length == 0)
-            return false;
+    var myInput = document.redditsearch.input.value;
+    if (processing || myInput.length == 0)
+        return false;
 
-        if ($(window).scrollTop() >= ($(document).height() - $(window).height())*0.8){
-            processing = true;
-            $('#status').addClass('state-loading alert alert-info').html("<i class='icon-spinner icon-spin'></i> Loading more links...");
-            process_data(12); // load 12 more links
-        }
-    });
+    if ($(window).scrollTop() >= ($(document).height() - $(window).height())*0.8){
+        processing = true;
+        $('#status').addClass('state-loading alert alert-info').html("<i class='icon-spinner icon-spin'></i> Loading more links...");
+        process_data(12); // load 12 more links
+    }
+});
     
 
 
