@@ -224,7 +224,7 @@ function process_data(nrOfLinks) {
         var comments = post.data.num_comments;
         var redditor = post.data.author;
         var postlink = post.data.permalink;
-        var tstamp = createTimestamp(post.data.created); // TODO make this work properly
+        var tstamp = createTimestamp(post.data.created);
      
 			// TODO: check if this duplicate check still works
             // we check if we have already stored this link inside
@@ -246,11 +246,11 @@ function process_data(nrOfLinks) {
     }
 };
 
-// create a timestamp string
+// format timestamp as a string
 function createTimestamp (createdAt) {	
 	var date = new Date(createdAt*1000);
 	var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-	return date.getDate() + ". " + months[date.getMonth()] + " " + date.getFullYear();
+	return months[date.getMonth()] + " " date.getDate() + ", " + date.getFullYear();
 };
 
 //create oEmbed of link from tweet
