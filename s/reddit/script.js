@@ -36,12 +36,12 @@ $(function() {
 
     if (hash) {
 	   
-         // Do the search magic
-         getLinks(hash);
-         // enable_realtime_update(hash);
+        // Do the search magic
+        getLinks(hash);
+        // enable_realtime_update(hash);
        
-         // Fill field
-         field.value = hash;
+        // Fill field
+        field.value = hash;
     } 
     
     else {
@@ -60,7 +60,7 @@ $(function() {
         var myInput = getInput();
         
         if(myInput) {
-        
+
         	label(myInput);
 			
         	//proceed with subreddit
@@ -68,7 +68,7 @@ $(function() {
 	    	
 	    	// Update URL
 	    	window.location.hash = myInput;
-	    	};
+	    };
        
     });
 });
@@ -120,17 +120,17 @@ function setInput(myInput) {
 
 function label(myInput) {
 		
-		if (myInput.substring(0,5) == "feed=") {
-			$('h1').html("Your front page, instacurated"); // add input name to headline
-			$('.twi').html("");
-			document.title = "Your front page, instacurated"; // add input to page title	
-		}
-		
-		else {
-			$('h1').html(myInput + ", instacurated"); // add input name to headline
-			$('.twi').html("");
-			document.title = myInput + ", instacurated"; // add input to page title
-		}
+	if (myInput.substring(0,5) == "feed=") {
+		$('h1').html("Your front page, instacurated"); // add input name to headline
+		$('.twi').html("");
+		document.title = "Your front page, instacurated"; // add input to page title	
+	}
+	
+	else {
+		$('h1').html(myInput + ", instacurated"); // add input name to headline
+		$('.twi').html("");
+		document.title = myInput + ", instacurated"; // add input to page title
+	}
 }
 
 
@@ -154,7 +154,7 @@ function getLinks(myInput) {
     else { 
     	subreddit = myInput;
 
-    // get data for subreddit via API
+        // get data for subreddit via API
 	    var params = {
 	         'limit' : postsToFetch,
 	    };
@@ -172,28 +172,28 @@ function getLinks(myInput) {
 	    	process_data(minNrOfLinks); 
 	    	$('#status').removeClass('alert-info').addClass('alert-success').html("<i class='icon-spinner icon-spin'></i> Compiling...");
 	    });
-	  };   
+	};   
 };
 
 function getFrontpage(username) {
 	// get data for user via API
-	    var params = {
-	         'limit' : postsToFetch,
-	    };
-	    $.getJSON('http://www.reddit.com/.json?' + username + '&jsonp=?', params, function(data) {
-	        fetched_data = data.data.children.reverse();
-	        console.log(fetched_data.length + " posts fetched.");
-	        console.log(fetched_data[0].data.title);
-	        
-	    })
-	    .error(function() {
-	    	$('#status').html("");
-	    	warn("Something went wrong, we're sorry.");
-	    })
-	    .success(function() {
-	    	process_data(minNrOfLinks); 
-	    	$('#status').removeClass('alert-info').addClass('alert-success').html("<i class='icon-spinner icon-spin'></i> Compiling...");
-	    });
+    var params = {
+         'limit' : postsToFetch,
+    };
+    $.getJSON('http://www.reddit.com/.json?' + username + '&jsonp=?', params, function(data) {
+        fetched_data = data.data.children.reverse();
+        console.log(fetched_data.length + " posts fetched.");
+        console.log(fetched_data[0].data.title);
+        
+    })
+    .error(function() {
+    	$('#status').html("");
+    	warn("Something went wrong, we're sorry.");
+    })
+    .success(function() {
+    	process_data(minNrOfLinks); 
+    	$('#status').removeClass('alert-info').addClass('alert-success').html("<i class='icon-spinner icon-spin'></i> Compiling...");
+    });
 }
 
 function process_data(nrOfLinks) {
@@ -226,23 +226,23 @@ function process_data(nrOfLinks) {
         var postlink = post.data.permalink;
         var tstamp = createTimestamp(post.data.created);
      
-			// TODO: check if this duplicate check still works
-            // we check if we have already stored this link inside
-            // our global links hash, this could be done more efficient
-            // but I guess it's good enough for the moment.
-            if(typeof links[link] == "undefined") { // exclude duplicate links
-                links[link] = true;
-                n -= 1;
-                linksTotal += 1;
-                generateEmbed(linksTotal, link, text, score, comments, redditor, postlink, tstamp);
-                console.log("The link-url is: " + link + " and the title text is " + text + ". The post has a score of " + score + ".");
-				console.log(tstamp + " timestamp");
-                if (n == 0) {
-                    // we break the each loop here since we have enough links found
-                    processing = false;
-                    return false;
-                }
-            }   
+		// TODO: check if this duplicate check still works
+        // we check if we have already stored this link inside
+        // our global links hash, this could be done more efficient
+        // but I guess it's good enough for the moment.
+        if(typeof links[link] == "undefined") { // exclude duplicate links
+            links[link] = true;
+            n -= 1;
+            linksTotal += 1;
+            generateEmbed(linksTotal, link, text, score, comments, redditor, postlink, tstamp);
+            console.log("The link-url is: " + link + " and the title text is " + text + ". The post has a score of " + score + ".");
+			console.log(tstamp + " timestamp");
+            if (n == 0) {
+                // we break the each loop here since we have enough links found
+                processing = false;
+                return false;
+            }
+        }   
     }
 };
 
@@ -264,7 +264,7 @@ function generateEmbed(linksTotal, link, text, score, comments, redditor, postli
  	
     $.getJSON('../../embed-cache.php?url=' + link + '&maxwidth=370', function(embed) { // maxwidth needed for correct multimedia element size
         if(embed.error) {
-            console.log("Error on requesting '"+link+"': "+embed.error);
+            console.log("Error on requesting '" + link + "': " + embed.error);
         } else {
             var title = embed.title,
                 description = embed.description,
@@ -300,7 +300,7 @@ function generateEmbed(linksTotal, link, text, score, comments, redditor, postli
 
             var blocked = []; // array of blocked providers
 
-            if (jQuery.inArray(provider,blocked) == -1 && title != undefined) { // exclude blocked providers
+            if (jQuery.inArray(provider,blocked) == -1 && typeof title != undefined) { // exclude blocked providers
 
             	$column.append($teaser);
             	$teaser.append($media);
@@ -316,11 +316,11 @@ function generateEmbed(linksTotal, link, text, score, comments, redditor, postli
             	if (title && title.length > 100) {title = jQuery.trim(title).substring(0, 99).split(" ").slice(0, -1).join(" ") + " [...]"};
 
             	//assign correct content to all those elements
-            	if (type == "link" && img_url != undefined && img_width >= 150) {
+            	if (type == "link" && typeof img_url != undefined && img_width >= 150) {
             			$media.html("<a href='" + link + "' target='_blank'>" + "<img src='" + img_url + "'></a><br/>")
             			}
             			
-            	else if (type == "photo" && url != undefined) {
+            	else if (type == "photo" && typeof url != undefined) {
             			$media.html("<a href='" + link + "' target='_blank'>" + "<img src='" + url + "'></a><br/>")
             			}
             			
