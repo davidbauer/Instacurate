@@ -35,19 +35,19 @@ $(function() {
         field = document.redditsearch.input;
 
     if (hash) {
-	   
+
         // Do the search magic
         getLinks(hash);
         // enable_realtime_update(hash);
-       
+
         // Fill field
         field.value = hash;
-    } 
-    
+    }
+
     else {
         // enable_realtime_update("switzerland"); // TODO: Get Tambur realtime sneakpeek to work again
     }
-    
+
     $('#searchform').submit(function(e) {
         // Stop the form from sending and reloading the page
         e.preventDefault();
@@ -58,18 +58,18 @@ $(function() {
 
         // Get the typed subreddit
         var myInput = getInput();
-        
+
         if(myInput) {
 
         	label(myInput);
-			
+
         	//proceed with subreddit
 			getLinks(myInput);
-	    	
+
 	    	// Update URL
 	    	window.location.hash = myInput;
 	    };
-       
+
     });
 });
 
@@ -82,7 +82,7 @@ $(function() {
         var myInput = $(this).attr('data-input');
 
         setInput(myInput);
-        
+
         $('#searchform').submit();
     });
 });
@@ -95,13 +95,13 @@ function warn(message) {
 // store subreddit given via input
 function getInput() {
     var myInput;
-    
+
     // TODO later: Check typed content against list of existing subreddits and autocomplete
-    
+
     if (document.redditsearch.input.value == "") {
     	warn("You can't enter nothing and expect something to show up.");
     }
-    
+
     else if (document.redditsearch.input.value.substr(0, 5) == "feed=") { //check if a user feed has been entered
 		myInput = document.redditsearch.input.value;
 		return myInput;
@@ -119,13 +119,13 @@ function setInput(myInput) {
 
 
 function label(myInput) {
-		
+
 	if (myInput.substring(0,5) == "feed=") {
 		$('h1').html("Your front page, instacurated"); // add input name to headline
 		$('.twi').html("");
-		document.title = "Your front page, instacurated"; // add input to page title	
+		document.title = "Your front page, instacurated"; // add input to page title
 	}
-	
+
 	else {
 		$('h1').html(myInput + ", instacurated"); // add input name to headline
 		$('.twi').html("");
@@ -152,7 +152,7 @@ function getLinks(myInput) {
 	    thisuser = myInput;
 	    getFrontpage(thisuser);
     }
-    else { 
+    else {
 
         // If the search is new, reset the last post variable
         if (subreddit !== myInput) {
@@ -170,17 +170,17 @@ function getLinks(myInput) {
 	        fetched_data = data.data.children.reverse();
             lastPost = data.data.after;
 	        console.log(fetched_data.length + " posts fetched.");
-	        
+
 	    })
 	    .error(function() {
 	    	$('#status').html("");
 	    	warn("No such subreddit seems to exist. Try another one.");
 	    })
 	    .success(function() {
-	    	process_data(minNrOfLinks); 
+	    	process_data(minNrOfLinks);
 	    	$('#status').removeClass('alert-info').addClass('alert-success').html("<i class='icon-spinner icon-spin'></i> Compiling...");
 	    });
-	};   
+	};
 };
 
 function getFrontpage(username) {
@@ -192,14 +192,14 @@ function getFrontpage(username) {
         fetched_data = data.data.children.reverse();
         console.log(fetched_data.length + " posts fetched.");
         console.log(fetched_data[0].data.title);
-        
+
     })
     .error(function() {
     	$('#status').html("");
     	warn("Something went wrong, we're sorry.");
     })
     .success(function() {
-    	process_data(minNrOfLinks); 
+    	process_data(minNrOfLinks);
     	$('#status').removeClass('alert-info').addClass('alert-success').html("<i class='icon-spinner icon-spin'></i> Compiling...");
     });
 }
@@ -214,17 +214,19 @@ function process_data(nrOfLinks) {
     	return;
     }
 
-    var n = nrOfLinks;
+    var n = nrOfLinks,
+        embedLinks = [],
+        embedPosts = [];
     while (n > 0) {
         var post = fetched_data.pop();
-        
+
         if (post == undefined) {
             console.log("post undefined, can't do nothing with it");
             break;
         }
-        
+
         console.log("post title: " + post.data.title);
-        
+
         var link = post.data.url;
         var text = post.data.title;
         var score = post.data.score;
@@ -232,7 +234,7 @@ function process_data(nrOfLinks) {
         var redditor = post.data.author;
         var postlink = post.data.permalink;
         var tstamp = createTimestamp(post.data.created);
-     
+
 		// TODO: check if this duplicate check still works
         // we check if we have already stored this link inside
         // our global links hash, this could be done more efficient
@@ -241,135 +243,161 @@ function process_data(nrOfLinks) {
             links[link] = true;
             n -= 1;
             linksTotal += 1;
-            generateEmbed(linksTotal, link, text, score, comments, redditor, postlink, tstamp);
-            console.log("The link-url is: " + link + " and the title text is " + text + ". The post has a score of " + score + ".");
-			console.log(tstamp + " timestamp");
+
+            embedLinks.push(link);
+            embedPosts.push([ text, score, comments, redditor, postlink, tstamp ]);
+            //generateEmbed(linksTotal, link, text, score, comments, redditor, postlink, tstamp);
+            console.log("The link-url is: " + link + " and the title text is " + text + ". The post has a score of " + score + "!");
+			      console.log(tstamp + " timestamp");
             if (n == 0) {
                 // we break the each loop here since we have enough links found
                 processing = false;
-                return false;
+                break;
             }
-        }   
+        }
     }
+    processLinks(linksTotal, embedLinks, embedPosts);
 };
 
 // format timestamp as a string
-function createTimestamp (createdAt) {	
+function createTimestamp (createdAt) {
 	var date = new Date(createdAt*1000);
 	var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 	return months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
 };
 
+// process links
+function processLinks(total, links, postdata) {
+  if(console) console.log('Processing ' + links.length + ' links.');
+  $.ajax('../../embed-cache.php', {
+    type: 'get',
+    dataType: 'json',
+    data: {
+      url: links,
+      maxwidth: 360
+    },
+    error: function(bla, error) {
+      alert(error);
+    },
+    success: function(response) {
+      var cache = response.cache,
+          index = total - links.length,
+          args;
+      for(var i=0, cnt=cache.length; i<cnt; i=i+1) {
+        if(cache[i]) {
+          args = [index, cache[i]];
+          Array.prototype.push.call(args, postdata[i]);
+          generateEmbed.apply(this, args);
+          index += 1;
+        }
+      }
+      for(i=0, cnt=response.errors.length; i<cnt; i=i+1) {
+        if(console) console.log('Error: '+errors[i]);
+      }
+   }
+  });
+}
+
 //create oEmbed of link from tweet
-function generateEmbed(linksTotal, link, text, score, comments, redditor, postlink, tstamp) {
+function generateEmbed(linksTotal, embed, text, score, comments, redditor, postlink, tstamp) {
 
     //cache container DOM element
     var embeds_columns = $('#embeds div.column');
     var c = (linksTotal -1) % embeds_columns.length;
- 	var $column = $(embeds_columns[c]);
- 	var $status = $('#status');
- 	
-    $.getJSON('../../embed-cache.php?url=' + link + '&maxwidth=360', function(embed) { // maxwidth needed for correct multimedia element size
-        if(embed.error) {
-            console.log("Error on requesting '" + link + "': " + embed.error);
+  	var $column = $(embeds_columns[c]);
+  	var $status = $('#status');
+
+    var title = embed.title,
+        description = embed.description,
+        url = embed.url,
+        provider = embed.provider_name,
+        provider_url = embed.provider_url,
+        img_url = embed.thumbnail_url,
+        img_width = embed.thumbnail_width,
+        author = embed.author_name,
+        author_url = embed.author_url,
+        type = embed.type, // used to distinguish links from audio and video
+        multimedia = embed.html,
+
+
+        //cache teaser DOM elements for faster access
+        $teaser = $('<div class="teaser"/>'),
+        $media = $('<div class="media" />'),
+        $article = $('<article class="article" />'),
+        $title = $('<h3 />'),
+        $description = $('<div class="description" />'),
+        $credits = $('<div class="credits" />'),
+        $instapaper = $('<div class="instapaper"/>'),
+        $recommender = $('<div class="recommender"/>'),
+        $rectext = $('<a class="rectext" />');
+
+    //get rid of loading message if loading class is still applied
+    if ($status.hasClass('state-loading')) {
+        $status.removeClass('state-loading alert alert-info').html('');
+    }
+
+    //create a new teaser element with all subelements
+
+    var blocked = []; // array of blocked providers
+
+    if (jQuery.inArray(provider,blocked) == -1 && typeof title != undefined) { // exclude blocked providers
+
+    	$column.append($teaser);
+    	$teaser.append($media);
+    	$teaser.append($article);
+    	$article.append($credits);
+    	$article.append($title);
+    	$article.append($description);
+    	$teaser.append($recommender);
+
+    	// crop long description
+    	if (description && description.length > 140) {description = jQuery.trim(description).substring(0, 139).split(" ").slice(0, -1).join(" ") + " [...]"};
+    	// crop long titles
+    	if (title && title.length > 100) {title = jQuery.trim(title).substring(0, 99).split(" ").slice(0, -1).join(" ") + " [...]"};
+
+    	//assign correct content to all those elements
+    	if (type == "link" && typeof img_url != undefined && img_width >= 150) {
+    		$media.html("<a href='" + url + "' target='_blank'>" + "<img src='" + img_url + "'></a><br/>")
+    	}
+
+    	else if (type == "photo" && typeof url != undefined) {
+    	   $media.html("<a href='" + url + "' target='_blank'>" + "<img src='" + url + "'></a><br/>")
+    	}
+
+    	else if (type == "video" || type == "rich" || type == "audio") {
+    		$teaser.addClass(type); // add type as class to teaser for later styling
+    		$media.html(multimedia + "<br/>")
+    	};
+
+    	if (title != undefined) {$title.html("<a href='" + url + "' target='_blank'>" + title + "</a><br />");}
+
+        if (description != undefined) {$description.html(description + " <a href='"+ url + "' target='_blank'>read on</a>");}
+
+    	if (author != undefined) {
+            $credits.html("<a href='" + author_url + "' title='" + author + "' target='_blank'>" + author + "</a>, " + "<a href='" + provider_url + "' title='" + provider + "' target='_blank'>" + provider + "</a>");
         } else {
-            var title = embed.title,
-                description = embed.description,
-                url = embed.url,
-                provider = embed.provider_name,
-                provider_url = embed.provider_url,
-                img_url = embed.thumbnail_url,
-                img_width = embed.thumbnail_width,
-                author = embed.author_name,
-                author_url = embed.author_url,
-                type = embed.type, // used to distinguish links from audio and video
-                multimedia = embed.html,
+            $credits.html("<a href='" + provider_url + "' title='" + provider + "' target='_blank'>" + provider + "</a>");
+        };
 
-				
-                //cache teaser DOM elements for faster access
-                $teaser = $('<div class="teaser"/>'),
-                $media = $('<div class="media" />'),
-                $article = $('<article class="article" />'),
-                $title = $('<h3 />'),
-                $description = $('<div class="description" />'),
-                $credits = $('<div class="credits" />'),
-                $instapaper = $('<div class="instapaper"/>'),
-                $recommender = $('<div class="recommender"/>'),
-                $rectext = $('<a class="rectext" />');
-                
-                
+    	//add instapaper button
+    	if (type == "link") {
+        	$instapaper.html("<iframe border='0' scrolling='no' width='78' height='17' allowtransparency='true' frameborder='0' style='margin-bottom: -3px; z-index: 1338; border: 0px; background-color: transparent; overflow: hidden;' src='http://www.instapaper.com/e2?url=" + url + "&title=" + title + "&description=" + description + " (via instacurate.com)'></iframe>");
+    	}
 
-            //get rid of loading message if loading class is still applied
-            if ($status.hasClass('state-loading')) {
-                $status.removeClass('state-loading alert alert-info').html('');
-            }
-                       
-            //create a new teaser element with all subelements
+    	$recommender.html("<div class='score'><i class='fa fa-line-chart'></i> " + score + "</div><p class='rectext'>Shared by <a href='http://www.reddit.com/user/" + redditor + "'>" + redditor + "</a>");
 
-            var blocked = []; // array of blocked providers
+      $recommender.append($rectext);
+    	$recommender.append($instapaper);
 
-            if (jQuery.inArray(provider,blocked) == -1 && typeof title != undefined) { // exclude blocked providers
+    }
 
-            	$column.append($teaser);
-            	$teaser.append($media);
-            	$teaser.append($article);
-            	$article.append($credits);
-            	$article.append($title);
-            	$article.append($description); 	
-            	$teaser.append($recommender);
-
-            	// crop long description
-            	if (description && description.length > 140) {description = jQuery.trim(description).substring(0, 139).split(" ").slice(0, -1).join(" ") + " [...]"};
-            	// crop long titles
-            	if (title && title.length > 100) {title = jQuery.trim(title).substring(0, 99).split(" ").slice(0, -1).join(" ") + " [...]"};
-
-            	//assign correct content to all those elements
-            	if (type == "link" && typeof img_url != undefined && img_width >= 150) {
-            		$media.html("<a href='" + link + "' target='_blank'>" + "<img src='" + img_url + "'></a><br/>")
-            	}
-            			
-            	else if (type == "photo" && typeof url != undefined) {
-            	   $media.html("<a href='" + link + "' target='_blank'>" + "<img src='" + url + "'></a><br/>")
-            	}
-            			
-            	else if (type == "video" || type == "rich" || type == "audio") {
-            		$teaser.addClass(type); // add type as class to teaser for later styling
-            		$media.html(multimedia + "<br/>")
-            	};
-
-            	if (title != undefined) {$title.html("<a href='" + link + "' target='_blank'>" + title + "</a><br />");}
-            	
-                if (description != undefined) {$description.html(description + " <a href='"+ link + "' target='_blank'>read on</a>");}
-
-            	if (author != undefined) {
-                    $credits.html("<a href='" + author_url + "' title='" + author + "' target='_blank'>" + author + "</a>, " + "<a href='" + provider_url + "' title='" + provider + "' target='_blank'>" + provider + "</a>");
-                } else {
-                    $credits.html("<a href='" + provider_url + "' title='" + provider + "' target='_blank'>" + provider + "</a>");
-                };
-
-            	//add instapaper button
-            	if (type == "link") {
-                	$instapaper.html("<iframe border='0' scrolling='no' width='78' height='17' allowtransparency='true' frameborder='0' style='margin-bottom: -3px; z-index: 1338; border: 0px; background-color: transparent; overflow: hidden;' src='http://www.instapaper.com/e2?url=" + link + "&title=" + title + "&description=" + description + " (via instacurate.com)'></iframe>");
-            	}
-            	
-            	$recommender.html("<div class='score'><i class='fa fa-line-chart'></i> " + score + "</div><p class='rectext'>Shared by <a href='http://www.reddit.com/user/" + redditor + "'>" + redditor + "</a>");
-				
-				$recommender.append($rectext);
-            	$recommender.append($instapaper);
-
-            }
-
-            //add post title as a tooltip
-            $rectext.append(tstamp + " (view on reddit)").attr('target', '_blank').attr('href', 'http://www.reddit.com' + postlink).popover({
-                title: "<blockquote class='twitter-tweet'><p>"+text+"</p></blockquote>",
-                html: true,
-                trigger: "hover",
-                placement: "top"
-            });
-            
-        }
+    //add post title as a tooltip
+    $rectext.append(tstamp + " (view on reddit)").attr('target', '_blank').attr('href', 'http://www.reddit.com' + postlink).popover({
+      title: "<blockquote class='twitter-tweet'><p>"+text+"</p></blockquote>",
+      html: true,
+      trigger: "hover",
+      placement: "top"
     });
-
 };
 
 
@@ -442,18 +470,18 @@ $(document).scroll(function(e){
         getLinks(myInput);
     }
 });
-    
+
 
 
 $(document).ready(function(){
-    
+
     // load some default content to start with
     // getLinks("all");
-    
+
     // display help text if user hasn't done anything after 5 secs
     setTimeout(function(){
 	    $('.helptext').removeClass('hide')},5000);
-    
+
 
 });
 
