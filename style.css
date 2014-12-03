@@ -204,6 +204,9 @@ nav a:hover {text-decoration: none; background-color: rgba(36,215,255,0.1); }
 
 .close {margin-top: -15px;}
 
+.helptext {font-size: 24px;margin-bottom: 20px;}
+.hugesnoo {font-size: 200px !important;}
+
 /* tooltip styles */
 
 .ui-tooltip, .arrow:after {

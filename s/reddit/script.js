@@ -449,6 +449,11 @@ $(document).ready(function(){
     
     // load some default content to start with
     // getLinks("all");
+    
+    // display help text if user hasn't done anything after 5 secs
+    setTimeout(function(){
+	    $('.helptext').removeClass('hide')},5000);
+    
 
 });
 
