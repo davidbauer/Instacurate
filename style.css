@@ -51,12 +51,6 @@ a:hover.btn-info {text-decoration: none;color:white;}
 	margin-right:auto;}
 	
 .score {
-	background-color: #EFF7FF;
-	border: 2px solid rgba(36,215,255,0.7);
-	-webkit-border-radius: 999px;
-    -moz-border-radius: 999px;
-    border-radius: 999px;
-    behavior: url(PIE.htc);
     height: 20px;
     padding: 7px 5px 5px 5px;
     text-align: center;
@@ -302,8 +296,8 @@ nav a:hover {text-decoration: none; background-color: rgba(36,215,255,0.1); }
 }
 .twitter-tweet {
     border: none;
-    font-size: 22px;
-    line-height: 28px;
+    font-size: 16px;
+    line-height: 21px;
     margin: 0 0 -12px 0;
     padding: 0;
 }
@@ -323,9 +317,7 @@ nav a:hover {text-decoration: none; background-color: rgba(36,215,255,0.1); }
 	color:#3071a9 !important;
 }
 
-.icon-reorder {
-	background-color: #ececec;
-	padding:5px;}
+.fa-bars {font-size: 21px !important;padding:6px 4px 4px;}
 
 #jPanelMenu-menu {
     background: #dadada;

@@ -224,7 +224,6 @@ function process_data(nrOfLinks) {
             break;
         }
         
-        console.log("post is: " + post);
         console.log("post title: " + post.data.title);
         
         var link = post.data.url;
@@ -353,7 +352,7 @@ function generateEmbed(linksTotal, link, text, score, comments, redditor, postli
                 	$instapaper.html("<iframe border='0' scrolling='no' width='78' height='17' allowtransparency='true' frameborder='0' style='margin-bottom: -3px; z-index: 1338; border: 0px; background-color: transparent; overflow: hidden;' src='http://www.instapaper.com/e2?url=" + link + "&title=" + title + "&description=" + description + " (via instacurate.com)'></iframe>");
             	}
             	
-            	$recommender.html("<div class='score'>" + score + "</div><p class='rectext'>Shared by <a href='http://www.reddit.com/user/" + redditor + "'>" + redditor + "</a>");
+            	$recommender.html("<div class='score'><i class='fa fa-line-chart'></i> " + score + "</div><p class='rectext'>Shared by <a href='http://www.reddit.com/user/" + redditor + "'>" + redditor + "</a>");
 				
 				$recommender.append($rectext);
             	$recommender.append($instapaper);
