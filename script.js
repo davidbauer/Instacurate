@@ -325,7 +325,12 @@ function Tweet(t, urlEntity, container) {
             });
 
             if (this.retweets != 0) {
-                $tweetLink.append(", " + this.retweets + " retweets.")
+                if (this.retweets == 1) {
+	            	$tweetLink.append(", 1 retweet");  
+                }
+                else {
+                	$tweetLink.append(", " + this.retweets + " retweets");
+                }
             }
             // add tweet to the dom
             container.append($teaser);
