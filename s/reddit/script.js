@@ -170,7 +170,6 @@ function getLinks(myInput) {
 	        fetched_data = data.data.children.reverse();
             lastPost = data.data.after;
 	        console.log(fetched_data.length + " posts fetched.");
-	        console.log(fetched_data[0].data.title);
 	        
 	    })
 	    .error(function() {
