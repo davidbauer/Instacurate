@@ -23,7 +23,8 @@ body {
 .btn-info {margin-bottom: 10px;color:#ececec;}
 a:hover.btn-info {text-decoration: none;color:white;}
 
-#demo {text-align: center;margin-top: 15px;font-size: 16px;}
+#demo {text-align: center;margin-top: -25px;font-size: 16px;}
+#demo img {width: 100%;}
 
 #embeds {margin-top:10px;}
 

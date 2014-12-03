@@ -94,7 +94,7 @@
 /////-- /*
 /////-- $(function() {
 /////--
-/////--     $('.linkinput').live('click', function(e) {
+/////--     $('.linkinput').on('click', function(e) {
 /////--         e.preventDefault();
 /////--
 /////--         var myInput = $(this).attr('data-user');
@@ -224,8 +224,7 @@ function Tweet(t, urlEntity, container) {
     this.id = t.id_str;
     this.link = urlEntity.expanded_url;
     // this.embedCacheUrl = 'http://instacurate.com/embed-cache.php?url=';
-    // I used my own embed.ly API-Key so instacurate.com wont run into rate limits
-    this.embedCacheUrl = 'http://api.embed.ly/1/oembed?key=INSERTYOUROWNKEY&url=';
+    this.embedCacheUrl = 'http://api.embed.ly/1/oembed?key=ab0fdaa34f634136bf4eb2325e040527&url=';
 
 	var date = new Date(t.created_at);
 	var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -358,6 +357,7 @@ function TimeLine(query) {
 
     this.init = function() {
         var tl = this;
+        
         if (typeof tl.loggedInUser === 'undefined') {
             $.getJSON(tl.appServerUrl + "/loggedinuser?callback=?", function(username){
                 if (username) {
@@ -372,6 +372,10 @@ function TimeLine(query) {
                 if (isLoggedIn) {
                     tl.isLoggedInCallback();
                     tl.query = typeof query === 'undefined' || query === '' ? 'owntimeline' : query;
+                    
+                    //remove demo image
+					$('#demo').html("");
+        
                     tl.fetchTweetsForQuery();
                 } else {
                     // place logic here to deal with non-registered users
@@ -520,8 +524,6 @@ function TimeLine(query) {
 
 $(document).ready(function() {
     
-    //remove demo image
-    $('#demo').html("");
     var t = new TimeLine();
 
 });
