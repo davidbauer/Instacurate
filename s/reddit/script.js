@@ -76,7 +76,7 @@ $(function() {
 // get input from suggestions
 $(function() {
 
-    $('.linkinput').live('click', function(e) {
+    $('.linkinput').on('click', function(e) {
         e.preventDefault();
 
         var myInput = $(this).attr('data-input');
