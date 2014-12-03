@@ -1,5 +1,6 @@
 html, body {
     height: 100%;
+    font-family: 'Raleway', sans-serif;
 }
 
 body {
@@ -14,6 +15,8 @@ body {
     text-align: center;
     
 }
+
+.form-control {height:inherit;}
 
 .lead {margin-top: 6px;}
 
@@ -299,7 +302,6 @@ nav a:hover {text-decoration: none; background-color: rgba(36,215,255,0.1); }
 }
 .twitter-tweet {
     border: none;
-    font-family: Georgia, "Times New Roman", serif;
     font-size: 22px;
     line-height: 28px;
     margin: 0 0 -12px 0;
@@ -313,15 +315,20 @@ nav a:hover {text-decoration: none; background-color: rgba(36,215,255,0.1); }
 /* navigation */
 .menu-trigger, .menu-trigger:hover {
 	color:black;
-	text-decoration: none;
+	text-decoration: none !important;
 	margin-bottom: -20px;
 }
+
+.menu-trigger:hover {
+	color:#3071a9 !important;
+}
+
 .icon-reorder {
 	background-color: #ececec;
 	padding:5px;}
 
 #jPanelMenu-menu {
-    background: rgba(0,116,136,0.3);
+    background: #dadada;
 }
 
 #jPanelMenu-menu a {
@@ -331,7 +338,7 @@ nav a:hover {text-decoration: none; background-color: rgba(36,215,255,0.1); }
 #jPanelMenu-menu ul.navi {
     list-style: none;
     margin-left: 0px;
-    padding: 0;
+    padding-left: 0px;
 }
 
 #jPanelMenu-menu ul.navi li {
@@ -341,24 +348,20 @@ nav a:hover {text-decoration: none; background-color: rgba(36,215,255,0.1); }
     padding: 0.8em 1em;
     border-bottom: 1px solid rgba(0,85,100,0.3);
     text-decoration: none;
-    color: #f7f7f7;
 }
 
-#support {margin: 0.5em 1em; }
+#support {margin: 0.5em 1em;}
 
-#support h3 {font-weight: 500;
-	font-size: 14px;
-}
-
+.weeklyfilet {margin-top:10px;}
 
 #jPanelMenu-menu a li {
     display: block;
     text-decoration: none;
-    color: #f7f7f7;
+    color:black;
 }
 #jPanelMenu-menu a:hover li, #jPanelMenu-menu a:focus li {
     text-decoration: none;
-    background: rgba(0,116,136,0.5);
+    background: #b9b9b9;
 }
 
 
