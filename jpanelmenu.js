@@ -56,8 +56,12 @@
 				beforeClose: function(){ },
 
 				after: function(){ },
-				afterOpen: function(){ },
-				afterClose: function(){ },
+				afterOpen: function(){
+					$('.menu-trigger').html('<i class="fa fa-times"></i> Close');
+				},
+				afterClose: function(){
+					$('.menu-trigger').html('<i class="fa fa-bars"></i> <i class="fa fa-arrow-left"></i> There\'s more');
+				},
 
 				beforeOn: function(){ },
 				afterOn: function(){ },
