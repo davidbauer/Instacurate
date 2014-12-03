@@ -269,7 +269,7 @@ function generateEmbed(linksTotal, link, text, score, comments, redditor, postli
  	var $column = $(embeds_columns[c]);
  	var $status = $('#status');
  	
-    $.getJSON('../../embed-cache.php?url=' + link + '&maxwidth=370', function(embed) { // maxwidth needed for correct multimedia element size
+    $.getJSON('../../embed-cache.php?url=' + link + '&maxwidth=360', function(embed) { // maxwidth needed for correct multimedia element size
         if(embed.error) {
             console.log("Error on requesting '" + link + "': " + embed.error);
         } else {
@@ -285,6 +285,7 @@ function generateEmbed(linksTotal, link, text, score, comments, redditor, postli
                 type = embed.type, // used to distinguish links from audio and video
                 multimedia = embed.html,
 
+				
                 //cache teaser DOM elements for faster access
                 $teaser = $('<div class="teaser"/>'),
                 $media = $('<div class="media" />'),
@@ -336,9 +337,9 @@ function generateEmbed(linksTotal, link, text, score, comments, redditor, postli
             		$media.html(multimedia + "<br/>")
             	};
 
-            	$title.html("<a href='" + link + "' target='_blank'>" + title + "</a><br />");
+            	if (title != undefined) {$title.html("<a href='" + link + "' target='_blank'>" + title + "</a><br />");}
             	
-                if (description != undefined) $description.html(description + " <a href='"+ link + "' target='_blank'>read on</a>");
+                if (description != undefined) {$description.html(description + " <a href='"+ link + "' target='_blank'>read on</a>");}
 
             	if (author != undefined) {
                     $credits.html("<a href='" + author_url + "' title='" + author + "' target='_blank'>" + author + "</a>, " + "<a href='" + provider_url + "' title='" + provider + "' target='_blank'>" + provider + "</a>");

@@ -232,7 +232,7 @@ function Tweet(t, urlEntity, container) {
     var tw = this;
 
     this.init = function(url, container) {
-        $.getJSON(this.embedCacheUrl + url + '&maxwidth=370&callback?', function(embed) {
+        $.getJSON(this.embedCacheUrl + url + '&maxwidth=360&callback?', function(embed) {
             // maxwidth needed for correct multimedia element size
             if(embed.error) {
                 console.log("Error on requesting '"+link+"': "+embed.error);
@@ -266,7 +266,7 @@ function Tweet(t, urlEntity, container) {
                 $title = $('<h3 />'),
                 $description = $('<div class="description" />'),
                 $credits = $('<div class="credits" />'),
-                $instapaper = $('<div class="instapaper"/>'),
+                $instapaper = $('<div class="instapaper hidden-xs hidden-sm"/>'),
                 $recommender = $('<div class="recommender"/>'),
                 $tweet = $('<span class="rectext" />'),
                 $tweetLink = $('<a><i class="icon-twitter small"></i> </a>');
@@ -298,9 +298,12 @@ function Tweet(t, urlEntity, container) {
                 $media.html(this.multimedia + "<br/>")
             };
 
-            $title.html("<a href='" + this.link + "' target='_blank'>" + this.title + "</a><br />");
+            if (this.title !== undefined) {
+            	$title.html("<a href='" + this.link + "' target='_blank'>" + this.title + "</a><br />");
+            }
+            
             if (this.description !== undefined)
-                $description.html(this.description + " <a href='"+ this.link + "' target='_blank'>read on</a>");
+                {$description.html(this.description + " <a href='"+ this.link + "' target='_blank'>read on</a>");}
 
             if (this.author !== undefined) {
                 $credits.html("<a href='" + this.author_url + "' title='" + this.author + "' target='_blank'>" + this.author + "</a>, " + "<a href='" + this.provider_url + "' title='" + this.provider + "' target='_blank'>" + this.provider + "</a>");}
