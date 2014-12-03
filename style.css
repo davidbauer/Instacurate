@@ -311,14 +311,16 @@ nav a:hover {text-decoration: none; background-color: rgba(36,215,255,0.1); }
 .menu-trigger, .menu-trigger:hover {
 	color:black !important;
 	text-decoration: none !important;
-	margin-bottom: -20px;
+	position: relative;
+	top:7px;
+	left:10px;
 }
 
 .menu-trigger:hover {
 	color:#3071a9 !important;
 }
 
-.fa-bars, .fa-times {font-size: 21px !important;padding:6px 4px 4px;}
+.fa-bars, .fa-times {font-size: 21px !important;position: relative;top:3px;}
 
 #jPanelMenu-menu {
     background: #dadada;
