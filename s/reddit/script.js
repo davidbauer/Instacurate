@@ -256,7 +256,7 @@ function process_data(nrOfLinks) {
             }
         }
     }
-    processLinks(linksTotal, embedLinks, embedPosts);
+    requestEmbeds(linksTotal, embedLinks, embedPosts);
 };
 
 // format timestamp as a string
@@ -267,8 +267,8 @@ function createTimestamp (createdAt) {
 };
 
 // process links
-function processLinks(total, links, postdata) {
-  if(console) console.log('Processing ' + links.length + ' links.');
+function requestEmbeds(total, links, postdata) {
+  if(console) console.log('Requesting embeds for ' + links.length + ' links.');
   $.ajax('../../embed-cache.php', {
     type: 'get',
     dataType: 'json',
@@ -276,7 +276,7 @@ function processLinks(total, links, postdata) {
       url: links,
       maxwidth: 360
     },
-    error: function(bla, error) {
+    error: function(jqhxr, error) {
       alert(error);
     },
     success: function(response) {
