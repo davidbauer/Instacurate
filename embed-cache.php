@@ -1,24 +1,22 @@
 <?php
 require_once('./embed-cache.class.php');
-
 if($_GET['url']) {
-    $urls = $_GET['url'];
-    $params = array_merge([], $_GET);
-    $output = array();
-    $errors = array();
-    $embedcache = new embedcache();
-    if(!is_array($urls)) $urls = array($urls);
-    unset($params['url']);
-    foreach($urls as $url) {
-        if(($json = $embedcache->getEmbed($url, $params))) {
-            $output[] = $json;
+    $url = '';
+    $params = array();
+    foreach($_GET as $k=>$v) {
+        if($k == 'url') {
+            $url = $v;
         } else {
-            $output[] = 0;
-            $errors[] = '{ "error": "' . $embed->error .'" }';
+            $params[$k] = $v;
         }
     }
+    $embedcache = new embedcache();
     header('Content-type: application/json');
-    printf('{ "cache": [ %s ], "errors": [ %s ] }', implode(', ', $output), implode(', ', $errors));
+    if(($output = $embedcache->getEmbed($url, $params))) {
+        echo $output;
+    } else {
+        echo '{ "error": "' . $embed->error .'" }';
+    }
 } else {
     $embedcache = new embedcache();
     $embedcache->cleanUp();
