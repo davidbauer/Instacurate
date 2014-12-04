@@ -337,7 +337,11 @@ function generateEmbed(linksTotal, link, text, score, comments, redditor, postli
             		$media.html(multimedia + "<br/>")
             	};
 
-            	if (title != undefined) {$title.html("<a href='" + link + "' target='_blank'>" + title + "</a><br />");}
+            	if (title != undefined) {
+	            	$title.html("<a href='" + link + "' target='_blank'>" + title + "</a><br />");
+	            	}
+            	
+            	else {$title.html("<a href='" + link + "' target='_blank'>" + text + "</a><br />");}
             	
                 if (description != undefined) {$description.html(description + " <a href='"+ link + "' target='_blank'>read on</a>");}
 
