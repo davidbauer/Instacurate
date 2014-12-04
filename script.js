@@ -215,42 +215,35 @@
 /////-- }
 
 
-function Tweet(t, urlEntity, container) {
+function Tweet(t, embed, container) {
     this.text = t.text;
     this.retweets = t.retweet_count;
     this.img = t.user.profile_image_url;
     this.realname = t.user.name;
     this.accountname = t.user.screen_name;
     this.id = t.id_str;
-    this.link = urlEntity.expanded_url;
-    // this.embedCacheUrl = 'http://instacurate.com/embed-cache.php?url=';
-    this.embedCacheUrl = 'http://api.embed.ly/1/oembed?key=ab0fdaa34f634136bf4eb2325e040527&url=';
+    this.link = embed.url;
+
+    // this.embedCacheUrl = 'http://api.embed.ly/1/oembed?key=ab0fdaa34f634136bf4eb2325e040527&url=';
 
 	var date = new Date(t.created_at);
 	var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 	this.tstamp =  date.getDate() + ". " + months[date.getMonth()] + " " + date.getFullYear();
     var tw = this;
 
-    this.init = function(url, container) {
-        $.getJSON(this.embedCacheUrl + url + '&maxwidth=360&callback?', function(embed) {
-            // maxwidth needed for correct multimedia element size
-            if(embed.error) {
-                console.log("Error on requesting '"+link+"': "+embed.error);
-            } else {
-                tw.title = embed.title;
-                tw.description = embed.description;
-                tw.url = embed.url;
-                tw.provider = embed.provider_name;
-                tw.provider_url = embed.provider_url;
-                tw.img_url = embed.thumbnail_url;
-                tw.img_width = embed.thumbnail_width;
-                tw.author = embed.author_name;
-                tw.author_url = embed.author_url;
-                tw.type = embed.type; // used to distinguish links from audio and video
-                tw.multimedia = embed.html;
-                tw.render(container);
-            }
-        });
+    this.init = function(embed) {
+      tw.title = embed.title;
+      tw.description = embed.description;
+      tw.url = embed.url;
+      tw.provider = embed.provider_name;
+      tw.provider_url = embed.provider_url;
+      tw.img_url = embed.thumbnail_url;
+      tw.img_width = embed.thumbnail_width;
+      tw.author = embed.author_name;
+      tw.author_url = embed.author_url;
+      tw.type = embed.type; // used to distinguish links from audio and video
+      tw.multimedia = embed.html;
+      tw.render(container);
     },
     this.render = function(container) {
 
@@ -288,11 +281,11 @@ function Tweet(t, urlEntity, container) {
             if (this.type === "link" && this.img_url !== undefined && this.img_width >= 150) {
                 $media.html("<a href='" + this.link + "' target='_blank'>" + "<img src='" + this.img_url + "'></a><br/>")
             }
-            
+
             else if (this.type == "photo" && this.url != undefined) {
             			$media.html("<a href='" + this.link + "' target='_blank'>" + "<img src='" + this.url + "'></a><br/>")
             			}
-            
+
             else if (this.type === "video" || this.type === "rich" || this.type === "audio") {
                 $teaser.addClass(this.type); // add type as class to teaser for later styling
                 $media.html(this.multimedia + "<br/>")
@@ -301,7 +294,7 @@ function Tweet(t, urlEntity, container) {
             if (this.title !== undefined) {
             	$title.html("<a href='" + this.link + "' target='_blank'>" + this.title + "</a><br />");
             }
-            
+
             if (this.description !== undefined)
                 {$description.html(this.description + " <a href='"+ this.link + "' target='_blank'>read on</a>");}
 
@@ -329,7 +322,7 @@ function Tweet(t, urlEntity, container) {
 
             if (this.retweets != 0) {
                 if (this.retweets == 1) {
-	            	$tweetLink.append(", 1 retweet");  
+	            	$tweetLink.append(", 1 retweet");
                 }
                 else {
                 	$tweetLink.append(", " + this.retweets + " retweets");
@@ -339,7 +332,8 @@ function Tweet(t, urlEntity, container) {
             container.append($teaser);
         }
     };
-    this.init(urlEntity.expanded_url, container);
+
+    this.init(embed);
 }
 
 function TimeLine(query) {
@@ -358,6 +352,8 @@ function TimeLine(query) {
     this.autoRefreshInterval = 60000;
     this.autoRefreshTimer = null;
     this.appServerUrl = "http://tlinkstimeline.appspot.com";
+    this.embedCacheUrl = './embed-cache.php';
+
     this.isLoggedInCallback = function() {
         $(".signin").toggleClass('hide');
         $('.twi').html("Here's your personalised news site, based on your Twitter timeline.");
@@ -365,7 +361,7 @@ function TimeLine(query) {
 
     this.init = function() {
         var tl = this;
-        
+
         if (typeof tl.loggedInUser === 'undefined') {
             $.getJSON(tl.appServerUrl + "/loggedinuser?callback=?", function(username){
                 if (username) {
@@ -380,10 +376,10 @@ function TimeLine(query) {
                 if (isLoggedIn) {
                     tl.isLoggedInCallback();
                     tl.query = typeof query === 'undefined' || query === '' ? 'owntimeline' : query;
-                    
+
                     //remove demo image
 					$('#demo').html("");
-        
+
                     tl.fetchTweetsForQuery();
                 } else {
                     // place logic here to deal with non-registered users
@@ -413,6 +409,7 @@ function TimeLine(query) {
             'count' : tl.tweetsToFetch,
         };
         if (tl.query === 'owntimeline') {
+            if(console) console.log('Showing own timeline.');
             $.getJSON(tl.appServerUrl + "/statuses/home_timeline.json?callback=?", params, function(data) {
                 tl.rawTweets = tl.rawTweets.concat(data.reverse());
                 tl._processTweets();
@@ -423,6 +420,7 @@ function TimeLine(query) {
                 }
             });
         } else if (tl.query.substring(0,4) == "list:") {
+            if(console) console.log('Showing list.');
             // if user is looking at a list of his/her
             params['slug'] = tl.query.substring(5,100);
             params['owner_screen_name'] = tl.loggedInUser;
@@ -437,6 +435,7 @@ function TimeLine(query) {
                 }
 	        });
         } else if (tl.query[0] === '@') {
+            if(console) console.log('Showing user.');
             params['screen_name'] = tl.query.substring(1,100);
             $.getJSON(tl.appServerUrl + '/statuses/user_timeline.json?&callback=?', params, function(data) {
                 // request needs to go to the server script
@@ -449,6 +448,7 @@ function TimeLine(query) {
                 }
             });
         } else {
+            if(console) console.log('Showing Tweets filtered for links.');
             params['q'] = tl.query + " filter:links";
             if (tl.lastTweetId !== 1) {
                 //get next 100 tweets with tweetid <= last tweetid from previous search request
@@ -484,31 +484,69 @@ function TimeLine(query) {
     this._processTweets = function() {
         var tl = this;
         var n = tl.minNrOfLinks;
+        var embedCols = $('#embeds div.column'),
+            nrOfEmbedCols = embedCols.length,
+            embedLinks = [],
+            embedTweets = [];
+
         while (n && tl.rawTweets.length > 0) {
             var t = tl.rawTweets.pop();
             if (typeof t === 'undefined') {
                 break;
             }
             //cache container DOM element
-            var embedCols = $('#embeds div.column');
-            var nrOfEmbedCols = embedCols.length;
+
 
             $.each(t.entities.urls, function(i, urlEntity) {
                 var url = urlEntity.expanded_url;
                 if (typeof tl.processedTweets[url] === 'undefined' && t.text[0] !== '@') {
                     // exclude duplicate links and links from @-replies
-                    tl.nrOfProcessedLinks++;
                     n -= 1;
-                    var c = (tl.nrOfProcessedLinks -1) % nrOfEmbedCols;
-                    var $container = $(embedCols[c]);
-                    tl.lastTweetId = t.id_str; // store the last TweetId
-                    tl.processedTweets[url] = new Tweet(t, urlEntity, $container);
+                    embedLinks.push(url);
+                    embedTweets.push(t);
                     if (n == 0) {
-                        return false;
+                        return;
                     }
                 }
             });
         }
+
+        if(console) console.log('Requesting embeds for ' + embedLinks.length + ' links.');
+        $.ajax(this.embedCacheUrl, {
+          type: 'get',
+          dataType: 'json',
+          data: {
+            url: embedLinks,
+            maxwidth: 360
+          },
+          error: function(jqhxr, error) {
+            console.log(error);
+          },
+          success: function(response) {
+            var cache = response.cache,
+                $container, args, c, t, embed, entityIndex = 0;
+            for(var i=0, cnt=cache.length; i<cnt; i=i+1) {
+              embed = cache[i];
+              if(embed != 0) {
+                t = embedTweets[i];
+                tl.nrOfProcessedLinks += 1; console.log('Processing embed for url: ' + embed.url+'. Number of links processed: '+ tl.nrOfProcessedLinks);
+                c = (tl.nrOfProcessedLinks -1) % nrOfEmbedCols;
+                $container = $(embedCols[c]);
+                if(t.id_str == tl.lastTweetId) {
+                  entityIndex += 1;
+                }
+                else {
+                  tl.lastTweetId = t.id_str; // store the last TweetId
+                  entityIndex = 0;
+                }
+                tl.processedTweets[embed.url] = new Tweet(t, embed, $container);
+              }
+            }
+            for(i=0, cnt=response.errors.length; i<cnt; i=i+1) {
+              if(console) console.log('Error: '+errors[i]);
+            }
+         }
+        });
     };
 
     this.finishedFetchTweetsForQuery = function() {
@@ -531,7 +569,7 @@ function TimeLine(query) {
 }
 
 $(document).ready(function() {
-    
+
     var t = new TimeLine();
 
 });
